@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="jquery-3.3.1.js"></script>
+    <script src="bootstrap.js"></script>
+</head>
+<style>
+    span{
+        float: left;
+        width: 650px
+    }
+
+
+</style>
+<body style="background-color: dodgerblue">
+<center>
+<span id="span1">
+    <br><br><br>
+    <div class="btn-group" data-toggle="buttons">
+  <label class="btn btn-primary">
+    <input type="checkbox" autocomplete="off"> 管理我的博客
+  </label>
+  <label class="btn btn-primary">
+    <input type="checkbox" autocomplete="off"> 创建新的博客
+  </label>
+    </div>
+</span>
+</center>
+<span id="span2">
+    <br><br>
+    <div class="btn-group" data-toggle="buttons">
+        <label class="btn btn-primary">
+            <input type="text" class="form-control" placeholder="作者呢称" style="width: 150px">
+        </label>
+        <label class="btn btn-primary">
+            <input type="text" class="form-control" placeholder="博客主题" style="width: 150px">
+        </label>
+        <label class="btn btn-primary">
+            <select class="form-control" onchange="selectOnchang(this)" style="width: 150px">
+                <option>所有申请商家</option>
+                <option>待审核商家</option>
+                <option>未通过审核商家</option>
+                <option>已通过审核商家</option>
+            </select>
+          </label>
+        <label class="btn btn-primary">
+            <button  type="button" class="btn btn-default">查找</button>
+        </label>
+    </div>
+</span>
+</body>
+</html>
