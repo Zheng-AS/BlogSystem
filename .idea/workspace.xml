@@ -6,7 +6,15 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2dd3c1b3-d846-45c9-9afa-f009cd01acb0" name="Default Changelist" comment="" />
+    <list default="true" id="2dd3c1b3-d846-45c9-9afa-f009cd01acb0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/csdn/po/Administrator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/csdn/po/Blog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/csdn/po/Comment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/csdn/po/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/top.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/top.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,8 +27,12 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
+        <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="LogFilters">
     <option name="FILTER_ERRORS" value="false" />
@@ -38,6 +50,7 @@
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/web/WEB-INF" />
@@ -146,11 +159,6 @@
                 <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
                 <item name="Tomcat Server" type="7427dc5b:ServiceModel$ServiceGroupNode" />
               </path>
-              <path>
-                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-                <item name="Tomcat Server" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-                <item name="Finished" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-              </path>
             </expand>
             <select />
           </treeState>
@@ -170,6 +178,7 @@
       <updated>1616754229891</updated>
       <workItem from="1616754234878" duration="14080000" />
       <workItem from="1616815326663" duration="14504000" />
+      <workItem from="1616913367314" duration="6329000" />
     </task>
     <servers />
   </component>
@@ -185,6 +194,10 @@
       <screen x="0" y="0" width="2048" height="1152" />
     </state>
     <state x="959" y="234" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2048.1152@0.0.2048.1152" timestamp="1616755164893" />
+    <state x="830" y="292" key="#com.intellij.ide.util.MemberChooser" timestamp="1616924588003">
+      <screen x="0" y="0" width="2048" height="1152" />
+    </state>
+    <state x="830" y="292" key="#com.intellij.ide.util.MemberChooser/0.0.2048.1152@0.0.2048.1152" timestamp="1616924588003" />
     <state width="664" height="316" key="GridCell.Tab.0.bottom" timestamp="1616833626924">
       <screen x="0" y="0" width="2048" height="1152" />
     </state>
@@ -253,6 +266,10 @@
       <screen x="0" y="0" width="2048" height="1152" />
     </state>
     <state x="1010" y="154" key="SettingsEditor/0.0.2048.1152@0.0.2048.1152" timestamp="1616818787552" />
+    <state width="498" height="446" key="SwitcherDM" timestamp="1616914269443">
+      <screen x="0" y="0" width="2048" height="1152" />
+    </state>
+    <state width="498" height="446" key="SwitcherDM/0.0.2048.1152@0.0.2048.1152" timestamp="1616914269443" />
     <state x="1216" y="400" key="com.intellij.ide.util.TipDialog" timestamp="1616815368402">
       <screen x="0" y="0" width="2048" height="1152" />
     </state>
@@ -261,6 +278,10 @@
       <screen x="0" y="0" width="2048" height="1152" />
     </state>
     <state x="1194" y="272" key="run.anything.popup/0.0.2048.1152@0.0.2048.1152" timestamp="1616773650326" />
+    <state x="687" y="253" width="672" height="678" key="search.everywhere.popup" timestamp="1616921398316">
+      <screen x="0" y="0" width="2048" height="1152" />
+    </state>
+    <state x="687" y="253" width="672" height="678" key="search.everywhere.popup/0.0.2048.1152@0.0.2048.1152" timestamp="1616921398316" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/blogsystem$Tomcat_9_0_41.ic" NAME="Tomcat 9.0.41 Coverage Results" MODIFIED="1616754418503" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
