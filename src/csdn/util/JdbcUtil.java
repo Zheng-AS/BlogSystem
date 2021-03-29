@@ -30,7 +30,7 @@ public class JdbcUtil {
          * @throws SQLException 抛出异常
          */
         public  static Connection getConnection() throws SQLException {
-            return DriverManager.getConnection("jdbc:mysql://localhost:3306/kaoshi?useUnicode=true&characterEncoding=utf-8", "root", "tuofeiruou");
+            return DriverManager.getConnection("jdbc:mysql://localhost:3306/blog_system?useUnicode=true&characterEncoding=utf-8", "root", "tuofeiruou");
         }
 
         public Connection getConnection(HttpServletRequest request){
