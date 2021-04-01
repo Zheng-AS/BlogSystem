@@ -8,4 +8,5 @@ public interface UserDao {
 
     boolean selectUser(User user);
 
+    boolean isExist(String userName);
 }

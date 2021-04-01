@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="jquery-3.3.1.js"></script>
+</head>
+<style>
+    .mydiv{
+        height: 5px;
+        display: table-cell;
+        text-align: center;
+    }
+
+    p{
+        font-size: 15px;
+        width:70%;
+        color: red;
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+    .form{
+        background: rgba(255,255,255,0.2);
+        width:420px;
+        margin:120px auto;
+    }
+
+    /*阴影*/
+    .fa{
+        display: inline-block;top: 25px;left: 6px;position: relative;color: #ccc;
+    }
+
+    input[type="text"],input[type="password"]{
+        padding-left:26px;
+    }
+
+    .checkbox{
+        padding-left:21px;
+    }
+</style>
+<body>
+
+
+<div class="form row">
+    <form class="form-horizontal col-sm-offset-3 col-md-offset-3" id="register_form" method="post" action="/psdn/register">
+        <h3 class="form-title">用户注册</h3>
+        <div class="col-sm-9 col-md-9">
+            <div class="form-group" style="margin-left: 0">
+                <i class="fa fa-user fa-lg"></i>
+                <input class="form-control required" type="text" placeholder="请输入用户名" id="username" name="username" autofocus="autofocus" style="width: 250px"/>
+                <div class="col-sm-9 col-md-9" id="div1"/>
+                <div class="mydiv"><p>用户名已存在</p></div>
+            </div>
+            <div class="form-group" style="margin-left: 0">
+                <i class="fa fa-lock fa-lg"></i>
+                <input class="form-control required" type="password" placeholder="请输入密码" id="password1" name="password" maxlength="8" style="width: 250px"/>
+                <div class="col-sm-9 col-md-9" id="div2"/>
+            </div>
+            <div class="form-group" style="margin-left: 0">
+                <i class="fa fa-check fa-lg"></i>
+                <input class="form-control required" type="password" placeholder="确认您的密码" id="password2" maxlength="8" style="width: 250px"/>
+                <div class="col-sm-9 col-md-9" id="div3"/>
+            </div>
+            <div class="form-group">
+                <label class="checkbox pull-left">
+                    <a href="login.html" >返回</a>
+                </label>
+            </div>
+            <div class="form-group col-md-offset-9">
+                <input type="button" class="btn btn-success pull-right" id="submit1" value="注册" onclick="check1()"/>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+
+<script type="text/javascript">
+    function check1() {
+        var username = $("#username");
+        if(username.val() =="" ){
+            $("#div1").html("<font color='red'>用户名不能为空</font>");
+        }else {
+            $("#div1").html("");
+        }
+        if($("#password1").val() ==""){
+            $("#div2").html("<font color='red'>密码不能为空</font>");
+        }else {
+            $("#div2").html("");
+        }
+        if($("#password1").val() == $("#password2").val()){
+            $("#div3").html("");
+        }else {
+            $("#div3").html("<font color='red'>密码不一致</font>");
+        }
+        if($("#div1").text() =="" && $("#div2").text() =="" && $("#div3").text() ==""){
+            document.getElementById("register_form").submit();
+        }
+    }
+</script>
+</body>
+</html>

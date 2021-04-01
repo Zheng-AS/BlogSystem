@@ -30,17 +30,10 @@
     }
 </style>
 <body>
-    <script type="text/javascript">
-        function check1() {
-            var username = $("#username");
-            if(username.val() == null){
-                $("#div1").innerText("用户名不能为空")
-            }
-        }
-    </script>
+
 
     <div class="form row">
-        <form class="form-horizontal col-sm-offset-3 col-md-offset-3" id="register_form">
+        <form class="form-horizontal col-sm-offset-3 col-md-offset-3" id="register_form" method="post" action="/psdn/register">
             <h3 class="form-title">用户注册</h3>
             <div class="col-sm-9 col-md-9">
                 <div class="form-group" style="margin-left: 0">
@@ -62,7 +55,6 @@
                     <label class="checkbox pull-left">
                         <a href="login.html" >返回</a>
                     </label>
-
                 </div>
                 <div class="form-group col-md-offset-9">
                     <input type="button" class="btn btn-success pull-right" id="submit1" value="注册" onclick="check1()"/>
@@ -71,5 +63,29 @@
         </form>
     </div>
     </div>
+
+    <script type="text/javascript">
+        function check1() {
+            var username = $("#username");
+            if(username.val() =="" ){
+                $("#div1").html("<font color='red'>用户名不能为空</font>");
+            }else {
+                $("#div1").html("");
+            }
+            if($("#password1").val() ==""){
+                $("#div2").html("<font color='red'>密码不能为空</font>");
+            }else {
+                $("#div2").html("");
+            }
+            if($("#password1").val() == $("#password2").val()){
+                $("#div3").html("");
+            }else {
+                $("#div3").html("<font color='red'>密码不一致</font>");
+            }
+            if($("#div1").text() =="" && $("#div2").text() =="" && $("#div3").text() ==""){
+                document.getElementById("register_form").submit();
+            }
+        }
+    </script>
 </body>
 </html>

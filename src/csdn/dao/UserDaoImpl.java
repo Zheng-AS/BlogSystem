@@ -47,4 +47,23 @@ public class UserDaoImpl implements UserDao {
         }
         return result;
     }
+
+    @Override
+    public boolean isExist(String userName) {
+        boolean result = false;
+        String sql = "select * from user where username = ?";
+        ps = util.createStatement(sql);
+        try {
+            ps.setString(1,userName);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                result = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close();
+        }
+        return false;
+    }
 }
