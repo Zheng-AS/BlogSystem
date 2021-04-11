@@ -33,7 +33,7 @@
 
 
 <div class="form row">
-    <form class="form-horizontal col-sm-offset-3 col-md-offset-3" id="update_form" method="post" action="/psdn/updateMes">
+    <form class="form-horizontal col-sm-offset-3 col-md-offset-3" id="update_form" method="post" action="/psdn/user/updateMes">
         <h3 class="form-title">更改个人信息</h3>
         <div class="col-sm-9 col-md-9">
             <div class="form-group" style="margin-left: 0">
@@ -62,7 +62,7 @@
 <script type="text/javascript">
     window.onload = function() {
         $.ajax({
-            url:'/psdn/getMes',
+            url:'/psdn/user/getMes',
             type:'get',
             data:{},
             dataType:'json',
