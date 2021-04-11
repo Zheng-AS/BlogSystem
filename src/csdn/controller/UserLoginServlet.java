@@ -2,8 +2,6 @@ package csdn.controller;
 
 import csdn.service.ServiceFactory;
 import csdn.service.UserService;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,7 +20,11 @@ public class UserLoginServlet extends HttpServlet {
         userName = req.getParameter("username");
         password = req.getParameter("password");
 
-        if(userService.login(userName, password)){
+        int uid = userService.login(userName, password);
+        if(uid != 0){
+            req.getServletContext().setAttribute("uid",uid);
+            req.getServletContext().setAttribute("userName",userName);
+            req.getServletContext().setAttribute("password",password);
             resp.sendRedirect("/psdn/index.html");
         }else {
             resp.sendRedirect("/psdn/login_error.html");
