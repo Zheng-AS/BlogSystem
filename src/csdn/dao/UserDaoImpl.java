@@ -29,8 +29,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean selectUser(User user) {
-        boolean result = false;
+    public int selectUser(User user) {
+        int result = 0;
         String sql = "select * from user where username = ? and password =?";
         ps = util.createStatement(sql);
         try {
@@ -38,12 +38,12 @@ public class UserDaoImpl implements UserDao {
             ps.setString(2,user.getPassword());
             rs = ps.executeQuery();
             if(rs.next()){
-                result = true;
+                result = rs.getInt("uid");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            util.close();
+            util.close(rs);
         }
         return result;
     }
@@ -62,8 +62,51 @@ public class UserDaoImpl implements UserDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            util.close();
+            util.close(rs);
         }
         return false;
+    }
+
+    @Override
+    public User queryUser(int uid) {
+        String userName = null, password = null;
+        String sql = "select * from user where uid = ?";
+        ps = util.createStatement(sql);
+        try {
+            ps.setInt(1,uid);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                userName = rs.getString("username");
+                password = rs.getString("password");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close(rs);
+        }
+        return new User(userName,password);
+    }
+
+    @Override
+    public int update(User user) {
+        String userName = user.getUserName();
+        String password = user.getPassword();
+        int uid = user.getuId(),result = 0;
+        String sql = "update user set username = ?, password = ? where uid = ?";
+        ps = util.createStatement(sql);
+        try{
+            ps.setString(1,userName);
+            ps.setString(2,password);
+            ps.setInt(3,uid);
+            result = ps.executeUpdate();
+            if(result == 1){
+                util.commit();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close();
+        }
+        return result;
     }
 }
