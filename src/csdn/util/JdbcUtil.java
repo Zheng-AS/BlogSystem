@@ -62,7 +62,8 @@ public class JdbcUtil {
 
         public PreparedStatement createStatement(String sql){
             try {
-                ps = getConnection().prepareStatement(sql);
+                con = getConnection();
+                ps = con.prepareStatement(sql);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -94,6 +95,16 @@ public class JdbcUtil {
                     e.printStackTrace();
                 }
             }
+        }/**
+         * 关闭资源
+         */
+        public void close(ResultSet rs){
+            this.rs = rs;
+            this.close();
+        }
+
+        public void commit() throws SQLException {
+            con.commit();
         }
 
         public void close(HttpServletRequest request){
