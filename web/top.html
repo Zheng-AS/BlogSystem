@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:https="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -18,16 +18,23 @@
 
 </style>
 <body style="background-color: dodgerblue">
+
+<script>
+    function createBlog() {
+        window.location.href = "create_blog.html";
+    }
+</script>
+
 <center>
 <span id="span1">
     <br><br><br>
-    <div class="btn-group" data-toggle="buttons">
-  <label class="btn btn-primary">
-    <input type="checkbox" autocomplete="off"> 管理我的博客
-  </label>
-  <label class="btn btn-primary">
-    <input type="checkbox" autocomplete="off"> 创建新的博客
-  </label>
+    <div class="btn-group">
+        <a href="https://www.baidu.com/" target="right">
+            <button type="button" class="btn btn-default">管理我的博客</button>
+        </a>
+        <a href="test.html" target="right">
+            <button type="button" class="btn btn-default">创建我的博客</button>
+        </a>
     </div>
 </span>
 </center>
