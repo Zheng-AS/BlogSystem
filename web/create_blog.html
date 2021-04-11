@@ -2,9 +2,117 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>Title</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="jquery-3.3.1.js"></script>
+    <script
+            type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/wangeditor@latest/dist/wangEditor.min.js"></script>
+    <style>
+        .toolbar {
+            border: 1px solid #ccc;
+        }
+        .text {
+            border: 1px solid #ccc;
+            min-height: 400px;
+        }
+    </style>
 </head>
 <body>
-$END$
+<label>
+<input type="text"  placeholder="标题"  width="10000" id="title" >
+</label>
+<div>
+    <div id="toolbar-container" class="toolbar"></div>
+</div>
+
+<!-- 引入 wangEditor.min.js -->
+    <form id="form" method="post">
+        <div id="contentDiv"></div>
+        <textarea name="content" id="content" style="display:none" ></textarea>
+    </form>
+<label class="btn btn-primary">
+    <select class="form-control" style="..." id="tag">
+        <option value="">选择分类标签</option>
+        <option value="人工智能">人工智能</option>
+        <option value="前端">前端</option>
+        <option value="架构">架构</option>
+        <option value="区块链">区块链</option>
+        <option value="数据库">数据库</option>
+        <option value="5G">5G</option>
+        <option value="游戏开发">游戏开发</option>
+        <option value="大数据">大数据</option>
+    </select>
+</label>
+<label class="btn btn-primary">
+    <select class="form-control" style="..." id="isPublic">
+        <option value="否">设为隐私</option>
+        <option value="是">公开</option>
+    </select>
+</label>
+<button type="button" class="btn btn-default" onclick="submitData()">保存</button>
+</body>
+<script>
+    var data = {
+        title : "",
+        tag : "",
+        imgUrl : [],
+        content :"",
+        isPublic :""
+    }
+
+    var E = window.wangEditor;
+    var editor = new E('#contentDiv')
+    var $text1 = $('#content');
+    editor.config.onchange = function (html) {
+        // 监控变化，同步更新富文本内容到 textarea
+        $text1.val(html);
+    }
+    editor.config.uploadImgServer = '/psdn/blog/imgUpload';	//自定义上传图片（改成自己写的图片上传方法的路径）
+    editor.config.uploadFileName = 'imgFile';	//自定义文件名
+    editor.config.uploadImgHooks = {
+        customInsert: function (insertImg, result, editor) {
+            var url = result.url
+            data.imgUrl.push(url)
+            insertImg(url)
+            alert(result.msg);
+        }
+    }
+    editor.config.onchange = (html)=>{
+        console.log(html)
+    }
+    editor.config.customAlert = function (info) {	//关闭默认提示信息
+        // info 是需要提示的内容
+        alert('自定义提示：' + info)
+    }
+    editor.create();
+    $text1.val(editor.txt.html());
+
+    function submitData() {
+        data.tag = $('#tag option:selected').val()
+        data.title = $('#title').val()
+        data.isPublic = $('#isPublic option:selected').val()
+        data.content = editor.txt.text()
+        /*alert(data.tag = $('#tag option:selected').val())
+        alert(data.title = $('#title').val())
+        alert(data.isPublic = $('#isPublic option:selected').val())
+        alert(editor.txt.text())*/
+        $.ajax({
+            type: "POST",
+            url: "/psdn/blog/upload",
+            data: data,
+            cache: false,
+            contentType: false,    //不可缺
+            processData: false,    //不可缺
+            dataType:"JSON",
+            success: function(ret) {
+                console.log(ret);
+                alert("上传成功")
+            },
+        })
+    }
+
+</script>
 </body>
 </html>
