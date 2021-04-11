@@ -38,6 +38,12 @@ public class User {
         this.friends = friends;
     }
 
+    public User(Integer uId, String userName, String password) {
+        this.uId = uId;
+        this.userName = userName;
+        this.password = password;
+    }
+
     public Integer getuId() {
         return uId;
     }

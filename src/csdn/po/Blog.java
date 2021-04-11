@@ -10,11 +10,20 @@ public class Blog {
     private Integer nOfCon;
     private Boolean isPublic;
     private Comment[] comments;
+    private String title;
 
     public Blog() {
     }
 
-    public Blog(Integer bId, String bContent, String tag, Integer nOfLike, Integer nOfCon, Boolean isPublic, Comment[] comments) {
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Blog(Integer bId, String bContent, String tag, Integer nOfLike, Integer nOfCon, Boolean isPublic, Comment[] comments, String title) {
         this.bId = bId;
         this.bContent = bContent;
         this.tag = tag;
@@ -22,6 +31,7 @@ public class Blog {
         this.nOfCon = nOfCon;
         this.isPublic = isPublic;
         this.comments = comments;
+        this.title = title;
     }
 
     public Integer getbId() {
@@ -90,6 +100,7 @@ public class Blog {
                 ", nOfCon=" + nOfCon +
                 ", isPublic=" + isPublic +
                 ", comments=" + Arrays.toString(comments) +
+                ", title=" + title +
                 '}';
     }
 }
