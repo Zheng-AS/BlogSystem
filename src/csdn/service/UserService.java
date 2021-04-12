@@ -1,5 +1,6 @@
 package csdn.service;
 
+import csdn.po.Blog;
 import csdn.po.User;
 
 public interface UserService {
@@ -8,4 +9,6 @@ public interface UserService {
     int register(String userName, String password);
 
     boolean updateMes(User user);
+
+    int createBlog(Blog blog);
 }

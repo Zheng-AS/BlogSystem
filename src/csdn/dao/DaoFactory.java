@@ -4,4 +4,8 @@ public class DaoFactory {
     public static UserDao getUserDao(){
         return new UserDaoImpl();
     }
+
+    public static BlogDao getBlogDao(){
+        return new BlogDaoImpl();
+    }
 }

@@ -1,11 +1,14 @@
 package csdn.service;
 
+import csdn.dao.BlogDao;
 import csdn.dao.DaoFactory;
 import csdn.dao.UserDao;
+import csdn.po.Blog;
 import csdn.po.User;
 
 public class UserServiceImpl implements UserService {
     private UserDao userDao = DaoFactory.getUserDao();
+    private BlogDao blogDao = DaoFactory.getBlogDao();
     @Override
     public int register(String userName, String password) {
         if(userDao.isExist(userName)){
@@ -22,10 +25,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean updateMes(User user) {
         boolean result = false;
-        System.out.println(15615);
         if (userDao.update(user) == 1) {
-            System.out.println(122);
             result = true;
+        }
+        return result;
+    }
+
+    @Override
+    public int createBlog(Blog blog) {
+        int result = 0;
+        if(blogDao.createBlog(blog) == 1){
+            result = 1;
         }
         return result;
     }

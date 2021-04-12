@@ -1,22 +1,26 @@
 package csdn.controller;
 
+import com.alibaba.fastjson.JSON;
+import csdn.po.Blog;
+import csdn.service.ServiceFactory;
+import csdn.service.UserService;
 import csdn.util.IDUtil;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.List;
 
 @WebServlet("/blog/*")
 public class BlogServlet extends BaseServlet {
+    private UserService userService = ServiceFactory.getUserService();
+
     public void imgUpload(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/json;charset=UTF-8");
         resp.setCharacterEncoding("UTF-8");
@@ -86,8 +90,22 @@ public class BlogServlet extends BaseServlet {
 
     public void upload(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("utf-8");
-        String data = req.getParameter("title");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=utf-8");
+        String mes = "上传失败";
 
-        System.out.println(data);
+        String title = req.getParameter("title");
+        String tag = req.getParameter("tag");
+        String imgUrl = req.getParameter("imgUrl");
+        String content = req.getParameter("content");
+        String isPublic = req.getParameter("isPublic");
+        int uId = (int) req.getServletContext().getAttribute("uid");
+
+        if(userService.createBlog(new Blog(uId,content,tag,isPublic,title,imgUrl)) == 1){
+            mes = "上传成功";
+        }
+
+        PrintWriter out = resp.getWriter();
+        out.print("<font style='color:red;font-size:40'>"+mes+"</font>");
     }
 }
