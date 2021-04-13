@@ -6,6 +6,8 @@ import csdn.dao.UserDao;
 import csdn.po.Blog;
 import csdn.po.User;
 
+import java.util.ArrayList;
+
 public class UserServiceImpl implements UserService {
     private UserDao userDao = DaoFactory.getUserDao();
     private BlogDao blogDao = DaoFactory.getBlogDao();
@@ -38,5 +40,10 @@ public class UserServiceImpl implements UserService {
             result = 1;
         }
         return result;
+    }
+
+    @Override
+    public ArrayList<Blog> checkBlog(int uId) {
+        return blogDao.checkBlog(uId);
     }
 }

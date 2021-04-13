@@ -34,8 +34,9 @@ public class Blog {
         this.title = title;
     }
 
-    public Blog(Integer bId, String bContent, String tag, Integer nOfLike, Integer nOfCon, String isPublic, Comment[] comments, String title, String imgUrl) {
+    public Blog(Integer bId, Integer uId, String bContent, String tag, Integer nOfLike, Integer nOfCon, String isPublic, Comment[] comments, String title, String imgUrl) {
         this.bId = bId;
+        this.uId = uId;
         this.bContent = bContent;
         this.tag = tag;
         this.nOfLike = nOfLike;

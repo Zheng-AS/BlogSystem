@@ -15,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/blog/*")
@@ -88,7 +89,7 @@ public class BlogServlet extends BaseServlet {
         resp.getWriter().write(resultJSON);//返回url地址
     }
 
-    public void upload(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void upload(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("utf-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html;charset=utf-8");
@@ -107,5 +108,39 @@ public class BlogServlet extends BaseServlet {
 
         PrintWriter out = resp.getWriter();
         out.print("<font style='color:red;font-size:40'>"+mes+"</font>");
+    }
+
+    public void checkBlog(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setContentType("text/html;charset=utf-8");
+
+        int uId = (int) req.getServletContext().getAttribute("uid");
+        ArrayList<Blog> blogArrayList = userService.checkBlog(uId);
+        PrintWriter out;
+
+        out = resp.getWriter();
+        out.print("<table border='2' align='center'>");
+        out.print("<tr>");
+        out.print("<td>博客编号</td>");
+        out.print("<td>博客标题</td>");
+        out.print("<td>博客分类</td>");
+        out.print("<td>是否公开</td>");
+        out.print("<td>博客收藏数</td>");
+        out.print("<td>博客点赞数</td>");
+        out.print("<td>操作</td>");
+        out.print("<td>操作</td>");
+        out.print("</tr>");
+        for (Blog blog : blogArrayList) {
+            out.print("<tr>");
+            out.print("<td>" + blog.getbId() + "</td>");
+            out.print("<td>" + blog.getTitle()+ "</td>");
+            out.print("<td>" + blog.getTag()+ "</td>");
+            out.print("<td>" + blog.getPublic() + "</td>");
+            out.print("<td>" + blog.getnOfCon() + "</td>");
+            out.print("<td>" + blog.getnOfLike() + "</td>");
+            out.print("<td><a href='?bId="+blog.getbId()+"'>查看博客</a></td>");
+            out.print("<td><a href='/psdn/blog/delete?blogId="+blog.getbId()+"'>删除博客</a></td>");
+            out.print("</tr>");
+        }
+        out.print("</table>");
     }
 }

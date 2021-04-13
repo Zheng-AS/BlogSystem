@@ -99,9 +99,6 @@ public class UserDaoImpl implements UserDao {
             ps.setString(2,password);
             ps.setInt(3,uid);
             result = ps.executeUpdate();
-            if(result == 1){
-                util.commit();
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

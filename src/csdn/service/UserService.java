@@ -3,6 +3,8 @@ package csdn.service;
 import csdn.po.Blog;
 import csdn.po.User;
 
+import java.util.ArrayList;
+
 public interface UserService {
     int login(String userName, String password);
 
@@ -11,4 +13,6 @@ public interface UserService {
     boolean updateMes(User user);
 
     int createBlog(Blog blog);
+
+    ArrayList<Blog> checkBlog(int uid);
 }
