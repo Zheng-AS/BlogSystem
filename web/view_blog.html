@@ -21,17 +21,17 @@
 </head>
 <body>
 <label>
-<input type="text"  placeholder="标题"  width="10000" id="title" >
+    <input type="text"  placeholder="标题"  width="10000" id="title" >
 </label>
 <div>
     <div id="toolbar-container" class="toolbar"></div>
 </div>
 
 <!-- 引入 wangEditor.min.js -->
-    <form id="form" method="post">
-        <div id="contentDiv"></div>
-        <textarea name="content" id="content" style="display:none" ></textarea>
-    </form>
+<form id="form" method="post">
+    <div id="contentDiv"></div>
+    <textarea name="content" id="content" style="display:none" ></textarea>
+</form>
 <label class="btn btn-primary">
     <select class="form-control" style="..." id="tag">
         <option value="">选择分类标签</option>
@@ -70,6 +70,54 @@
         content :"",
         isPublic :""
     }
+    var data3 = {
+        title : "",
+        tag : "",
+        imgUrl : [],
+        content :"",
+        isPublic :""
+    }
+
+    var data2 = {
+        blogId : ""
+    }
+
+    var data3 = []
+
+    window.onload = function () {
+        console.log(window.location.href)
+        var href = window.location.href;
+        var search = "=";
+        var start = href.indexOf(search);
+        data2.blogId = href.substring(start+1,start+12);
+        console.log(data2.blogId);
+        $.ajax({
+            type: "GET",
+            url: "blog/viewBlog",
+            data: data2,
+            cache: false,
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            //processData: false,
+            dataType: "json",
+            success: function (ret) {
+                $('#title').val(ret.title)
+                editor.txt.text(ret.content)
+                $('#tag').val(ret.tag)
+                $('#isPublic').val(ret.isPublic)
+                //for()
+                //$('#contentDiv').html = `<img src=${ret.imgUrl} >`;
+                ret.imgUrl = ret.imgUrl.substring(1,ret.imgUrl.length-1)
+                console.log(ret.imgUrl )
+                while (ret.imgUrl) {
+                    var imgUrl = ret.imgUrl.substring(0, 67)
+                    ret.imgUrl = ret.imgUrl.substr(68)
+                    console.log(imgUrl)
+
+                    $('.w-e-text').html(`${ $('.w-e-text').html()}<img src=${imgUrl}>`)
+                }
+            }
+        })
+    }
 
     var E = window.wangEditor;
     var editor = new E('#contentDiv')
@@ -79,10 +127,10 @@
         $text1.val(html);
 
     }
-    editor.config.uploadImgServer = '/psdn/blog/imgUpload';	//自定义上传图片（改成自己写的图片上传方法的路径）
+    editor.config.uploadImgServer = '/psdn/blog/imgUpload';	//自定义上传图片
     editor.config.uploadFileName = 'imgFile';	//自定义文件名
     editor.config.uploadImgHooks = {
-        customInsert: function (insertImg, result, editor) {
+        customInsert: function (insertImg, result) {
             var url = result.url;
             console.log(data.imgUrl)
             data.imgUrl.push(url)
@@ -91,18 +139,16 @@
         }
     }
     editor.config.onchange = (html)=>{
-        console.log(html)
+            console.log(html)
 
-            for(var i in data.imgUrl){
-                var newArr = [];
-                var re = new  RegExp(data.imgUrl[i]);
-                //已经删除
-                if(!re.test(html)){
-                    data.imgUrl = data.imgUrl.filter(item=> item!==data.imgUrl[i]);
-                }
+        for(var i in data.imgUrl){
+            var newArr = [];
+            var re = new RegExp(data.imgUrl[i]);
+            if(!re.test(html)){
+                data.imgUrl = data.imgUrl.filter(item=> item!==data.imgUrl[i]);
             }
+        }
         console.log(data.imgUrl)
-        // var reg = /src
     }
     editor.config.customAlert = function (info) {	//关闭默认提示信息
         // info 是需要提示的内容
@@ -125,24 +171,12 @@
         $("#imgUrl1").val(data.imgUrl)
 
         $("#form2").submit()
-        /*console.log(data)
-        $.ajax({
-            type: "POST",
-            url: "/psdn/blog/upload",
-            data: JSON.stringify(data),
-            cache: false,
-            contentType: "application/x-www-form-urlencoded" ,    //不可缺
-            processData: false,    //不可缺
-            dataType:"JSON",
-            success: function(ret) {
-                console.log(ret);
-                alert(ret)
-            },
-            error:function(d){
-                console.log(d)
-            }
-        })*/
     }
+    $("#title").val(data.title)
+    $("#tag").val(data.tag)
+    $("#isPublic").val(data.isPublic)
+    $("#content").val(data.content)
+    $("#imgUrl").val(data.imgUrl)
 
 
 </script>
