@@ -46,4 +46,14 @@ public class UserServiceImpl implements UserService {
     public ArrayList<Blog> checkBlog(int uId) {
         return blogDao.checkBlog(uId);
     }
+
+    @Override
+    public Blog viewBlog(int bId) {
+        return blogDao.queryBlog(bId);
+    }
+
+    @Override
+    public int updateBlog(Blog blog) {
+        return blogDao.updateBlog(blog);
+    }
 }

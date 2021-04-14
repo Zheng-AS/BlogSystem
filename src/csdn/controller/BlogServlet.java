@@ -2,6 +2,7 @@ package csdn.controller;
 
 import com.alibaba.fastjson.JSON;
 import csdn.po.Blog;
+import csdn.po.Comment;
 import csdn.service.ServiceFactory;
 import csdn.service.UserService;
 import csdn.util.IDUtil;
@@ -16,13 +17,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet("/blog/*")
 public class BlogServlet extends BaseServlet {
     private UserService userService = ServiceFactory.getUserService();
 
-    public void imgUpload(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void imgUpload(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/json;charset=UTF-8");
         resp.setCharacterEncoding("UTF-8");
         String savePath = "C:\\Users\\86135\\Desktop\\repository\\web\\img";
@@ -117,6 +120,7 @@ public class BlogServlet extends BaseServlet {
         ArrayList<Blog> blogArrayList = userService.checkBlog(uId);
         PrintWriter out;
 
+        int i = 0;
         out = resp.getWriter();
         out.print("<table border='2' align='center'>");
         out.print("<tr>");
@@ -129,18 +133,62 @@ public class BlogServlet extends BaseServlet {
         out.print("<td>操作</td>");
         out.print("<td>操作</td>");
         out.print("</tr>");
-        for (Blog blog : blogArrayList) {
+        for (i = 0; i<blogArrayList.size(); i++) {
+            Blog blog = blogArrayList.get(i);
             out.print("<tr>");
-            out.print("<td>" + blog.getbId() + "</td>");
+            out.print("<td>" + (i+1) + "</td>");
             out.print("<td>" + blog.getTitle()+ "</td>");
             out.print("<td>" + blog.getTag()+ "</td>");
             out.print("<td>" + blog.getPublic() + "</td>");
             out.print("<td>" + blog.getnOfCon() + "</td>");
             out.print("<td>" + blog.getnOfLike() + "</td>");
-            out.print("<td><a href='?bId="+blog.getbId()+"'>查看博客</a></td>");
+            out.print("<td><a href=\"http://localhost:8080/psdn/view_blog.html?blogId="+blog.getbId()+"\" target=\"right\">查看博客</a></td>");
             out.print("<td><a href='/psdn/blog/delete?blogId="+blog.getbId()+"'>删除博客</a></td>");
             out.print("</tr>");
         }
         out.print("</table>");
+    }
+
+    public void viewBlog(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setContentType("text/json;charset=UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+
+        int bId = Integer.parseInt(req.getParameter("blogId"));
+        Blog blog = userService.viewBlog(bId);
+        Map<String,String> map = new HashMap<>();
+
+        StringBuffer imgUrl = new StringBuffer();
+        imgUrl.append("[");
+        imgUrl.append(blog.getImgUrl());
+        imgUrl.append("]");
+        map.put("imgUrl",imgUrl.toString());
+        map.put("title",blog.getTitle());
+        map.put("tag",blog.getTag());
+        map.put("content",blog.getbContent());
+        map.put("isPublic",blog.getPublic());
+
+        PrintWriter out = resp.getWriter();
+        out.print(JSON.toJSONString(map));
+    }
+
+    public void updateBlog(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=utf-8");
+        String mes = "更改失败";
+
+        String title = req.getParameter("title");
+        String tag = req.getParameter("tag");
+        String imgUrl = req.getParameter("imgUrl");
+        String content = req.getParameter("content");
+        String isPublic = req.getParameter("isPublic");
+        int bId = Integer.parseInt(req.getParameter("blogId"));
+
+        if(userService.createBlog(new Blog(bId, null, content, tag, null, null, isPublic, null, title, imgUrl)) == 1){
+            mes = "更改成功";
+        }
+
+        PrintWriter out = resp.getWriter();
+        out.print("<font style='color:red;font-size:40'>"+mes+"</font>");
     }
 }

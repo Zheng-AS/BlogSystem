@@ -70,4 +70,49 @@ public class BlogDaoImpl implements BlogDao {
         }
         return blogArrayList;
     }
+
+    @Override
+    public Blog queryBlog(int bId) {
+        Blog blog = new Blog();
+        String sql = "select * from blog where bid = ?";
+        ps = util.createStatement(sql);
+        try {
+            ps.setInt(1,bId);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                blog.setuId(rs.getInt("uid"));
+                blog.setTag(rs.getString("tag"));
+                blog.setnOfCon(rs.getInt("n_of_con"));
+                blog.setnOfLike(rs.getInt("n_of_like"));
+                blog.setPublic(rs.getString("is_pub"));
+                blog.setbContent(rs.getString("b_content"));
+                blog.setTitle(rs.getString("title"));
+                blog.setImgUrl(rs.getString("img_url"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close(rs);
+        }
+        return blog;
+    }
+
+    @Override
+    public int updateBlog(Blog blog) {
+        int result = 0;
+        String sql = "update blog set title = ?, tag = ?, b_content = ?, img_url = ?, is_pub = ? where bid = ?";
+        ps = util.createStatement(sql);
+        try {
+            ps.setString(1,blog.getTitle());
+            ps.setString(2,blog.getTag());
+            ps.setString(3,blog.getbContent());
+            ps.setString(4,blog.getImgUrl());
+            ps.setString(5,blog.getPublic());
+            ps.setInt(6,blog.getbId());
+            result = ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

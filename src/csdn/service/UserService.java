@@ -14,5 +14,9 @@ public interface UserService {
 
     int createBlog(Blog blog);
 
-    ArrayList<Blog> checkBlog(int uid);
+    ArrayList<Blog> checkBlog(int uId);
+
+    Blog viewBlog(int bId);
+
+    int updateBlog(Blog blog);
 }

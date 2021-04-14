@@ -8,4 +8,8 @@ public interface BlogDao {
     int createBlog(Blog blog);
 
     ArrayList<Blog> checkBlog(int uId);
+
+    Blog queryBlog(int bId);
+
+    int updateBlog(Blog blog);
 }
