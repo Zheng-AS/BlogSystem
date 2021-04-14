@@ -36,28 +36,44 @@
     <br><br>
     <div class="btn-group" data-toggle="buttons">
         <label class="btn btn-primary">
-            <input type="text" class="form-control" placeholder="作者呢称" style="width: 150px">
+            <input id="username1" type="text" class="form-control" placeholder="作者呢称" style="width: 150px">
         </label>
         <label class="btn btn-primary">
-            <input type="text" class="form-control" placeholder="博客主题" style="width: 150px">
+            <input id="title1" type="text" class="form-control" placeholder="博客主题" style="width: 150px">
         </label>
         <label class="btn btn-primary">
-            <select class="form-control" onchange="selectOnchang(this)" style="width: 150px">
-                <option>选择分类标签</option>
-                <option>人工智能</option>
-                <option>前端</option>
-                <option>架构</option>
-                <option>区块链</option>
-                <option>数据库</option>
-                <option>5G</option>
-                <option>游戏开发</option>
-                <option>大数据</option>
+            <select id="tag1" class="form-control" style="width: 150px">
+                <option value="">选择分类标签</option>
+                <option value="人工智能">人工智能</option>
+                <option value="前端">前端</option>
+                <option value="架构">架构</option>
+                <option value="区块链">区块链</option>
+                <option value="数据库">数据库</option>
+                <option value="5G">5G</option>
+                <option value="游戏开发">游戏开发</option>
+                <option value="大数据">大数据</option>
             </select>
           </label>
         <label class="btn btn-primary">
-            <button  type="button" class="btn btn-default">查找</button>
+            <button  type="button" class="btn btn-default" onclick="submitData()">查找</button>
         </label>
     </div>
+
+    <form id="select" method="get" action="/psdn/blog/findBlog" target="right">
+        <input type="text" id="username2" name="username" value="" style="display: none"/>
+        <input type="text" id="title2" name="title" value="" style="display: none"/>
+        <input type="text" id="tag2" name="tag" value="" style="display: none"/>
+        <input type="text" name="index" value="0" style="display: none"/>
+    </form>
 </span>
+<script>
+    function submitData() {
+        $("#username2").val($('#username1').val());
+        $("#title2").val($('#title1').val());
+        $("#tag2").val($('#tag1 option:selected').val());
+
+        $("#select").submit()
+    }
+</script>
 </body>
 </html>
