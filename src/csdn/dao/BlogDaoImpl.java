@@ -115,4 +115,35 @@ public class BlogDaoImpl implements BlogDao {
         }
         return result;
     }
+
+    @Override
+    public ArrayList<Blog> findBlog(String sql, ArrayList<String> arrayList) {
+        ArrayList<Blog> blogArrayList = new ArrayList<>();
+        ps = util.createStatement(sql);
+        int i;
+        try {
+            for(i = 0; i < arrayList.size(); i++){
+                ps.setString(i+1,arrayList.get(i));
+            }
+            rs =  ps.executeQuery();
+            while (rs.next()){
+                int bId = rs.getInt("bid");
+                String tag = rs.getString("tag");
+                int nOfLike = rs.getInt("n_of_like");
+                int nOfCon = rs.getInt("n_of_con");
+                String isPublic = rs.getString("is_pub");
+                String bContent = rs.getString("b_content");
+                String title = rs.getString("title");
+                String imgUrl = rs.getString("img_url");
+                int uId = rs.getInt("uId");
+                Blog blog = new Blog(bId,uId,bContent,tag,nOfLike,nOfCon,isPublic,null,title,imgUrl);
+                blogArrayList.add(blog);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close(rs);
+        }
+        return blogArrayList;
+    }
 }

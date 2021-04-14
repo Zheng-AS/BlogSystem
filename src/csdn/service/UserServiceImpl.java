@@ -5,6 +5,7 @@ import csdn.dao.DaoFactory;
 import csdn.dao.UserDao;
 import csdn.po.Blog;
 import csdn.po.User;
+import org.junit.Test;
 
 import java.util.ArrayList;
 
@@ -55,5 +56,55 @@ public class UserServiceImpl implements UserService {
     @Override
     public int updateBlog(Blog blog) {
         return blogDao.updateBlog(blog);
+    }
+
+    @Override
+    public ArrayList<Blog> findBlog(String userName, String tag, String title, String index) {
+        StringBuilder sql = new StringBuilder();
+        ArrayList<String> queryMes = new ArrayList<>();
+
+        title = "%%" + title + "%%";
+        sql.append("select * from blog where is_pub = \"是\" ");
+        if ("" != userName) {
+            sql.append("and uid = (select uid from user where username = ?) ");
+            queryMes.add(userName);
+            if ("" != tag) {
+                sql.append("and tag = ? ");
+                queryMes.add(tag);
+            }
+            if ("" != title){
+                sql.append("having title like ? ");
+                queryMes.add(title);
+            }
+        }else if("" != tag){
+            sql.append("and tag = ? ");
+            queryMes.add(tag);
+            if ("" != title){
+                sql.append("having title like ? ");
+                queryMes.add(title);
+            }
+        }else {
+            if("" != title){
+                sql.append("and title like ? ");
+                queryMes.add(title);
+            }else {
+                sql.delete(19,25);
+            }
+        }
+        sql.append("order by n_of_con, n_of_like desc ");
+        sql.append("limit " + index + ", 6");
+        System.out.println(sql.toString());
+        return blogDao.findBlog(sql.toString(),queryMes);
+    }
+
+    @Test
+    public void myTest(){
+        String userName = "潘";
+        //String userName = "";
+        String tag = "人工智能";
+        //String tag = "";
+        String title = "5G";
+        //String title = "";
+        findBlog(userName,tag,title,"0");
     }
 }

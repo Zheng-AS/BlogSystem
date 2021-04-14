@@ -12,4 +12,6 @@ public interface BlogDao {
     Blog queryBlog(int bId);
 
     int updateBlog(Blog blog);
+
+    ArrayList<Blog> findBlog(String sql, ArrayList<String> arrayList);
 }

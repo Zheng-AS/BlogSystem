@@ -191,4 +191,49 @@ public class BlogServlet extends BaseServlet {
         PrintWriter out = resp.getWriter();
         out.print("<font style='color:red;font-size:40'>"+mes+"</font>");
     }
+
+    public void findBlog(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        req.setCharacterEncoding("utf-8");
+        resp.setContentType("text/html;charset=utf-8");
+
+        String userName = req.getParameter("username");
+        String title = req.getParameter("title");
+        String tag = req.getParameter("tag");
+        String index = req.getParameter("index");
+        ArrayList<Blog> blogArrayList = userService.findBlog(userName,tag,title,index);
+        int indexInt = Integer.parseInt(index);
+
+        PrintWriter out;
+
+        int i = 0;
+        out = resp.getWriter();
+        out.print("<table border='2' align='center'>");
+        out.print("<tr>");
+        out.print("<td>博客编号</td>");
+        out.print("<td>博客标题</td>");
+        out.print("<td>博客分类</td>");
+        out.print("<td>博客收藏数</td>");
+        out.print("<td>博客点赞数</td>");
+        out.print("<td>操作</td>");
+        out.print("</tr>");
+        for (i = 0; i<blogArrayList.size(); i++) {
+            Blog blog = blogArrayList.get(i);
+            out.print("<tr>");
+            out.print("<td>" + (i+1) + "</td>");
+            out.print("<td>" + blog.getTitle()+ "</td>");
+            out.print("<td>" + blog.getTag()+ "</td>");
+            out.print("<td>" + blog.getnOfCon() + "</td>");
+            out.print("<td>" + blog.getnOfLike() + "</td>");
+            out.print("<td><a href=\"http://localhost:8080/psdn/view_other_blog.html?blogId="+blog.getbId()+"\" target=\"right\">查看博客</a></td>");
+            out.print("</tr>");
+        }
+        out.print("<tr>");
+        if (indexInt != 0){
+            out.print("<td><a href=\"/blog/findBlog?username="+userName+"&title="+title+"&tag="+tag+"&index="+(indexInt-6)+"\" target=\"right\">上一页</a></td>");
+        }
+        if (i == 6){
+            out.print("<td><a href=\"/blog/findBlog?username="+userName+"&title="+title+"&tag="+tag+"&index="+(indexInt+6)+"\" target=\"right\">下一页</a></td>");
+        }
+        out.print("</table>");
+    }
 }

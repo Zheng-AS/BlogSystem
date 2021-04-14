@@ -19,4 +19,6 @@ public interface UserService {
     Blog viewBlog(int bId);
 
     int updateBlog(Blog blog);
+
+    ArrayList<Blog> findBlog(String userName, String tag, String title, String index);
 }
