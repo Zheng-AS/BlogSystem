@@ -20,4 +20,7 @@ public interface UserDao {
 
     //查询用户是否收藏博客
     boolean conIsExist(int uId, int bId);
+
+    //通过ID获取用户姓名
+    String getNameByUId(int uId);
 }

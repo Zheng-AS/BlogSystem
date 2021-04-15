@@ -179,6 +179,7 @@ public class BlogServlet extends BaseServlet {
 
         int bId = Integer.parseInt(req.getParameter("blogId"));
         Blog blog = userService.viewBlog(bId);
+        String authorName = userService.getAuthorName(blog.getuId());
         Map<String,String> map = new HashMap<>();
 
         StringBuffer imgUrl = new StringBuffer();
@@ -192,6 +193,7 @@ public class BlogServlet extends BaseServlet {
         map.put("isPublic",blog.getPublic());
         map.put("likeNum", String.valueOf(blog.getnOfLike()));
         map.put("conNum", String.valueOf(blog.getnOfCon()));
+        map.put("author",authorName);
 
         PrintWriter out = resp.getWriter();
         out.print(JSON.toJSONString(map));

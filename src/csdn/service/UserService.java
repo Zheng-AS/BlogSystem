@@ -35,4 +35,7 @@ public interface UserService {
 
     //收藏功能
     String changeConNum(int uId, int bId);
+
+    //获取作者姓名
+    String getAuthorName(int uId);
 }

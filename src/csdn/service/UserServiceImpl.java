@@ -112,6 +112,11 @@ public class UserServiceImpl implements UserService {
         return "不可以收藏自己的博客哦";
     }
 
+    @Override
+    public String getAuthorName(int uId) {
+        return userDao.getNameByUId(uId);
+    }
+
     @Test
     public void myTest(){
         String userName = "潘";
