@@ -26,15 +26,21 @@
 <div>
     <div id="toolbar-container" class="toolbar"></div>
 </div>
-
 <!-- 引入 wangEditor.min.js -->
 <form id="form" method="post">
     <div id="contentDiv"></div>
     <textarea name="content" id="content" style="display:none" ></textarea>
 </form>
-
-<
-
+<div style="float:left;cursor:pointer">
+    <img src="/psdn/img/timg.jpg" height="35" width="35" onclick="like()"><span id="like-num"></span>
+    <br>
+    <span>点赞</span>
+</div>
+<div  style="float:left;cursor:pointer">
+    <img src="/psdn/img/cimg.png" height="35" width="35" onclick=""><span id="con-num"></span>
+    <br>
+    <span>收藏</span>
+</div>
 <form id="form2" method="post" action="/psdn/blog/updateBlog">
     <input type="text" id="title1" name="title" style="display: none"/>
     <input type="text" id="tag1" name="tag" style="display: none"/>
@@ -54,19 +60,9 @@
         content :"",
         isPublic :""
     }
-    var data3 = {
-        title : "",
-        tag : "",
-        imgUrl : [],
-        content :"",
-        isPublic :""
-    }
-
     var data2 = {
         blogId : ""
     }
-
-    var data3 = []
 
     window.onload = function () {
         console.log(window.location.href)
@@ -88,6 +84,8 @@
                 editor.txt.text(ret.content)
                 ret.imgUrl = ret.imgUrl.substring(1,ret.imgUrl.length-1)
                 console.log(ret.imgUrl )
+                $('#like-num').text(ret.likeNum)
+                $('#con-num').text(ret.conNum)
                 while (ret.imgUrl) {
                     var imgUrl = ret.imgUrl.substring(0, 67)
                     ret.imgUrl = ret.imgUrl.substr(68)
@@ -126,6 +124,22 @@
     editor.config.height = 550;
     editor.create();
     $text1.val(editor.txt.html());
+    
+    function like() {
+        $.ajax({
+            type: "GET",
+            url: "blog/like",
+            data: data2,
+            cache: false,
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            //processData: false,
+            dataType: "json",
+            success: function (ret) {
+                alert(ret.mes)
+                //$('#like-num').text(Number($('#like-num').text())+1)
+            }
+        })
+    }
 
 </script>
 </body>
