@@ -192,7 +192,7 @@ public class UserDaoImpl implements UserDao {
         try {
             ps.setInt(1,uId);
             ps.setInt(2,aId);
-            ps.executeQuery();
+            ps.executeUpdate();
             result = "取消关注成功";
         } catch (SQLException e) {
             e.printStackTrace();
