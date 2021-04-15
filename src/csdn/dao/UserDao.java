@@ -12,7 +12,6 @@ public interface UserDao {
     //判断用户是否存在
     boolean isExist(String userName);
 
-
     //通过id查找返回用户信息
     User queryUser(int uid);
 

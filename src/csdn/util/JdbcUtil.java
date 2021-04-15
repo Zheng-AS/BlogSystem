@@ -70,6 +70,16 @@ public class JdbcUtil {
             return ps;
         }
 
+        public Connection getCon(){
+            try {
+                con = getConnection();
+                con.setAutoCommit(false);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return con;
+        }
+
         /**
          * 关闭资源
          */
@@ -101,10 +111,6 @@ public class JdbcUtil {
         public void close(ResultSet rs){
             this.rs = rs;
             this.close();
-        }
-
-        public void commit() throws SQLException {
-            con.commit();
         }
 
         public void close(HttpServletRequest request){

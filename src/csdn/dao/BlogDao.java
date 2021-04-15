@@ -19,4 +19,13 @@ public interface BlogDao {
 
     //动态查询他人博客信息
     ArrayList<Blog> findBlog(String sql, ArrayList<String> arrayList);
+
+    //查询点赞表中有无记录
+    boolean likeIsExist(int uId, int bId);
+
+    //点赞数加1
+    String addLikeNum(int uId, int bId);
+
+    //点赞数减1
+    String reduceLikeNum(int uId, int bId);
 }

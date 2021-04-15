@@ -31,5 +31,5 @@ public interface UserService {
     ArrayList<Blog> findBlog(String userName, String tag, String title, String index);
 
     //点赞功能
-    int addLike(int uId, int bId);
+    String changeLikeNum(int uId, int bId);
 }

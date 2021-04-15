@@ -3,6 +3,7 @@ package csdn.dao;
 import csdn.po.Blog;
 import csdn.util.JdbcUtil;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,10 +13,11 @@ public class BlogDaoImpl implements BlogDao {
     private JdbcUtil util = new JdbcUtil();
     PreparedStatement ps = null;
     ResultSet rs = null;
+    Connection con = null;
     @Override
     public int createBlog(Blog blog) {
         int result = 0;
-        String sql = "insert into blog(uid,title,tag,b_content,is_pub,img_url)" + "values(?,?,?,?,?,?)";
+        String sql = "insert into blog(uid,title,tag,b_content,is_pub,img_url) values(?,?,?,?,?,?)";
         ps = util.createStatement(sql);
         try {
             ps.setInt(1,blog.getuId());
@@ -145,5 +147,97 @@ public class BlogDaoImpl implements BlogDao {
             util.close(rs);
         }
         return blogArrayList;
+    }
+
+    @Override
+    public boolean likeIsExist(int uId, int bId) {
+        boolean result = false;
+        String sql = "select * from great where uid = ? and bid = ?";
+        ps =util.createStatement(sql);
+        try {
+            ps.setInt(1,uId);
+            ps.setInt(2,bId);
+            rs = ps.executeQuery();
+            if (rs.next()){
+                result = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close(rs);
+        }
+        return result;
+    }
+
+    @Override
+    public String addLikeNum(int uId, int bId) {
+        String result = "服务器出现错误，正在为您加急抢修";
+        try {
+            int count = 0;
+            //开启事务
+            con = util.getCon();
+
+            String sql1 = "update blog set n_of_like = n_of_like +1 where bId = ?";
+            ps = con.prepareStatement(sql1);
+            ps.setInt(1,bId);
+            count += ps.executeUpdate();
+
+            String sql2 = "insert into great(uid, bid) values(?,?)";
+            ps = con.prepareStatement(sql2);
+            ps.setInt(1,uId);
+            ps.setInt(2,bId);
+            count += ps.executeUpdate();
+
+            if (count == 2){
+                result = "点赞成功";
+            }
+            con.commit();
+        } catch (SQLException e) {
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            util.close();
+        }
+        return result;
+    }
+
+    @Override
+    public String reduceLikeNum(int uId, int bId) {
+        String result = "服务器出现错误，正在为您加急抢修";
+        try {
+            int count = 0;
+            //开启事务
+            con = util.getCon();
+
+            String sql1 = "update blog set n_of_like = n_of_like -1 where bId = ?";
+            ps = con.prepareStatement(sql1);
+            ps.setInt(1,bId);
+            count += ps.executeUpdate();
+
+            String sql2 = "delete from great where uid = ? and bid = ?";
+            ps = con.prepareStatement(sql2);
+            ps.setInt(1,uId);
+            ps.setInt(2,bId);
+            count += ps.executeUpdate();
+
+            if (count == 2){
+                result = "取消点赞成功";
+            }
+            con.commit();
+        } catch (SQLException e) {
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            util.close();
+        }
+        return result;
     }
 }

@@ -85,8 +85,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int addLike(int uId, int bId) {
-        return 0;
+    public String changeLikeNum(int uId, int bId) {
+        if(blogDao.queryBlog(bId).getuId() != uId) {
+            if (blogDao.likeIsExist(uId, bId)) {
+                return blogDao.reduceLikeNum(uId, bId);
+            } else {
+                return blogDao.addLikeNum(uId, bId);
+            }
+        }return "不可以给自己点赞哦";
     }
 
     @Test

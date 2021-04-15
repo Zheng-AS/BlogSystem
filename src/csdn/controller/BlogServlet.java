@@ -281,11 +281,15 @@ public class BlogServlet extends BaseServlet {
      * @param resp
      * @throws IOException
      */
-    public void addLike(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+    public void like(HttpServletRequest req, HttpServletResponse resp) throws IOException{
         req.setCharacterEncoding("utf-8");
-        int uid = (int) req.getServletContext().getAttribute("uid");
-        req.getParameter("blogId");
+        resp.setContentType("text/json;charset=UTF-8");
+        int uId = (int) req.getServletContext().getAttribute("uid");
+        int bId = Integer.parseInt(req.getParameter("blogId"));
 
-        
+        String mes = userService.changeLikeNum(uId,bId);
+        Map map = new HashMap();
+        map.put("mes",mes);
+        resp.getWriter().print(JSON.toJSONString(map));
     }
 }
