@@ -1,0 +1,13 @@
+一。学习
+	1.学习使用jQuery
+	2.学习使用Ajax发送请求
+	3.学习如何返回数据到html
+	4.学习如何使用git
+	
+二。进展
+	1.使用bootstrap和jquery创建html
+	2.创建实体类
+	3.创建dao和dao实现类
+	4.封装jdbc工具类
+	5.创建service类和实现类
+	6.实现了登录和注册功能

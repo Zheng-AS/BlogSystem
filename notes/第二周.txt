@@ -1,0 +1,13 @@
+一。学习
+	1.学习如何使用wangEditor编辑器
+	2.学习如何上传图片到服务器
+	3.了解分层结构
+	4.学习了如何使用BaseServlet抽取其他servlet改写其页面路径，之前不了解可以这样使用，通过创建BaseServlet
+	  让其他servlet继承它使其的功能类似一个controller，这样既可以节省代码量，方便查找，而且还不用进去web.xml注册，方便了许多
+	  
+二。进展
+	1.HTML中使用了wangEditor编辑器进行创建
+	2.创建BaseServlet封装其他servlet
+	3.实现用户信息更新功能，创建博客功能，图片上传至服务器功能
+	4.创建了更多的html，编写其js方法
+	
