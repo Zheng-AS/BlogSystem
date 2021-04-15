@@ -38,4 +38,7 @@ public interface UserService {
 
     //获取作者姓名
     String getAuthorName(int uId);
+
+    //更改用户关注
+    String changeUserAttn(int uId, int aId);
 }

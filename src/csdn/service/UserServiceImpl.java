@@ -117,6 +117,20 @@ public class UserServiceImpl implements UserService {
         return userDao.getNameByUId(uId);
     }
 
+    @Override
+    public String changeUserAttn(int uId, int aId) {
+        //判断是否为自己
+        if(uId != aId) {
+            //检测是否已关注
+            if (userDao.attnIsExist(uId, aId)) {
+                return userDao.cancelAttn(uId, aId);
+            } else {
+                return userDao.addAttn(uId, aId);
+            }
+        }
+        return "不可以关注自己哦";
+    }
+
     @Test
     public void myTest(){
         String userName = "潘";

@@ -145,4 +145,60 @@ public class UserDaoImpl implements UserDao {
         }
         return userName;
     }
+
+    @Override
+    public boolean attnIsExist(int uId, int aId) {
+        boolean result = false;
+        String sql = "select * from user_attn where uid = ? and aid = ?";
+        ps = util.createStatement(sql);
+        try {
+            ps.setInt(1,uId);
+            ps.setInt(2,aId);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                result = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close(rs);
+        }
+        return result;
+    }
+
+    @Override
+    public String addAttn(int uId, int aId) {
+        String result = "关注失败，正在为您加急抢修";
+        String sql = "insert into user_attn (uid, aid) values (?,?)";
+        ps =util.createStatement(sql);
+        try {
+            ps.setInt(1,uId);
+            ps.setInt(2,aId);
+            ps.executeUpdate();
+            result = "关注成功";
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close(rs);
+        }
+        return  result;
+    }
+
+    @Override
+    public String cancelAttn(int uId, int aId) {
+        String result = "取消关注失败，正在为您加急抢修";
+        String sql = "delete from user_attn where uid =? and aid = ?";
+        ps =util.createStatement(sql);
+        try {
+            ps.setInt(1,uId);
+            ps.setInt(2,aId);
+            ps.executeQuery();
+            result = "取消关注成功";
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close(rs);
+        }
+        return  result;
+    }
 }

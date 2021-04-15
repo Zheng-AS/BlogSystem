@@ -23,4 +23,13 @@ public interface UserDao {
 
     //通过ID获取用户姓名
     String getNameByUId(int uId);
+
+    //查询用户关注是否存在
+    boolean attnIsExist(int uId, int aId);
+
+    //增加关注的人
+    String addAttn(int uId, int aId);
+
+    //取消关注的人
+    String cancelAttn(int uId, int aId);
 }

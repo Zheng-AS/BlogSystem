@@ -2,7 +2,6 @@ package csdn.controller;
 
 import com.alibaba.fastjson.JSON;
 import csdn.po.Blog;
-import csdn.po.Comment;
 import csdn.service.ServiceFactory;
 import csdn.service.UserService;
 import csdn.util.IDUtil;
@@ -10,8 +9,6 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,10 +23,7 @@ public class BlogServlet extends BaseServlet {
     private UserService userService = ServiceFactory.getUserService();
 
     /**
-     * 上传图片到服务器
-     * @param req
-     * @param resp 返回图片url
-     * @throws IOException
+     * 上传图片到服务器,返回url
      */
     public void imgUpload(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/json;charset=UTF-8");
@@ -100,9 +94,6 @@ public class BlogServlet extends BaseServlet {
 
     /**
      * 创建博客
-     * @param req
-     * @param resp 创建是否成功
-     * @throws IOException
      */
     public void upload(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("utf-8");
@@ -127,9 +118,6 @@ public class BlogServlet extends BaseServlet {
 
     /**
      * 管理博客
-     * @param req
-     * @param resp
-     * @throws IOException
      */
     public void checkBlog(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/html;charset=utf-8");
@@ -169,9 +157,6 @@ public class BlogServlet extends BaseServlet {
 
     /**
      * 查看博客
-     * @param req
-     * @param resp
-     * @throws IOException
      */
     public void viewBlog(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/json;charset=UTF-8");
@@ -194,6 +179,7 @@ public class BlogServlet extends BaseServlet {
         map.put("likeNum", String.valueOf(blog.getnOfLike()));
         map.put("conNum", String.valueOf(blog.getnOfCon()));
         map.put("author",authorName);
+        map.put("author_id", String.valueOf(blog.getuId()));
 
         PrintWriter out = resp.getWriter();
         out.print(JSON.toJSONString(map));
@@ -201,9 +187,6 @@ public class BlogServlet extends BaseServlet {
 
     /**
      * 更新自己博客
-     * @param req
-     * @param resp
-     * @throws IOException
      */
     public void updateBlog(HttpServletRequest req, HttpServletResponse resp) throws IOException{
         req.setCharacterEncoding("utf-8");
@@ -228,9 +211,6 @@ public class BlogServlet extends BaseServlet {
 
     /**
      * 检索他人博客
-     * @param req
-     * @param resp
-     * @throws IOException
      */
     public void findBlog(HttpServletRequest req, HttpServletResponse resp) throws IOException{
         req.setCharacterEncoding("utf-8");
@@ -278,10 +258,7 @@ public class BlogServlet extends BaseServlet {
     }
 
     /**
-     * 点赞博客
-     * @param req
-     * @param resp
-     * @throws IOException
+     * 点赞（取消点赞）博客
      */
     public void like(HttpServletRequest req, HttpServletResponse resp) throws IOException{
         req.setCharacterEncoding("utf-8");
@@ -290,16 +267,13 @@ public class BlogServlet extends BaseServlet {
         int bId = Integer.parseInt(req.getParameter("blogId"));
 
         String mes = userService.changeLikeNum(uId,bId);
-        Map map = new HashMap();
+        Map<String,String> map = new HashMap();
         map.put("mes",mes);
         resp.getWriter().print(JSON.toJSONString(map));
     }
 
     /**
-     * 收藏博客
-     * @param req
-     * @param resp
-     * @throws IOException
+     * 收藏（取消收藏）博客
      */
     public void collection(HttpServletRequest req, HttpServletResponse resp) throws IOException{
         req.setCharacterEncoding("utf-8");
@@ -308,7 +282,22 @@ public class BlogServlet extends BaseServlet {
         int bId = Integer.parseInt(req.getParameter("blogId"));
 
         String mes = userService.changeConNum(uId,bId);
-        Map map = new HashMap();
+        Map<String,String> map = new HashMap();
+        map.put("mes",mes);
+        resp.getWriter().print(JSON.toJSONString(map));
+    }
+
+    /**
+     * 进行关注（取消关注）作者
+     */
+    public void attention(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        req.setCharacterEncoding("utf-8");
+        resp.setContentType("text/json;charset=UTF-8");
+        int uId = (int) req.getServletContext().getAttribute("uid");
+        int aId = Integer.parseInt(req.getParameter("authorId"));
+
+        String mes = userService.changeUserAttn(uId,aId);
+        Map<String,String> map = new HashMap();
         map.put("mes",mes);
         resp.getWriter().print(JSON.toJSONString(map));
     }
