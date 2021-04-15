@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="jquery-3.3.1.js"></script>
+    <script
+            type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/wangeditor@latest/dist/wangEditor.min.js"></script>
+    <style>
+        .toolbar {
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <span id="author"></span>
+    <button type="button" class="btn btn-default" onclick="attention()">    点击关注    </button>
+    <input type="text" style="display: none" id="author_id"/>
+</div>
+<label>
+    <div id="title"></div>
+</label>
+<div>
+    <div id="toolbar-container" class="toolbar"></div>
+</div>
+<!-- 引入 wangEditor.min.js -->
+<form id="form" method="post">
+    <div id="contentDiv"></div>
+    <textarea name="content" id="content" style="display:none" ></textarea>
+</form>
+<div style="float:left;cursor:pointer">
+    <img src="/psdn/img/timg.jpg" height="35" width="35" onclick="like()"><span id="like-num"></span>
+    <br>
+    <span>点赞</span>
+</div>
+<div  style="float:left;cursor:pointer">
+    <img src="/psdn/img/cimg.png" height="35" width="35" onclick="collection()"><span id="con-num"></span>
+    <br>
+    <span>收藏</span>
+</div>
+<form id="form2" method="post" action="/psdn/blog/updateBlog">
+    <input type="text" id="title1" name="title" style="display: none"/>
+    <input type="text" id="tag1" name="tag" style="display: none"/>
+    <input type="text" id="imgUrl1" name="imgUrl" style="display: none"/>
+    <input type="text" id="content1" name="content" style="display: none"/>
+    <input type="text" id="isPublic1" name="isPublic" style="display: none"/>
+</form>
+
+
+
+</body>
+<script>
+    var data = {
+        title : "",
+        tag : "",
+        imgUrl : [],
+        content :"",
+        isPublic :""
+    };
+    var data2 = {
+        blogId : ""
+    };
+    var data3 = {
+        authorId : ""
+    };
+
+    window.onload = function () {
+        console.log(window.location.href);
+        var href = window.location.href;
+        var search = "=";
+        var start = href.indexOf(search);
+        data2.blogId = href.substring(start+1,start+12);
+        console.log(data2.blogId);
+        $.ajax({
+            type: "GET",
+            url: "blog/viewBlog",
+            data: data2,
+            cache: false,
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            //processData: false,
+            dataType: "json",
+            success: function (ret) {
+                $('#title').text("标题:"+ret.title);
+                editor.txt.text(ret.content);
+                ret.imgUrl = ret.imgUrl.substring(1,ret.imgUrl.length-1);
+                console.log(ret.imgUrl );
+                $('#like-num').text(ret.likeNum);
+                $('#con-num').text(ret.conNum);
+                $('#author').text("作者呢称:  "+ret.author);
+                $('#author_id').text(ret.author_id);
+                while (ret.imgUrl) {
+                    var imgUrl = ret.imgUrl.substring(0, 67);
+                    ret.imgUrl = ret.imgUrl.substr(68);
+                    console.log(imgUrl);
+                    $('.w-e-text').html(`${ $('.w-e-text').html()}<img src=${imgUrl}>`);
+                }
+            }
+        })
+    }
+
+    var E = window.wangEditor;
+    var editor = new E('#contentDiv');
+    var $text1 = $('#content');
+    editor.config.onchange = function (html) {
+        // 监控变化，同步更新富文本内容到 textarea
+        $text1.val(html);
+    }
+    editor.config.uploadImgServer = false;	//自定义上传图片
+    editor.config.onchange = (html)=>{
+        console.log(html);
+
+        for(var i in data.imgUrl){
+            var newArr = [];
+            var re = new RegExp(data.imgUrl[i]);
+            if(!re.test(html)){
+                data.imgUrl = data.imgUrl.filter(item=> item!==data.imgUrl[i]);
+            }
+        }
+        console.log(data.imgUrl)
+    }
+    editor.config.customAlert = function (info) {	//关闭默认提示信息
+        // info 是需要提示的内容
+        alert('自定义提示：' + info)
+    }
+    editor.config.height = 550;
+    editor.create();
+    $text1.val(editor.txt.html());
+    
+    function like() {
+        $.ajax({
+            type: "GET",
+            url: "blog/like",
+            data: data2,
+            cache: false,
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            //processData: false,
+            dataType: "json",
+            success: function (ret) {
+                alert(ret.mes)
+                //$('#like-num').text(Number($('#like-num').text())+1)
+            }
+        })
+    }
+    function collection() {
+        $.ajax({
+            type: "GET",
+            url: "blog/collection",
+            data: data2,
+            cache: false,
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            //processData: false,
+            dataType: "json",
+            success: function (ret) {
+                alert(ret.mes)
+                //$('#like-num').text(Number($('#like-num').text())+1)
+            }
+        })
+    }
+    function attention() {
+        data3.authorId = $('#author_id').text();
+        $.ajax({
+            type: "GET",
+            url: "blog/attention",
+            data: data3,
+            cache: false,
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            //processData: false,
+            dataType: "json",
+            success: function (ret) {
+                alert(ret.mes)
+                //$('#like-num').text(Number($('#like-num').text())+1)
+            }
+        })
+    }
+
+</script>
+</body>
+</html>

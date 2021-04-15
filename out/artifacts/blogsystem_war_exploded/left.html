@@ -47,43 +47,76 @@
 <body>
 
 <br/><br/><br/>
+<form method="post" action="" id="fsubmit">
 <div id="div1">
     <img id="img" src="i_have_guilt.jpg">
     <input  ref="file" type="file" accept="image/*" class="hiddenInput"/><br>
     <font size="4px" color="#a9a9a9">我的头像</font>
 </div>
+</form>
 
 <span id="span1">
     <br><br><br>
-    <div class="btn-group" data-toggle="buttons">
-        <label class="btn btn-primary">
-             <input type="checkbox" autocomplete="off"> 个人信息
-        </label><br>
-        <label class="btn btn-primary">
-             <input type="checkbox" autocomplete="off"> 我的好友
-        </label><br>
-        <label class="btn btn-primary">
-             <input type="checkbox" autocomplete="off"> 我的关注
-        </label><br>
-        <label class="btn btn-primary">
-             <input type="checkbox" autocomplete="off"> 我的收藏
-        </label>
+    <div class="btn-group">
+        <a href="update_mes.html" target="right">
+            <button type="button" class="btn btn-default">    个人信息    </button>
+        </a>
+        <a href="" target="right">
+            <button type="button" class="btn btn-default">    我的好友    </button>
+        </a>
+        <a href="" target="right">
+            <button type="button" class="btn btn-default">    我的关注    </button>
+        </a>
+        <a href="" target="right">
+            <button type="button" class="btn btn-default">    我的收藏    </button>
+        </a>
     </div>
 </span>
 
 
 <script>
+
     $(".hiddenInput").change(function(e){
 
         var file = e.target.files[0];
-        var freader = new FileReader();
-        freader.readAsDataURL(file);
-        freader.onload = function(e) {
-            var src = e.target.result;
-            $("#img").attr("src",src);
-
+        var url = window.URL.createObjectURL(file)
+        if(url){
+            $("#img").attr("src",url)
         }
+        $('#fsubmit').submit();
+        /*var data = new FormData();
+        console.log(data);
+        $.each($(e)[0].files,function(i,file){
+            data.append('file', file);
+        });
+        console.log(data);
+        $.ajax({
+            type: "POST",
+            url: "/psdn/imgUpload",
+            data: data,
+            cache: false,
+            contentType: false,    //不可缺
+            processData: false,    //不可缺
+            dataType:"json",
+            success: function(ret) {
+                console.log(ret);
+                    //$("#photoUrl").val(ret.data.url);//将地址存储好
+                    $("#img").attr("src",ret.url);//显示图片
+                    //$("#show").attr("value",ret.data.url);//显示图片
+                    alert(1111);
+                    alert(2222);
+
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("上传失败，请检查网络后重试");
+            }
+        });*/
     })
+
+    .onload = function(e) {
+        var src = e.target.result;
+        $("#img").attr("src",src);
+    }
 </script>
 
 </body>
