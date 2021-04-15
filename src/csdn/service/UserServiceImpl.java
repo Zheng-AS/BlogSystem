@@ -63,38 +63,30 @@ public class UserServiceImpl implements UserService {
         StringBuilder sql = new StringBuilder();
         ArrayList<String> queryMes = new ArrayList<>();
 
+        //进行字符串拼接，若字段不为空将其存储进queryMes数组
         title = "%%" + title + "%%";
         sql.append("select * from blog where is_pub = \"是\" ");
         if ("" != userName) {
             sql.append("and uid = (select uid from user where username = ?) ");
             queryMes.add(userName);
-            if ("" != tag) {
-                sql.append("and tag = ? ");
-                queryMes.add(tag);
-            }
-            if ("" != title){
-                sql.append("having title like ? ");
-                queryMes.add(title);
-            }
-        }else if("" != tag){
+        }
+        if ("" != tag) {
             sql.append("and tag = ? ");
             queryMes.add(tag);
-            if ("" != title){
-                sql.append("having title like ? ");
-                queryMes.add(title);
-            }
-        }else {
-            if("" != title){
-                sql.append("and title like ? ");
-                queryMes.add(title);
-            }else {
-                sql.delete(19,25);
-            }
+        }
+        if ("" != title){
+            sql.append("having title like ? ");
+            queryMes.add(title);
         }
         sql.append("order by n_of_con, n_of_like desc ");
         sql.append("limit " + index + ", 6");
         System.out.println(sql.toString());
         return blogDao.findBlog(sql.toString(),queryMes);
+    }
+
+    @Override
+    public int addLike(int uId, int bId) {
+        return 0;
     }
 
     @Test

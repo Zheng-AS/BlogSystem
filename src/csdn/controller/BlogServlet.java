@@ -25,6 +25,12 @@ import java.util.Map;
 public class BlogServlet extends BaseServlet {
     private UserService userService = ServiceFactory.getUserService();
 
+    /**
+     * 上传图片到服务器
+     * @param req
+     * @param resp 返回图片url
+     * @throws IOException
+     */
     public void imgUpload(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/json;charset=UTF-8");
         resp.setCharacterEncoding("UTF-8");
@@ -92,6 +98,12 @@ public class BlogServlet extends BaseServlet {
         resp.getWriter().write(resultJSON);//返回url地址
     }
 
+    /**
+     * 创建博客
+     * @param req
+     * @param resp 创建是否成功
+     * @throws IOException
+     */
     public void upload(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("utf-8");
         resp.setCharacterEncoding("UTF-8");
@@ -113,6 +125,12 @@ public class BlogServlet extends BaseServlet {
         out.print("<font style='color:red;font-size:40'>"+mes+"</font>");
     }
 
+    /**
+     * 管理博客
+     * @param req
+     * @param resp
+     * @throws IOException
+     */
     public void checkBlog(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/html;charset=utf-8");
 
@@ -149,6 +167,12 @@ public class BlogServlet extends BaseServlet {
         out.print("</table>");
     }
 
+    /**
+     * 查看博客
+     * @param req
+     * @param resp
+     * @throws IOException
+     */
     public void viewBlog(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/json;charset=UTF-8");
         resp.setCharacterEncoding("UTF-8");
@@ -166,11 +190,19 @@ public class BlogServlet extends BaseServlet {
         map.put("tag",blog.getTag());
         map.put("content",blog.getbContent());
         map.put("isPublic",blog.getPublic());
+        map.put("likeNum", String.valueOf(blog.getnOfLike()));
+        map.put("conNum", String.valueOf(blog.getnOfCon()));
 
         PrintWriter out = resp.getWriter();
         out.print(JSON.toJSONString(map));
     }
 
+    /**
+     * 更新自己博客
+     * @param req
+     * @param resp
+     * @throws IOException
+     */
     public void updateBlog(HttpServletRequest req, HttpServletResponse resp) throws IOException{
         req.setCharacterEncoding("utf-8");
         resp.setCharacterEncoding("UTF-8");
@@ -192,6 +224,12 @@ public class BlogServlet extends BaseServlet {
         out.print("<font style='color:red;font-size:40'>"+mes+"</font>");
     }
 
+    /**
+     * 检索他人博客
+     * @param req
+     * @param resp
+     * @throws IOException
+     */
     public void findBlog(HttpServletRequest req, HttpServletResponse resp) throws IOException{
         req.setCharacterEncoding("utf-8");
         resp.setContentType("text/html;charset=utf-8");
@@ -235,5 +273,19 @@ public class BlogServlet extends BaseServlet {
             out.print("<td><a href=\"/blog/findBlog?username="+userName+"&title="+title+"&tag="+tag+"&index="+(indexInt+6)+"\" target=\"right\">下一页</a></td>");
         }
         out.print("</table>");
+    }
+
+    /**
+     * 点赞
+     * @param req
+     * @param resp
+     * @throws IOException
+     */
+    public void addLike(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        req.setCharacterEncoding("utf-8");
+        int uid = (int) req.getServletContext().getAttribute("uid");
+        req.getParameter("blogId");
+
+        
     }
 }

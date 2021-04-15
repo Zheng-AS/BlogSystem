@@ -20,6 +20,12 @@ public class UserServlet extends BaseServlet {
     private String userName, password;
     private UserService userService = ServiceFactory.getUserService();
 
+    /**
+     * 获取用户信息
+     * @param req
+     * @param resp
+     * @throws IOException
+     */
     public void getMes(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/json;charset=UTF-8");
         resp.setCharacterEncoding("UTF-8");
@@ -33,6 +39,13 @@ public class UserServlet extends BaseServlet {
         out.print(jsonData);
     }
 
+    /**
+     * 登录账号
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     public void login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("utf-8");
 
@@ -50,6 +63,13 @@ public class UserServlet extends BaseServlet {
         }
     }
 
+    /**
+     * 注册账号
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     public void register(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("utf-8");
 
@@ -62,6 +82,14 @@ public class UserServlet extends BaseServlet {
             resp.sendRedirect("/psdn/register_error.html");
         }
     }
+
+    /**
+     * 更改个人信息
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     public void updateMes(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("utf-8");
         resp.setCharacterEncoding("UTF-8");
