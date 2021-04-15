@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
             sql.append("having title like ? ");
             queryMes.add(title);
         }
-        sql.append("order by n_of_con, n_of_like desc ");
+        sql.append("order by n_of_con desc, n_of_like desc ");
         sql.append("limit " + index + ", 6");
         System.out.println(sql.toString());
         return blogDao.findBlog(sql.toString(),queryMes);
@@ -86,13 +86,30 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String changeLikeNum(int uId, int bId) {
+        //检测是否为自己的博客
         if(blogDao.queryBlog(bId).getuId() != uId) {
+            //检测是已点赞
             if (blogDao.likeIsExist(uId, bId)) {
                 return blogDao.reduceLikeNum(uId, bId);
             } else {
                 return blogDao.addLikeNum(uId, bId);
             }
-        }return "不可以给自己点赞哦";
+        }
+        return "不可以给自己点赞哦";
+    }
+
+    @Override
+    public String changeConNum(int uId, int bId) {
+        //检测是否为自己的博客
+        if(blogDao.queryBlog(bId).getuId() != uId){
+            //检测是否已收藏
+            if(userDao.conIsExist(uId,bId)){
+                return blogDao.cancelCon(uId,bId);
+            }else {
+                return blogDao.addCon(uId,bId);
+            }
+        }
+        return "不可以收藏自己的博客哦";
     }
 
     @Test

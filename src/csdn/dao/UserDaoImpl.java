@@ -106,4 +106,24 @@ public class UserDaoImpl implements UserDao {
         }
         return result;
     }
+
+    @Override
+    public boolean conIsExist(int uId, int bId) {
+        boolean result = false;
+        String sql = "select * from user_con where uid = ? and bid = ?";
+        ps = util.createStatement(sql);
+        try {
+            ps.setInt(1,uId);
+            ps.setInt(2,bId);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                result = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close(rs);
+        }
+        return result;
+    }
 }

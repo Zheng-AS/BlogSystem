@@ -13,8 +13,11 @@ public interface UserDao {
     boolean isExist(String userName);
 
     //通过id查找返回用户信息
-    User queryUser(int uid);
+    User queryUser(int uId);
 
     //更新用户信息
     int update(User user);
+
+    //查询用户是否收藏博客
+    boolean conIsExist(int uId, int bId);
 }

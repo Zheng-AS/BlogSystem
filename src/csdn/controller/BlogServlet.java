@@ -267,16 +267,16 @@ public class BlogServlet extends BaseServlet {
         }
         out.print("<tr>");
         if (indexInt != 0){
-            out.print("<td><a href=\"/blog/findBlog?username="+userName+"&title="+title+"&tag="+tag+"&index="+(indexInt-6)+"\" target=\"right\">上一页</a></td>");
+            out.print("<td><a href=\"/psdn/blog/findBlog?username="+userName+"&title="+title+"&tag="+tag+"&index="+(indexInt-6)+"\" target=\"right\">上一页</a></td>");
         }
         if (i == 6){
-            out.print("<td><a href=\"/blog/findBlog?username="+userName+"&title="+title+"&tag="+tag+"&index="+(indexInt+6)+"\" target=\"right\">下一页</a></td>");
+            out.print("<td><a href=\"/psdn/blog/findBlog?username="+userName+"&title="+title+"&tag="+tag+"&index="+(indexInt+6)+"\" target=\"right\">下一页</a></td>");
         }
         out.print("</table>");
     }
 
     /**
-     * 点赞
+     * 点赞博客
      * @param req
      * @param resp
      * @throws IOException
@@ -288,6 +288,24 @@ public class BlogServlet extends BaseServlet {
         int bId = Integer.parseInt(req.getParameter("blogId"));
 
         String mes = userService.changeLikeNum(uId,bId);
+        Map map = new HashMap();
+        map.put("mes",mes);
+        resp.getWriter().print(JSON.toJSONString(map));
+    }
+
+    /**
+     * 收藏博客
+     * @param req
+     * @param resp
+     * @throws IOException
+     */
+    public void collection(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        req.setCharacterEncoding("utf-8");
+        resp.setContentType("text/json;charset=UTF-8");
+        int uId = (int) req.getServletContext().getAttribute("uid");
+        int bId = Integer.parseInt(req.getParameter("blogId"));
+
+        String mes = userService.changeConNum(uId,bId);
         Map map = new HashMap();
         map.put("mes",mes);
         resp.getWriter().print(JSON.toJSONString(map));

@@ -240,4 +240,76 @@ public class BlogDaoImpl implements BlogDao {
         }
         return result;
     }
+
+    @Override
+    public String addCon(int uId, int bId) {
+        String result = "收藏失败，正在为您加急抢修.";
+        try {
+            int count = 0;
+            //开启事务
+            con = util.getCon();
+
+            String sql1 = "update blog set n_of_con = n_of_con +1 where bId = ?";
+            ps = con.prepareStatement(sql1);
+            ps.setInt(1,bId);
+            count += ps.executeUpdate();
+
+            String sql2 = "insert into user_con(uid,bid) values (?,?)";
+            ps = con.prepareStatement(sql2);
+            ps.setInt(1,uId);
+            ps.setInt(2,bId);
+            count += ps.executeUpdate();
+
+            if (count == 2){
+                result = "收藏成功";
+            }
+            con.commit();
+        } catch (SQLException e) {
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            util.close();
+        }
+        return result;
+    }
+
+    @Override
+    public String cancelCon(int uId, int bId) {
+        String result = "操作失败，正在为您加急抢修.";
+        try {
+            int count = 0;
+            //开启事务
+            con = util.getCon();
+
+            String sql1 = "update blog set n_of_con = n_of_con -1 where bId = ?";
+            ps = con.prepareStatement(sql1);
+            ps.setInt(1,bId);
+            count += ps.executeUpdate();
+
+            String sql2 = "delete from user_con where uid = ? and bid = ?";
+            ps = con.prepareStatement(sql2);
+            ps.setInt(1,uId);
+            ps.setInt(2,bId);
+            count += ps.executeUpdate();
+
+            if (count == 2){
+                result = "收藏成功";
+            }
+            con.commit();
+        } catch (SQLException e) {
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            util.close();
+        }
+        return result;
+    }
 }

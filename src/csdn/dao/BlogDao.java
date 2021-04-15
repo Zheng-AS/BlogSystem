@@ -28,4 +28,11 @@ public interface BlogDao {
 
     //点赞数减1
     String reduceLikeNum(int uId, int bId);
+
+    //收藏者加1
+    String addCon(int uId, int bId);
+
+    //收藏者减1
+    String cancelCon(int uId, int bId);
+
 }

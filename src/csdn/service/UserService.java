@@ -32,4 +32,7 @@ public interface UserService {
 
     //点赞功能
     String changeLikeNum(int uId, int bId);
+
+    //收藏功能
+    String changeConNum(int uId, int bId);
 }
