@@ -18,10 +18,11 @@
 <body>
 <div>
     <span id="author"></span>
-    <button type="button" class="btn btn-default">    点击关注    </button>
+    <button type="button" class="btn btn-default" onclick="attention()">    点击关注    </button>
+    <input type="text" style="display: none" id="author_id"/>
 </div>
 <label>
-    <input type="text"  placeholder="标题"  width="10000" id="title" >
+    <div id="title"></div>
 </label>
 <div>
     <div id="toolbar-container" class="toolbar"></div>
@@ -63,9 +64,12 @@
     var data2 = {
         blogId : ""
     };
+    var data3 = {
+        authorId : ""
+    };
 
     window.onload = function () {
-        console.log(window.location.href)
+        console.log(window.location.href);
         var href = window.location.href;
         var search = "=";
         var start = href.indexOf(search);
@@ -80,13 +84,14 @@
             //processData: false,
             dataType: "json",
             success: function (ret) {
-                $('#title').val(ret.title);
+                $('#title').text("标题:"+ret.title);
                 editor.txt.text(ret.content);
                 ret.imgUrl = ret.imgUrl.substring(1,ret.imgUrl.length-1);
                 console.log(ret.imgUrl );
                 $('#like-num').text(ret.likeNum);
                 $('#con-num').text(ret.conNum);
-                $('#author').text("作者呢称:  "+ret.author+"     ");
+                $('#author').text("作者呢称:  "+ret.author);
+                $('#author_id').text(ret.author_id);
                 while (ret.imgUrl) {
                     var imgUrl = ret.imgUrl.substring(0, 67);
                     ret.imgUrl = ret.imgUrl.substr(68);
@@ -145,6 +150,22 @@
             type: "GET",
             url: "blog/collection",
             data: data2,
+            cache: false,
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            //processData: false,
+            dataType: "json",
+            success: function (ret) {
+                alert(ret.mes)
+                //$('#like-num').text(Number($('#like-num').text())+1)
+            }
+        })
+    }
+    function attention() {
+        data3.authorId = $('#author_id').text();
+        $.ajax({
+            type: "GET",
+            url: "blog/attention",
+            data: data3,
             cache: false,
             contentType: "application/x-www-form-urlencoded; charset=utf-8",
             //processData: false,
