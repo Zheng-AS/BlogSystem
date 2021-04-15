@@ -13,13 +13,13 @@
         .toolbar {
             border: 1px solid #ccc;
         }
-        .text {
-            border: 1px solid #ccc;
-            min-height: 400px;
-        }
     </style>
 </head>
 <body>
+<div>
+    <span id="author"></span>
+    <button type="button" class="btn btn-default">    点击关注    </button>
+</div>
 <label>
     <input type="text"  placeholder="标题"  width="10000" id="title" >
 </label>
@@ -59,10 +59,10 @@
         imgUrl : [],
         content :"",
         isPublic :""
-    }
+    };
     var data2 = {
         blogId : ""
-    }
+    };
 
     window.onload = function () {
         console.log(window.location.href)
@@ -80,25 +80,25 @@
             //processData: false,
             dataType: "json",
             success: function (ret) {
-                $('#title').val(ret.title)
-                editor.txt.text(ret.content)
-                ret.imgUrl = ret.imgUrl.substring(1,ret.imgUrl.length-1)
-                console.log(ret.imgUrl )
-                $('#like-num').text(ret.likeNum)
-                $('#con-num').text(ret.conNum)
+                $('#title').val(ret.title);
+                editor.txt.text(ret.content);
+                ret.imgUrl = ret.imgUrl.substring(1,ret.imgUrl.length-1);
+                console.log(ret.imgUrl );
+                $('#like-num').text(ret.likeNum);
+                $('#con-num').text(ret.conNum);
+                $('#author').text("作者呢称:  "+ret.author+"     ");
                 while (ret.imgUrl) {
-                    var imgUrl = ret.imgUrl.substring(0, 67)
-                    ret.imgUrl = ret.imgUrl.substr(68)
-                    console.log(imgUrl)
-
-                    $('.w-e-text').html(`${ $('.w-e-text').html()}<img src=${imgUrl}>`)
+                    var imgUrl = ret.imgUrl.substring(0, 67);
+                    ret.imgUrl = ret.imgUrl.substr(68);
+                    console.log(imgUrl);
+                    $('.w-e-text').html(`${ $('.w-e-text').html()}<img src=${imgUrl}>`);
                 }
             }
         })
     }
 
     var E = window.wangEditor;
-    var editor = new E('#contentDiv')
+    var editor = new E('#contentDiv');
     var $text1 = $('#content');
     editor.config.onchange = function (html) {
         // 监控变化，同步更新富文本内容到 textarea
@@ -106,7 +106,7 @@
     }
     editor.config.uploadImgServer = false;	//自定义上传图片
     editor.config.onchange = (html)=>{
-        console.log(html)
+        console.log(html);
 
         for(var i in data.imgUrl){
             var newArr = [];
