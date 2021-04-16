@@ -1,6 +1,7 @@
 package csdn.service;
 
 import csdn.dao.BlogDao;
+import csdn.dao.CommentDao;
 import csdn.dao.DaoFactory;
 import csdn.dao.UserDao;
 import csdn.po.Blog;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 public class UserServiceImpl implements UserService {
     private UserDao userDao = DaoFactory.getUserDao();
     private BlogDao blogDao = DaoFactory.getBlogDao();
+    private CommentDao commentDao = DaoFactory.getCommentDao();
     @Override
     public int register(String userName, String password) {
         if(userDao.isExist(userName)){
@@ -129,6 +131,11 @@ public class UserServiceImpl implements UserService {
             }
         }
         return "不可以关注自己哦";
+    }
+
+    @Override
+    public String addComment(int uId, int bId, String content) {
+        return commentDao.addComment(uId, bId, content);
     }
 
     @Test

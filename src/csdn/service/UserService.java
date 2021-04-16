@@ -41,4 +41,7 @@ public interface UserService {
 
     //更改用户关注
     String changeUserAttn(int uId, int aId);
+
+    //用户发表评论
+    String addComment(int uId, int bId, String content);
 }

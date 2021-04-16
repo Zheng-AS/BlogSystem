@@ -8,4 +8,8 @@ public class DaoFactory {
     public static BlogDao getBlogDao(){
         return new BlogDaoImpl();
     }
+
+    public static CommentDao getCommentDao(){
+        return new CommentDaoImpl();
+    }
 }
