@@ -5,7 +5,6 @@ import csdn.po.User;
 import csdn.service.ServiceFactory;
 import csdn.service.UserService;
 
-import javax.jws.WebService;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
