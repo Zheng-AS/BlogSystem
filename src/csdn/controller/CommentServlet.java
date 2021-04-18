@@ -18,22 +18,21 @@ public class CommentServlet extends BaseServlet {
     /**
      *  递归拼接字符串
      */
-    public StringBuffer outPrintComment(StringBuffer sb,ArrayList<Comment> commentArrayList, String userName){
+    public void outPrintComment(PrintWriter out,ArrayList<Comment> commentArrayList, String userName){
         if(commentArrayList == null ){ }
         else {
             for (Comment comment : commentArrayList) {
-                sb.append("<div>");
-                sb.append("<div>------------------------------------------------------------------------</div>");
-                sb.append("<div>" + comment.getUserName() + "</div>");
-                sb.append("<div style=\"padding-left: 20px\">回复["+userName+"]:" + comment.getContent());
-                sb.append("<a href=\"http://localhost:8080/psdn/add_resp.html?cId=" + comment.getcId() + "\">点击回复</a>");
+                out.print("<div>");
+                out.print("<div>------------------------------------------------------------------------</div>");
+                out.print("<div>" + comment.getUserName() + "</div>");
+                out.print("<div style=\"padding-left: 20px\">回复["+userName+"]:" + comment.getContent());
+                out.print("<a href=\"http://localhost:8080/psdn/add_resp.html?cId=" + comment.getcId() + "\">点击回复</a>");
                 //调用递归函数
-                outPrintComment(sb, comment.getRespCom(), comment.getUserName());
-                sb.append("</div>");
-                sb.append("</div>");
+                outPrintComment(out, comment.getRespCom(), comment.getUserName());
+                out.print("</div>");
+                out.print("</div>");
             }
         }
-        return sb;
     }
 
     /**
@@ -43,7 +42,9 @@ public class CommentServlet extends BaseServlet {
         req.setCharacterEncoding("utf-8");
         resp.setContentType("text/html;charset=utf-8");
         int bId = Integer.parseInt(req.getParameter("blogId"));
-        ArrayList<Comment> commentArrayList = userService.getComment(bId);
+        String index = req.getParameter("index");
+        int indexInt = Integer.parseInt(index);
+        ArrayList<Comment> commentArrayList = userService.getComment(bId,indexInt);
         PrintWriter out;
         StringBuffer sb = new StringBuffer();
 
@@ -51,19 +52,25 @@ public class CommentServlet extends BaseServlet {
         //调用递归方法
         out.print("<div>_________________________________博客评论_____________________________________</div>");
         //属于博客评论，不是回复评论，不进入递归
+        int i = 0;
         for (Comment comment : commentArrayList) {
             out.print("<div>");
             out.print("<div>" + comment.getUserName() + "</div>");
             out.print("<div style=\"padding-left: 20px\">评论：" + comment.getContent());
             out.print("<a href=\"/comment/addResp?cId=" + comment.getcId() + "\">点击回复</a>");
             //调用递归函数
-            outPrintComment(sb, comment.getRespCom(), comment.getUserName());
-            out.print(sb.toString());
+            outPrintComment(out, comment.getRespCom(), comment.getUserName());
             out.print("</div>");
             out.print("</div>");
             out.print("<div>________________________________________________________________________</div>");
+            i ++;
         }
-        out.print("<div>_____________________________________________________________________________</div>");
+        if (indexInt != 0){
+            out.print("<div><a href=\"/psdn/comment/viewComment?blogId="+bId+"&index="+(indexInt-6)+"\" target=\"right\">上一页</a></div>");
+        }
+        if (i == 6){
+            out.print("<div><a href=\"/psdn/comment/viewComment?blogId="+bId+"&index="+(indexInt+6)+"\" target=\"right\">下一页</a></div>");
+        }
         out.print("<br>");
         out.print("<br>");
         out.print("<form id=\"from1\" method=\"post\" action=\"/psdn/comment/addComment\">\n" +

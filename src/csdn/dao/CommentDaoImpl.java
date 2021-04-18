@@ -58,7 +58,7 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
-    public ArrayList<Comment> getCommentByBId(int bId) {
+    public ArrayList<Comment> getCommentByBId(int bId, int index) {
         ArrayList<Comment> commentArrayList = new ArrayList<>();
         String sql = "select " +
                     "b.cid, b.bid, c.* " +
@@ -71,10 +71,12 @@ public class CommentDaoImpl implements CommentDao {
                 "having " +
                     "bid = ? " +
                 "order by " +
-                    "c.time asc";
+                    "c.time asc " +
+                "limit ?, 6";
         ps = util.createStatement(sql);
         try {
             ps.setInt(1,bId);
+            ps.setInt(2,index);
             rs = ps.executeQuery();
             while (rs.next()){
                 String cId = rs.getString("cid");
@@ -185,11 +187,4 @@ public class CommentDaoImpl implements CommentDao {
         return mes;
     }
 
-        @Test
-    public void test1(){
-        ArrayList<Comment> commentByBId = getCommentByBId(1);
-        for (Comment comment : commentByBId) {
-            System.out.println(comment);
-        }
-    }
 }

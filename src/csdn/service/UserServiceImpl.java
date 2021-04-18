@@ -140,11 +140,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ArrayList<Comment> getComment(int bId) {
+    public ArrayList<Comment> getComment(int bId, int index) {
         //功能：获取该  博客id下的评论 <-- 该评论的回复 <-- 该回复评论的回复 <-- .........
 
         //获取该博客下的评论
-        ArrayList<Comment> commentArrayList = commentDao.getCommentByBId(bId);
+        ArrayList<Comment> commentArrayList = commentDao.getCommentByBId(bId,index);
         //调用递归方法
         getRespComList(commentArrayList);
         return commentArrayList;
@@ -184,24 +184,8 @@ public class UserServiceImpl implements UserService {
 
     @Test
     public void myTest(){
-        ArrayList<Comment> a = new ArrayList<>();
-        a.add(new Comment("00000000000", "qqqqqq", 1, null));
-        ArrayList<Comment> b = a;
-        ArrayList<Comment> c = new ArrayList<>();
-        c.add(new Comment("dahwuidahwu", "woshineirong", 8, null));
-        for (Comment comment : b) {
-            comment.setuId(88);
-            comment.setcId("11111111111");
+        ArrayList<Comment> a = getComment(1,0);
+        System.out.println(a.toString());
 
-            comment.setRespCom(c);
-            System.out.println(comment.getcId() +"{"+comment.getContent()+"}");
-        }
-        b = c;
-        for (Comment comment : a) {
-            System.out.println(comment.toString());
-        }
-        for (Comment comment : b) {
-            System.out.println(comment.toString());
-        }
     }
 }

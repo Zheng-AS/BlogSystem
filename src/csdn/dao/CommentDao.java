@@ -9,7 +9,7 @@ public interface CommentDao {
     String addComment(int uId, int bId, String content);
 
     //根据博客Id查找评论
-    ArrayList<Comment> getCommentByBId(int bId);
+    ArrayList<Comment> getCommentByBId(int bId, int index);
 
     //根据评论Id查找评论
     Comment getCommentByCId(String cId);
