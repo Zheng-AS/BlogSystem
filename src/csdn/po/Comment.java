@@ -1,18 +1,37 @@
 package csdn.po;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Comment {
-    private Integer cId;
+    private String cId;
     private String content;
     private Integer uId;
-    private Comment[] respCom;
+    private ArrayList<Comment> respCom;
+    private String time;
+    private String userName;
 
-    public Integer getcId() {
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getcId() {
         return cId;
     }
 
-    public void setcId(Integer cId) {
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public void setcId(String cId) {
         this.cId = cId;
     }
 
@@ -32,37 +51,41 @@ public class Comment {
         this.uId = uId;
     }
 
-    public Comment[] getRespCom() {
+    public ArrayList<Comment> getRespCom() {
         return respCom;
     }
 
-    public void setRespCom(Comment[] respCom) {
+    public void setRespCom(ArrayList<Comment> respCom) {
         this.respCom = respCom;
     }
 
     public Comment() {
     }
 
-    public Comment(Integer cId, String content, Integer uId, Comment[] respCom) {
+    public Comment(String cId, String content, Integer uId, ArrayList<Comment> respCom, String time) {
         this.cId = cId;
         this.content = content;
         this.uId = uId;
         this.respCom = respCom;
+        this.time = time;
     }
 
-    public Comment(Integer cId, String content, Integer uId) {
+    public Comment(String cId, String content, Integer uId, String time) {
         this.cId = cId;
         this.content = content;
         this.uId = uId;
+        this.time = time;
     }
 
     @Override
     public String toString() {
         return "Comment{" +
-                "cId=" + cId +
+                "cId='" + cId + '\'' +
                 ", content='" + content + '\'' +
                 ", uId=" + uId +
-                ", respCom=" + Arrays.toString(respCom) +
+                ", respCom=" + respCom +
+                ", time='" + time + '\'' +
+                ", userName='" + userName + '\'' +
                 '}';
     }
 }
