@@ -42,6 +42,8 @@
     <br>
     <span>收藏</span>
 </div>
+<button type="button" class="btn btn-default" onclick="comment()">    查看评论    </button>
+
 <form id="form2" method="post" action="/psdn/blog/updateBlog">
     <input type="text" id="title1" name="title" style="display: none"/>
     <input type="text" id="tag1" name="tag" style="display: none"/>
@@ -50,6 +52,9 @@
     <input type="text" id="isPublic1" name="isPublic" style="display: none"/>
 </form>
 
+<form id="from3" method="get" action="/psdn/comment/viewComment">
+        <input style="display: none" type="text" name="blogId" id="blogId"/>
+</form>
 
 
 </body>
@@ -176,6 +181,11 @@
             }
         })
     }
+    function comment() {
+        $('#blogId').val(data2.blogId);
+        $('#from3').submit();
+    }
+
 
 </script>
 </body>
