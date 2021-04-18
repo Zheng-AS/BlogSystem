@@ -1,6 +1,7 @@
 package csdn.service;
 
 import csdn.po.Blog;
+import csdn.po.Comment;
 import csdn.po.User;
 
 import java.util.ArrayList;
@@ -44,4 +45,7 @@ public interface UserService {
 
     //用户发表评论
     String addComment(int uId, int bId, String content);
+
+    //获取博客下的评论
+    ArrayList<Comment> getComment(int bId);
 }

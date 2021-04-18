@@ -5,6 +5,7 @@ import csdn.dao.CommentDao;
 import csdn.dao.DaoFactory;
 import csdn.dao.UserDao;
 import csdn.po.Blog;
+import csdn.po.Comment;
 import csdn.po.User;
 import org.junit.Test;
 
@@ -138,14 +139,61 @@ public class UserServiceImpl implements UserService {
         return commentDao.addComment(uId, bId, content);
     }
 
+    @Override
+    public ArrayList<Comment> getComment(int bId) {
+        //功能：获取该  博客id下的评论 <-- 该评论的回复 <-- 该回复评论的回复 <-- .........
+
+        //获取该博客下的评论
+        ArrayList<Comment> commentArrayList = commentDao.getCommentByBId(bId);
+        //调用递归方法
+        getRespComList(commentArrayList);
+        return commentArrayList;
+    }
+
+    //封装为一个方法
+    public void getRespComList(ArrayList<Comment> commentArrayList){
+        //对此评论数组进行遍历，使该数组下的评论对象进行如下操作
+        for (Comment comment : commentArrayList) {
+            //获取这个评论的用户呢称
+            comment.setUserName(userDao.getNameByUId(comment.getuId()));
+            //获取这每个评论的回复评论的ID数组
+            ArrayList<String> commentRespId = commentDao.getCommentRespId(comment.getcId());
+            //创建回复评论数组
+            ArrayList<Comment> respCommentArrayList = new ArrayList<>();
+            //遍历该数组，使该数组下每个评论ID进行如下操作
+            for (String cId : commentRespId) {
+                //查找对应ID的评论信息
+                Comment respComment = commentDao.getCommentByCId(cId);
+                //将获得到的评论对象存入回复数组中
+                respCommentArrayList.add(respComment);
+                //将回复评论数组存入上一级评论中
+                comment.setRespCom(respCommentArrayList);
+            }
+            //对该回复评论ID数组对应的回复评论数组进行递归调用，查找该数组内的回复评论的回复评论数组
+            getRespComList(respCommentArrayList);
+        }
+    }
+
     @Test
     public void myTest(){
-        String userName = "潘";
-        //String userName = "";
-        String tag = "人工智能";
-        //String tag = "";
-        String title = "5G";
-        //String title = "";
-        findBlog(userName,tag,title,"0");
+        ArrayList<Comment> a = new ArrayList<>();
+        a.add(new Comment("00000000000", "qqqqqq", 1, null));
+        ArrayList<Comment> b = a;
+        ArrayList<Comment> c = new ArrayList<>();
+        c.add(new Comment("dahwuidahwu", "woshineirong", 8, null));
+        for (Comment comment : b) {
+            comment.setuId(88);
+            comment.setcId("11111111111");
+
+            comment.setRespCom(c);
+            System.out.println(comment.getcId() +"{"+comment.getContent()+"}");
+        }
+        b = c;
+        for (Comment comment : a) {
+            System.out.println(comment.toString());
+        }
+        for (Comment comment : b) {
+            System.out.println(comment.toString());
+        }
     }
 }
