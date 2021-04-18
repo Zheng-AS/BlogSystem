@@ -148,6 +148,26 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
+    public ArrayList<String> getCommentIdByBId(int bId) {
+        ArrayList<String> commentIdArrayList = new ArrayList<>();
+        String respId = "00000000000";
+        String sql = "select * from blog_comment where bid = ?";
+        ps = util.createStatement(sql);
+        try {
+            ps.setInt(1,bId);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                commentIdArrayList.add(rs.getString("cid"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close(rs);
+        }
+        return commentIdArrayList;
+    }
+
+    @Override
     public String addRespCom(String cId, String content, int uId) {
         String mes = "发表评论失败";
         try {
@@ -187,4 +207,33 @@ public class CommentDaoImpl implements CommentDao {
         return mes;
     }
 
+    @Override
+    public PreparedStatement deleteRespCom(String cId, Connection con, PreparedStatement ps) throws SQLException {
+        String sql1 = "delete from blog_comment where cid = ?";
+        ps = con.prepareStatement(sql1);
+        ps.setString(1, cId);
+        ps.executeUpdate();
+
+        String sql2 = "delete from comment where cid = ?";
+        ps = con.prepareStatement(sql2);
+        ps.setString(1,cId);
+        ps.executeUpdate();
+
+        return ps;
+    }
+
+    @Override
+    public PreparedStatement deleteCom(String cId, Connection con, PreparedStatement ps) throws SQLException {
+        String sql1 = "delete from comment_resp where rid = ?";
+        ps = con.prepareStatement(sql1);
+        ps.setString(1, cId);
+        ps.executeUpdate();
+
+        String sql2 = "delete from comment where cid = ?";
+        ps = con.prepareStatement(sql2);
+        ps.setString(1,cId);
+        ps.executeUpdate();
+
+        return ps;
+    }
 }

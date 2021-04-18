@@ -2,6 +2,9 @@ package csdn.dao;
 
 import csdn.po.Blog;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface BlogDao {
@@ -35,4 +38,6 @@ public interface BlogDao {
     //收藏者减1
     String cancelCon(int uId, int bId);
 
+    //博客删除
+    PreparedStatement deleteBlog(int bId, Connection con, PreparedStatement ps) throws SQLException;
 }

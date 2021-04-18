@@ -312,4 +312,24 @@ public class BlogDaoImpl implements BlogDao {
         }
         return result;
     }
+
+    @Override
+    public PreparedStatement deleteBlog(int bId, Connection con, PreparedStatement ps) throws SQLException {
+        String sql1 = "delete from great where bId = ?";
+        ps = con.prepareStatement(sql1);
+        ps.setInt(1, bId);
+        ps.executeUpdate();
+
+        String sql2 = "delete from user_con where bid = ?";
+        ps = con.prepareStatement(sql2);
+        ps.setInt(1,bId);
+        ps.executeUpdate();
+
+        String sql3 = "delete from blog where bid = ?";
+        ps = con.prepareStatement(sql3);
+        ps.setInt(1,bId);
+        ps.executeUpdate();
+
+        return ps;
+    }
 }
