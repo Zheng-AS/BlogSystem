@@ -174,6 +174,14 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public String addRespCom(String cId, String content, int uId) {
+        if(content == ""){
+            return "评论不能为空";
+        }
+        return commentDao.addRespCom(cId,content,uId);
+    }
+
     @Test
     public void myTest(){
         ArrayList<Comment> a = new ArrayList<>();

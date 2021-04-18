@@ -17,4 +17,6 @@ public interface CommentDao {
     //根据此评论Id获取其评论回复Id
     ArrayList<String> getCommentRespId(String cId);
 
+    //发表回复评论
+    String addRespCom(String cId, String content, int uId);
 }

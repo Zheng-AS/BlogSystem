@@ -48,4 +48,7 @@ public interface UserService {
 
     //获取博客下的评论
     ArrayList<Comment> getComment(int bId);
+
+    //用户发表回复评论
+    String addRespCom(String cId, String content, int uId);
 }

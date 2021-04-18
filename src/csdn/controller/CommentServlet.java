@@ -26,7 +26,7 @@ public class CommentServlet extends BaseServlet {
                 sb.append("<div>------------------------------------------------------------------------</div>");
                 sb.append("<div>" + comment.getUserName() + "</div>");
                 sb.append("<div style=\"padding-left: 20px\">回复["+userName+"]:" + comment.getContent());
-                sb.append("<a href=\"/comment/addResp?cId=" + comment.getcId() + "\">点击回复</a>");
+                sb.append("<a href=\"http://localhost:8080/psdn/add_resp.html?cId=" + comment.getcId() + "\">点击回复</a>");
                 //调用递归函数
                 outPrintComment(sb, comment.getRespCom(), comment.getUserName());
                 sb.append("</div>");
@@ -90,6 +90,21 @@ public class CommentServlet extends BaseServlet {
         String content = req.getParameter("content");
 
         String mes = userService.addComment(uId,bId,content);
+        PrintWriter out = resp.getWriter();
+        out.print("<font style='color:red;font-size:40'>"+mes+"</font>");
+    }
+
+    /**
+     *  增加回复评论功能
+     */
+    public void addRespCom(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        req.setCharacterEncoding("utf-8");
+        resp.setContentType("text/html;charset=UTF-8");
+        int uId = (int) req.getServletContext().getAttribute("uid");
+        String cId = req.getParameter("cId");
+        String content = req.getParameter("content");
+
+        String mes = userService.addRespCom(cId,content,uId);
         PrintWriter out = resp.getWriter();
         out.print("<font style='color:red;font-size:40'>"+mes+"</font>");
     }

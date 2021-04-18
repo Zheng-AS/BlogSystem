@@ -145,7 +145,47 @@ public class CommentDaoImpl implements CommentDao {
         return respIdArrayList;
     }
 
-    @Test
+    @Override
+    public String addRespCom(String cId, String content, int uId) {
+        String mes = "发表评论失败";
+        try {
+            int count = 0;
+            String rId = IDUtil.getCId();
+            //开启事务
+            con = util.getCon();
+
+            String sql1 = "insert into comment(cid, uid, content, time) values(?,?,?,?)";
+            ps = con.prepareStatement(sql1);
+            ps.setString(1, rId);
+            ps.setInt(2,uId);
+            ps.setString(3,content);
+            ps.setString(4,IDUtil.getTime());
+            count += ps.executeUpdate();
+
+            String sql2 = "insert into comment_resp(cid,rid) values(?,?)";
+            ps = con.prepareStatement(sql2);
+            ps.setString(1,cId);
+            ps.setString(2,rId);
+            count += ps.executeUpdate();
+            if(count == 2){
+                mes = "发布评论成功";
+            }
+
+            con.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } finally {
+            util.close();
+        }
+        return mes;
+    }
+
+        @Test
     public void test1(){
         ArrayList<Comment> commentByBId = getCommentByBId(1);
         for (Comment comment : commentByBId) {
