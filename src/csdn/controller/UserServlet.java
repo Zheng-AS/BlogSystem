@@ -1,6 +1,7 @@
 package csdn.controller;
 
 import com.alibaba.fastjson.JSON;
+import csdn.po.Blog;
 import csdn.po.User;
 import csdn.service.ServiceFactory;
 import csdn.service.UserService;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,9 +23,6 @@ public class UserServlet extends BaseServlet {
 
     /**
      * 获取用户信息
-     * @param req
-     * @param resp
-     * @throws IOException
      */
     public void getMes(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/json;charset=UTF-8");
@@ -40,10 +39,6 @@ public class UserServlet extends BaseServlet {
 
     /**
      * 登录账号
-     * @param req
-     * @param resp
-     * @throws ServletException
-     * @throws IOException
      */
     public void login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("utf-8");
@@ -64,10 +59,6 @@ public class UserServlet extends BaseServlet {
 
     /**
      * 注册账号
-     * @param req
-     * @param resp
-     * @throws ServletException
-     * @throws IOException
      */
     public void register(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("utf-8");
@@ -84,10 +75,6 @@ public class UserServlet extends BaseServlet {
 
     /**
      * 更改个人信息
-     * @param req
-     * @param resp
-     * @throws ServletException
-     * @throws IOException
      */
     public void updateMes(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("utf-8");
@@ -102,5 +89,88 @@ public class UserServlet extends BaseServlet {
         if(userService.updateMes(new User(uid,userName,password))){
             out.print("<font style='color:red;font-size:40'>更改成功</font>");
         }
+    }
+
+    /**
+     *  我的关注
+     */
+    public void attention(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+        req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=utf-8");
+        PrintWriter out = resp.getWriter();
+
+        int uId = (int) req.getServletContext().getAttribute("uid");
+        String index = req.getParameter("index");
+        int indexInt = Integer.parseInt(index);
+        ArrayList<User> userAttnList = userService.getUserAttn(uId,indexInt);
+        int i =0;
+
+        out.print("<table border='2' align='center'>");
+        out.print("<tr>");
+        out.print("<td>编号</td>");
+        out.print("<td>用户姓名</td>");
+        out.print("<td>操作</td>");
+        out.print("<td>操作</td>");
+        out.print("</tr>");
+        for (User attnUser : userAttnList) {
+            out.print("<tr>");
+            out.print("<td>" + (i+1) + "</td>");
+            out.print("<td>" + attnUser.getUserName() + "</td>");
+            out.print("<td><a href=\"/psdn/user/checkAttn?attnId="+attnUser.getuId()+"&index=0\" target=\"right\">查看</a></td>");
+            out.print("<td><a href=\"psdn/view_other_blog.html?aid="+attnUser.getuId()+"\" target=\"right\">取消关注</a></td>");
+            out.print("</tr>");
+            i ++;
+        }
+        out.print("<tr>");
+        if (indexInt != 0){
+            out.print("<td><a href=\"/psdn/user/attention?index="+(indexInt-6)+"\" target=\"right\">上一页</a></td>");
+        }
+        if (i == 6){
+            out.print("<td><a href=\"/psdn/user/attention?index="+(indexInt+6)+"\" target=\"right\">下一页</a></td>");
+        }
+        out.print("</table>");
+    }
+
+    public void checkAttn(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+        req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=utf-8");
+        PrintWriter out = resp.getWriter();
+
+        int uId = Integer.parseInt(req.getParameter("attnId"));
+        String index = req.getParameter("index");
+        int indexInt = Integer.parseInt(index);
+        ArrayList<Blog> blogArrayList = userService.checkBlog(uId, indexInt);
+        int i =0;
+
+        out.print("<table border='2' align='center'>");
+        out.print("<tr>");
+        out.print("<td>博客编号</td>");
+        out.print("<td>博客标题</td>");
+        out.print("<td>博客分类</td>");
+        out.print("<td>博客收藏数</td>");
+        out.print("<td>博客点赞数</td>");
+        out.print("<td>操作</td>");
+        out.print("</tr>");
+        for (Blog blog : blogArrayList) {
+            out.print("<tr>");
+            out.print("<td>" + (i+1) + "</td>");
+            out.print("<td>" + blog.getTitle()+ "</td>");
+            out.print("<td>" + blog.getTag()+ "</td>");
+            out.print("<td>" + blog.getnOfCon() + "</td>");
+            out.print("<td>" + blog.getnOfLike() + "</td>");
+            out.print("<td><a href=\"http://localhost:8080/psdn/view_other_blog.html?blogId="+blog.getbId()+"\" target=\"right\">查看博客</a></td>");
+            out.print("</tr>");
+            i ++;
+        }
+        out.print("<tr>");
+        if (indexInt != 0){
+            out.print("<td><a href=\"/psdn/user/checkAttn?index="+(indexInt-6)+"\" target=\"right\">上一页</a></td>");
+        }
+        if (i == 6){
+            out.print("<td><a href=\"/psdn/user/checkAttn?index="+(indexInt+6)+"\" target=\"right\">下一页</a></td>");
+        }
+        out.print("</table>");
     }
 }

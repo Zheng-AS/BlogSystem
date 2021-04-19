@@ -56,6 +56,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ArrayList<Blog> checkBlog(int uId, int index) {
+        return blogDao.checkBlog(uId, index);
+    }
+
+    @Override
     public Blog viewBlog(int bId) {
         return blogDao.queryBlog(bId);
     }
@@ -315,6 +320,17 @@ public class UserServiceImpl implements UserService {
             util.close();
         }
         return mes;
+    }
+
+    @Override
+    public ArrayList<User> getUserAttn(int uId, int index) {
+        ArrayList<Integer> attnIdList = userDao.queryAttnIdByUId(uId, index);
+        ArrayList<User> attnUserList = new ArrayList<>();
+        for (Integer attnId : attnIdList) {
+            User attnUser = userDao.queryUser(attnId);
+            attnUserList.add(attnUser);
+        }
+        return attnUserList;
     }
 
     @Test

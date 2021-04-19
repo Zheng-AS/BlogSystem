@@ -2,6 +2,8 @@ package csdn.dao;
 
 import csdn.po.User;
 
+import java.util.ArrayList;
+
 public interface UserDao {
     //新增用户
     int addUser(User user);
@@ -32,4 +34,7 @@ public interface UserDao {
 
     //取消关注的人
     String cancelAttn(int uId, int aId);
+
+    //根据用户ID获取其关注的人的ID
+    ArrayList<Integer> queryAttnIdByUId(int uId, int index);
 }

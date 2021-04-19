@@ -22,8 +22,11 @@ public interface UserService {
     //创建博客功能
     int createBlog(Blog blog);
 
-    //管理博客功能
+    //管理博客功能(自己查看自己的)
     ArrayList<Blog> checkBlog(int uId);
+
+    //管理博客功能(带分页,被人查看)
+    ArrayList<Blog> checkBlog(int uId, int index);
 
     //查看博客功能
     Blog viewBlog(int bId);
@@ -69,4 +72,7 @@ public interface UserService {
 
     //删除博客
     String deleteBlog(int bId);
+
+    //获取用户的关注用户
+    ArrayList<User> getUserAttn(int uId, int index);
 }

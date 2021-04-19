@@ -6,6 +6,7 @@ import csdn.util.JdbcUtil;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class UserDaoImpl implements UserDao {
     private JdbcUtil util = new JdbcUtil();
@@ -84,7 +85,7 @@ public class UserDaoImpl implements UserDao {
         } finally {
             util.close(rs);
         }
-        return new User(userName,password);
+        return new User(uid,userName,password);
     }
 
     @Override
@@ -200,5 +201,25 @@ public class UserDaoImpl implements UserDao {
             util.close(rs);
         }
         return  result;
+    }
+
+    @Override
+    public ArrayList<Integer> queryAttnIdByUId(int uId, int index) {
+        ArrayList<Integer> attnIdList = new ArrayList<>();
+        String sql = "select * from user_attn where uid = ? limit ?, 6 ";
+        ps = util.createStatement(sql);
+        try {
+            ps.setInt(1,uId);
+            ps.setInt(2,index);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                attnIdList.add(rs.getInt("aid"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close(rs);
+        }
+        return attnIdList;
     }
 }

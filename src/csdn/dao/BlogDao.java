@@ -14,6 +14,9 @@ public interface BlogDao {
     //通过用户id查找返回其下所有博客信息
     ArrayList<Blog> checkBlog(int uId);
 
+    //通过用户id查找返回其下所有博客信息(带分页)
+    ArrayList<Blog> checkBlog(int uId, int index);
+
     //通过博客id查找返回博客信息
     Blog queryBlog(int bId);
 

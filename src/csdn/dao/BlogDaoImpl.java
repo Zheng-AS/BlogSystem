@@ -48,10 +48,50 @@ public class BlogDaoImpl implements BlogDao {
                 "having " +
                     "u.uid = b.uid " +
                 "order by " +
-                    "n_of_con, n_of_like desc";
+                    "n_of_con desc, n_of_like desc";
         ps = util.createStatement(sql);
         try {
             ps.setInt(1,uId);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                int bId = rs.getInt("bid");
+                String tag = rs.getString("tag");
+                int nOfLike = rs.getInt("n_of_like");
+                int nOfCon = rs.getInt("n_of_con");
+                String isPublic = rs.getString("is_pub");
+                String bContent = rs.getString("b_content");
+                String title = rs.getString("title");
+                String imgUrl = rs.getString("img_url");
+                Blog blog = new Blog(bId,uId,bContent,tag,nOfLike,nOfCon,isPublic,null,title,imgUrl);
+                blogArrayList.add(blog);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close(rs);
+        }
+        return blogArrayList;
+    }
+
+    @Override
+    public ArrayList<Blog> checkBlog(int uId, int index) {
+        ArrayList<Blog> blogArrayList = new ArrayList<>();
+        String sql = "select u.uid, b.* " +
+                "from " +
+                    "user u " +
+                "left join " +
+                    "blog b " +
+                "on " +
+                    "u.uid = ? and u.uid = b.uid " +
+                "having " +
+                    "is_pub = '是' " +
+                "order by " +
+                    "n_of_con desc, n_of_like desc " +
+                "limit ?, 6";
+        ps = util.createStatement(sql);
+        try {
+            ps.setInt(1,uId);
+            ps.setInt(2,index);
             rs = ps.executeQuery();
             while (rs.next()){
                 int bId = rs.getInt("bid");
