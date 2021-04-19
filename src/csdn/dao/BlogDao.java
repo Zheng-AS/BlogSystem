@@ -41,6 +41,9 @@ public interface BlogDao {
     //收藏者减1
     String cancelCon(int uId, int bId);
 
+    //根据用户ID查找其收藏博客ID
+    ArrayList<Integer> queryBIdByUId(int uId, int index);
+
     //博客删除
     PreparedStatement deleteBlog(int bId, Connection con, PreparedStatement ps) throws SQLException;
 }

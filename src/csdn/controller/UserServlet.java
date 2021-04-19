@@ -132,6 +132,9 @@ public class UserServlet extends BaseServlet {
         out.print("</table>");
     }
 
+    /**
+     *  我的收藏内（查看用户功能）
+     */
     public void checkAttn(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
         req.setCharacterEncoding("utf-8");
         resp.setCharacterEncoding("UTF-8");
@@ -170,6 +173,51 @@ public class UserServlet extends BaseServlet {
         }
         if (i == 6){
             out.print("<td><a href=\"/psdn/user/checkAttn?index="+(indexInt+6)+"\" target=\"right\">下一页</a></td>");
+        }
+        out.print("</table>");
+    }
+
+    /**
+     *  我的收藏
+     */
+    public void collection(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+        req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=utf-8");
+        PrintWriter out = resp.getWriter();
+
+        String index = req.getParameter("index");
+        int indexInt = Integer.parseInt(index);
+        int uid = (int) req.getServletContext().getAttribute("uid");
+        ArrayList<Blog> blogArrayList = userService.checkBlog(uid, indexInt);
+        int i =0;
+
+        out.print("<table border='2' align='center'>");
+        out.print("<tr>");
+        out.print("<td>博客编号</td>");
+        out.print("<td>博客标题</td>");
+        out.print("<td>博客分类</td>");
+        out.print("<td>博客收藏数</td>");
+        out.print("<td>博客点赞数</td>");
+        out.print("<td>操作</td>");
+        out.print("</tr>");
+        for (Blog blog : blogArrayList) {
+            out.print("<tr>");
+            out.print("<td>" + (i+1) + "</td>");
+            out.print("<td>" + blog.getTitle()+ "</td>");
+            out.print("<td>" + blog.getTag()+ "</td>");
+            out.print("<td>" + blog.getnOfCon() + "</td>");
+            out.print("<td>" + blog.getnOfLike() + "</td>");
+            out.print("<td><a href=\"http://localhost:8080/psdn/view_other_blog.html?blogId="+blog.getbId()+"\" target=\"right\">查看博客</a></td>");
+            out.print("</tr>");
+            i ++;
+        }
+        out.print("<tr>");
+        if (indexInt != 0){
+            out.print("<td><a href=\"/psdn/user/collection?index="+(indexInt-6)+"\" target=\"right\">上一页</a></td>");
+        }
+        if (i == 6){
+            out.print("<td><a href=\"/psdn/user/collection?index="+(indexInt+6)+"\" target=\"right\">下一页</a></td>");
         }
         out.print("</table>");
     }

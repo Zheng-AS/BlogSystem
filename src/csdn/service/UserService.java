@@ -75,4 +75,7 @@ public interface UserService {
 
     //获取用户的关注用户
     ArrayList<User> getUserAttn(int uId, int index);
+
+    //获取用户收藏的博客
+    ArrayList<Blog> getConBlog(int uId, int index);
 }

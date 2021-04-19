@@ -354,6 +354,24 @@ public class BlogDaoImpl implements BlogDao {
     }
 
     @Override
+    public ArrayList<Integer> queryBIdByUId(int uId, int index) {
+        ArrayList<Integer> bIdList = new ArrayList<>();
+        String sql = "select * from user_con where uid = ? limit ?, 6";
+        ps = util.createStatement(sql);
+        try {
+            ps.setInt(1, uId);
+            ps.setInt(2,index);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                bIdList.add(rs.getInt("bid"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bIdList;
+    }
+
+    @Override
     public PreparedStatement deleteBlog(int bId, Connection con, PreparedStatement ps) throws SQLException {
         String sql1 = "delete from great where bId = ?";
         ps = con.prepareStatement(sql1);

@@ -333,6 +333,16 @@ public class UserServiceImpl implements UserService {
         return attnUserList;
     }
 
+    @Override
+    public ArrayList<Blog> getConBlog(int uId, int index) {
+        ArrayList<Integer> bIdList = blogDao.queryBIdByUId(uId,index);
+        ArrayList<Blog> blogArrayList = new ArrayList<>();
+        for (Integer bId : bIdList) {
+            blogArrayList.add(blogDao.queryBlog(bId));
+        }
+        return blogArrayList;
+    }
+
     @Test
     public void test(){
         deleteBlog(9);
