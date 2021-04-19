@@ -209,7 +209,7 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public PreparedStatement deleteRespCom(String cId, Connection con, PreparedStatement ps) throws SQLException {
-        String sql1 = "delete from blog_comment where cid = ?";
+        String sql1 = "delete from comment_resp where rid = ?";
         ps = con.prepareStatement(sql1);
         ps.setString(1, cId);
         ps.executeUpdate();
@@ -224,7 +224,7 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public PreparedStatement deleteCom(String cId, Connection con, PreparedStatement ps) throws SQLException {
-        String sql1 = "delete from comment_resp where rid = ?";
+        String sql1 = "delete from blog_comment where cid = ?";
         ps = con.prepareStatement(sql1);
         ps.setString(1, cId);
         ps.executeUpdate();

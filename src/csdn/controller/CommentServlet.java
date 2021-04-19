@@ -57,7 +57,7 @@ public class CommentServlet extends BaseServlet {
             out.print("<div>");
             out.print("<div>" + comment.getUserName() + "</div>");
             out.print("<div style=\"padding-left: 20px\">评论：" + comment.getContent());
-            out.print("<a href=\"/comment/addResp?cId=" + comment.getcId() + "\">点击回复</a>");
+            out.print("<a href=\"http://localhost:8080/psdn/add_resp.html?cId=" + comment.getcId() + "\">点击回复</a>");
             //调用递归函数
             outPrintComment(out, comment.getRespCom(), comment.getUserName());
             out.print("</div>");

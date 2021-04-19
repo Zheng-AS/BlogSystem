@@ -149,7 +149,7 @@ public class BlogServlet extends BaseServlet {
             out.print("<td>" + blog.getnOfCon() + "</td>");
             out.print("<td>" + blog.getnOfLike() + "</td>");
             out.print("<td><a href=\"http://localhost:8080/psdn/view_blog.html?blogId="+blog.getbId()+"\" target=\"right\">查看博客</a></td>");
-            out.print("<td><a href='/psdn/blog/delete?blogId="+blog.getbId()+"'>删除博客</a></td>");
+            out.print("<td><a href='/psdn/blog/deleteBlog?blogId="+blog.getbId()+"'>删除博客</a></td>");
             out.print("</tr>");
         }
         out.print("</table>");
@@ -297,6 +297,20 @@ public class BlogServlet extends BaseServlet {
         int aId = Integer.parseInt(req.getParameter("authorId"));
 
         String mes = userService.changeUserAttn(uId,aId);
+        Map<String,String> map = new HashMap();
+        map.put("mes",mes);
+        resp.getWriter().print(JSON.toJSONString(map));
+    }
+
+    /**
+     *  删除博客
+     */
+    public void deleteBlog(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        req.setCharacterEncoding("utf-8");
+        resp.setContentType("text/html;charset=UTF-8");
+        int bId = Integer.parseInt(req.getParameter("blogId"));
+
+        String mes = userService.deleteBlog(bId);
         Map<String,String> map = new HashMap();
         map.put("mes",mes);
         resp.getWriter().print(JSON.toJSONString(map));

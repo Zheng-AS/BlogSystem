@@ -292,13 +292,14 @@ public class UserServiceImpl implements UserService {
     public String deleteBlog(int bId) {
         String mes = "删除失败，正在为您加急抢修";
         JdbcUtil util = new JdbcUtil();
+        //获取其下评论Id数组
         ArrayList<String> commentIdArrayList = commentDao.getCommentIdByBId(bId);
         //开启事务
         Connection con = util.getCon();
         PreparedStatement ps = null;
         try {
             for (String cId : commentIdArrayList) {
-                commentDao.deleteCom(cId,con,ps);
+                deleteCom(cId,con,ps);
             }
             blogDao.deleteBlog(bId,con,ps);
             mes = "删除成功";
@@ -314,5 +315,10 @@ public class UserServiceImpl implements UserService {
             util.close();
         }
         return mes;
+    }
+
+    @Test
+    public void test(){
+        deleteBlog(9);
     }
 }
