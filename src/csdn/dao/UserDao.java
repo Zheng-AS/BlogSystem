@@ -37,4 +37,7 @@ public interface UserDao {
 
     //根据用户ID获取其关注的人的ID
     ArrayList<Integer> queryAttnIdByUId(int uId, int index);
+
+    //插入用户举报信息
+    String updateReport(int uId, String title, String content, String imgUrl);
 }

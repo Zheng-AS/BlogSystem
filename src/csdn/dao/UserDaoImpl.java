@@ -222,4 +222,24 @@ public class UserDaoImpl implements UserDao {
         }
         return attnIdList;
     }
+
+    @Override
+    public String updateReport(int uId, String title, String content, String imgUrl) {
+        String mes = "发布失败";
+        String sql = "insert into report(uid, title, content, img_url) values(?,?,?,?)";
+        ps = util.createStatement(sql);
+        try {
+            ps.setInt(1, uId);
+            ps.setString(2, title);
+            ps.setString(3, content);
+            ps.setString(4, imgUrl);
+            ps.executeUpdate();
+            mes = "发布成功";
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close();
+        }
+        return mes;
+    }
 }

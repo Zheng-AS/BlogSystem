@@ -343,6 +343,11 @@ public class UserServiceImpl implements UserService {
         return blogArrayList;
     }
 
+    @Override
+    public String updateReport(int uId, String title, String content, String imgUrl) {
+        return userDao.updateReport(uId, title, content, imgUrl);
+    }
+
     @Test
     public void test(){
         deleteBlog(9);

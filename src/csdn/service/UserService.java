@@ -78,4 +78,7 @@ public interface UserService {
 
     //获取用户收藏的博客
     ArrayList<Blog> getConBlog(int uId, int index);
+
+    //上传举报信息
+    String updateReport(int uId, String title, String content, String imgUrl);
 }

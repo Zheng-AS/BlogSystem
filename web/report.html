@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="jquery-3.3.1.js"></script>
+    <script
+            type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/wangeditor@latest/dist/wangEditor.min.js"></script>
+    <style>
+        .toolbar {
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<label>
+    <input type="text"  placeholder="标题"  width="10000" id="title" >
+</label>
+<div>
+    <div id="toolbar-container" class="toolbar"></div>
+</div>
+
+<!-- 引入 wangEditor.min.js -->
+<form id="form" method="post">
+    <div id="contentDiv"></div>
+    <textarea name="content" id="content" style="display:none" ></textarea>
+</form>
+<button type="button" class="btn btn-default" onclick="submitData()">发送</button>
+
+<form id="form2" method="post" action="/psdn/user/report">
+    <input type="text" id="title1" name="title" style="display: none"/>
+    <input type="text" id="imgUrl1" name="imgUrl" style="display: none"/>
+    <input type="text" id="content1" name="content" style="display: none"/>
+</form>
+
+<br><br>
+<div>在收到举报信息后，我们的管理员会尽快处理，感谢您对净化网络环境的贡献</div>
+
+</body>
+<script>
+    var data = {
+        title : "",
+        imgUrl : [],
+        content :"",
+    };
+
+    var E = window.wangEditor;
+    var editor = new E('#contentDiv');
+    var $text1 = $('#content');
+    editor.config.onchange = function (html) {
+        // 监控变化，同步更新富文本内容到 textarea
+        $text1.val(html);
+
+    }
+    editor.config.uploadImgServer = '/psdn/blog/imgUpload';	//自定义上传图片（改成自己写的图片上传方法的路径）
+    editor.config.uploadFileName = 'imgFile';	//自定义文件名
+    editor.config.uploadImgHooks = {
+        customInsert: function (insertImg, result, editor) {
+            var url = result.url;
+            console.log(data.imgUrl);
+            data.imgUrl.push(url);
+            insertImg(url);
+            alert(result.msg);
+        }
+    };
+    editor.config.onchange = (html)=>{
+        console.log(html);
+
+        for(var i in data.imgUrl){
+            var newArr = [];
+            var re = new  RegExp(data.imgUrl[i]);
+            //已经删除
+            if(!re.test(html)){
+                data.imgUrl = data.imgUrl.filter(item=> item!==data.imgUrl[i]);
+            }
+        }
+        console.log(data.imgUrl)
+        // var reg = /src
+    };
+    editor.config.customAlert = function (info) {	//关闭默认提示信息
+        // info 是需要提示的内容
+        alert('自定义提示：' + info)
+    };
+    editor.config.height = 700;
+    editor.create();
+    $text1.val(editor.txt.html());
+
+    function submitData() {
+        data.title = $('#title').val();
+        data.content = editor.txt.text();
+
+        $("#title1").val(data.title);
+        $("#content1").val(data.content);
+        $("#imgUrl1").val(data.imgUrl);
+
+        $("#form2").submit()
+    }
+</script>
+</body>
+</html>

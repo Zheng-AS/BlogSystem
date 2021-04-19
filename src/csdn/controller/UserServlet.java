@@ -180,7 +180,7 @@ public class UserServlet extends BaseServlet {
     /**
      *  我的收藏
      */
-    public void collection(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+    public void collection(HttpServletRequest req, HttpServletResponse resp) throws IOException{
         req.setCharacterEncoding("utf-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html;charset=utf-8");
@@ -220,5 +220,24 @@ public class UserServlet extends BaseServlet {
             out.print("<td><a href=\"/psdn/user/collection?index="+(indexInt+6)+"\" target=\"right\">下一页</a></td>");
         }
         out.print("</table>");
+    }
+
+    /**
+     *  我要举报
+     */
+    public void report(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=utf-8");
+
+        String title = req.getParameter("title");
+        String imgUrl = req.getParameter("imgUrl");
+        String content = req.getParameter("content");
+        int uId = (int) req.getServletContext().getAttribute("uid");
+
+        String mes = userService.updateReport(uId, title ,content ,imgUrl);
+
+        PrintWriter out = resp.getWriter();
+        out.print("<font style='color:red;font-size:40'>"+mes+"</font>");
     }
 }
