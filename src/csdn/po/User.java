@@ -3,6 +3,7 @@ package csdn.po;
 import java.util.Arrays;
 
 public class User {
+    private String able;
     private Integer uId;
     private String userName;
     private String password;
@@ -42,6 +43,21 @@ public class User {
         this.uId = uId;
         this.userName = userName;
         this.password = password;
+    }
+
+    public User(Integer uId, String userName, String password, String able) {
+        this.uId = uId;
+        this.userName = userName;
+        this.password = password;
+        this.able = able;
+    }
+
+    public String getAble() {
+        return able;
+    }
+
+    public void setAble(String able) {
+        this.able = able;
     }
 
     public Integer getuId() {
