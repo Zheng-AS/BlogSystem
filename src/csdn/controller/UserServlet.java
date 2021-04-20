@@ -43,13 +43,13 @@ public class UserServlet extends BaseServlet {
      */
     public void login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("utf-8");
-        HttpSession session = req.getSession();
 
         userName = req.getParameter("username");
         password = req.getParameter("password");
 
         int uid = userService.login(userName, password);
         if(uid != 0){
+            HttpSession session = req.getSession();
             req.getServletContext().setAttribute("uid",uid);
             req.getServletContext().setAttribute("userName",userName);
             req.getServletContext().setAttribute("password",password);

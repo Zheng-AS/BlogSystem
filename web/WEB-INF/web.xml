@@ -14,6 +14,14 @@
         <url-pattern>/blog</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>CommentServlet</servlet-name>
+        <servlet-class>csdn.controller.CommentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CommentServlet</servlet-name>
+        <url-pattern>/comment</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>UserServlet</servlet-name>
         <servlet-class>csdn.controller.UserServlet</servlet-class>
     </servlet>
@@ -21,6 +29,16 @@
         <servlet-name>UserServlet</servlet-name>
         <url-pattern>/user</url-pattern>
     </servlet-mapping>
+    <filter>
+        <filter-name>VisitorFilter</filter-name>
+        <filter-class>csdn.filter.VisitorFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>VisitorFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    
     <welcome-file-list>
         <welcome-file>login.html</welcome-file>
     </welcome-file-list>

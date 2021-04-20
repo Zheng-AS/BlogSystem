@@ -4,4 +4,8 @@ public class ServiceFactory {
     public static UserService getUserService(){
         return new UserServiceImpl();
     }
+
+    public static AdminService getAdminService(){
+        return new AdminServiceImpl();
+    }
 }
