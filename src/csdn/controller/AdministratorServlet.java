@@ -28,7 +28,7 @@ public class AdministratorServlet extends BaseServlet {
             HttpSession session = req.getSession();
             resp.sendRedirect("/psdn/index.html");
         }else {
-            resp.sendRedirect("/psdn/login_error.html");
+            resp.sendRedirect("/psdn/admin_login_error.html");
         }
     }
 }
