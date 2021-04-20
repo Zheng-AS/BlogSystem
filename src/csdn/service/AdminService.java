@@ -10,4 +10,10 @@ public interface AdminService {
 
     //管理用户
     ArrayList<User> checkUser(int index);
+
+    //封禁用户
+    String banUser(int uId);
+
+    //解禁用户
+    String noBanUser(int uId);
 }

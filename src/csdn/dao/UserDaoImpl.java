@@ -263,6 +263,42 @@ public class UserDaoImpl implements UserDao {
         return users;
     }
 
+    @Override
+    public String banUser(int uId) {
+        String mes = "封禁失败，服务区繁忙";
+        String sql = "update user set able = '是' where uid = ?";
+        ps = util.createStatement(sql);
+        try {
+            ps.setInt(1,uId);
+            ps.executeUpdate();
+            mes = "封禁成功";
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close();
+        }
+        return mes;
+    }
+
+    @Override
+    public String noBanUser(int uId) {
+        String mes = "封禁失败，服务区繁忙";
+        String sql = "update user set able = '否' where uid = ?";
+        ps = util.createStatement(sql);
+        try {
+            ps.setInt(1,uId);
+            ps.executeUpdate();
+            mes = "封禁成功";
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close();
+        }
+        return mes;
+    }
+
+
+
     @Test
     public void test(){
         System.out.println(new User(1,"aaaa","aaaaddd", "是").toString());

@@ -43,4 +43,10 @@ public interface UserDao {
 
     //查找所有用户
     ArrayList<User> findAllUser(int index);
+
+    //封禁用户
+    String banUser(int uId);
+
+    //解禁用户
+    String noBanUser(int uId);
 }

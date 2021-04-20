@@ -20,4 +20,14 @@ public class AdminServiceImpl implements AdminService {
     public ArrayList<User> checkUser(int index) {
         return userDao.findAllUser(index);
     }
+
+    @Override
+    public String banUser(int uId) {
+        return userDao.banUser(uId);
+    }
+
+    @Override
+    public String noBanUser(int uId) {
+        return userDao.noBanUser(uId);
+    }
 }

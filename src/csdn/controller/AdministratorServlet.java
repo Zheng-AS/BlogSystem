@@ -66,9 +66,9 @@ public class AdministratorServlet extends BaseServlet {
             out.print("<td>" + user.getuId()+ "</td>");
             out.print("<td>" + user.getUserName()+ "</td>");
             if(user.getAble().equals("否")){
-                out.print("<td><a href=\"/psdn/admin/banUser?mes=1 target=\"down\">封禁</a></td>");
+                out.print("<td><a href=\"/psdn/admin/banUser?able=1&uid="+user.getuId()+" target=\"down\">封禁</a></td>");
             }else {
-                out.print("<td><a href=\"/psdn/admin/banUser?mes=0 target=\"down\">解封</a></td>");
+                out.print("<td><a href=\"/psdn/admin/banUser?able=0&uid="+user.getuId()+" target=\"down\">解封</a></td>");
             }
             out.print("<td><a href=\"/psdn/admin/userBlog?uid="+user.getuId()+"\" target=\"down\">查看用户</a></td>");
             out.print("<td><a href=\"/psdn/admin/userCom?uid="+user.getuId()+"\" target=\"down\">查看用户评论</a></td>");
@@ -85,5 +85,19 @@ public class AdministratorServlet extends BaseServlet {
         out.print("</table>");
     }
 
+    /**
+     *  封禁（解禁）
+     */
+    public void userBlog(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        req.setCharacterEncoding("utf-8");
+        resp.setContentType("text/html;charset=utf-8");
 
+        String able = req.getParameter("able");
+        int uId = Integer.parseInt(req.getParameter("uid"));
+        if(able.equals("1")){
+            String mes = adminService.banUser(uId);
+        }else {
+            String mes = adminService.noBanUser(uId);
+        }
+    }
 }
