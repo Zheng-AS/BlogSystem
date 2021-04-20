@@ -3,7 +3,6 @@ package csdn.po;
 import java.util.Arrays;
 
 public class User {
-    private String able;
     private Integer uId;
     private String userName;
     private String password;
@@ -18,6 +17,7 @@ public class User {
     private Blog[] conBlogs;
     //我的好友
     private User[] friends;
+    private String able;
 
     public User() {
     }
@@ -144,6 +144,7 @@ public class User {
                 ", myBlogs=" + Arrays.toString(myBlogs) +
                 ", conBlogs=" + Arrays.toString(conBlogs) +
                 ", friends=" + Arrays.toString(friends) +
+                ", able='" + able + '\'' +
                 '}';
     }
 }

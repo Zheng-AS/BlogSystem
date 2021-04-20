@@ -6,7 +6,6 @@ import csdn.po.User;
 import csdn.service.ServiceFactory;
 import csdn.service.UserService;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,7 +40,7 @@ public class UserServlet extends BaseServlet {
     /**
      * 登录账号
      */
-    public void login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void login(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("utf-8");
 
         userName = req.getParameter("username");
@@ -62,7 +61,7 @@ public class UserServlet extends BaseServlet {
     /**
      * 注册账号
      */
-    public void register(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void register(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("utf-8");
 
         userName = req.getParameter("username");
@@ -78,7 +77,7 @@ public class UserServlet extends BaseServlet {
     /**
      * 更改个人信息
      */
-    public void updateMes(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void updateMes(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("utf-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html;charset=utf-8");
@@ -96,7 +95,7 @@ public class UserServlet extends BaseServlet {
     /**
      *  我的关注
      */
-    public void attention(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+    public void attention(HttpServletRequest req, HttpServletResponse resp) throws IOException{
         req.setCharacterEncoding("utf-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html;charset=utf-8");
@@ -137,7 +136,7 @@ public class UserServlet extends BaseServlet {
     /**
      *  我的收藏内（查看用户功能）
      */
-    public void checkAttn(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+    public void checkAttn(HttpServletRequest req, HttpServletResponse resp) throws IOException{
         req.setCharacterEncoding("utf-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html;charset=utf-8");

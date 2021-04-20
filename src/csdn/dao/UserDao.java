@@ -40,4 +40,7 @@ public interface UserDao {
 
     //插入用户举报信息
     String updateReport(int uId, String title, String content, String imgUrl);
+
+    //查找所有用户
+    ArrayList<User> findAllUser(int index);
 }

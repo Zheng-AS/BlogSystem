@@ -2,6 +2,7 @@ package csdn.dao;
 
 import csdn.po.User;
 import csdn.util.JdbcUtil;
+import org.junit.Test;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -241,5 +242,29 @@ public class UserDaoImpl implements UserDao {
             util.close();
         }
         return mes;
+    }
+
+    @Override
+    public ArrayList<User> findAllUser(int index) {
+        ArrayList<User> users = new ArrayList<>();
+        String sql = "select * from user order by uid asc limit ?, 6";
+        ps = util.createStatement(sql);
+        try {
+            ps.setInt(1,index);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                users.add(new User(rs.getInt("uid"), rs.getString("username"), rs.getString("password"), rs.getString("able")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close(rs);
+        }
+        return users;
+    }
+
+    @Test
+    public void test(){
+        System.out.println(new User(1,"aaaa","aaaaddd", "是").toString());
     }
 }

@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
 
 public class BaseServlet extends HttpServlet {
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void service(HttpServletRequest req, HttpServletResponse resp){
         String uri = req.getRequestURI();
         String methodName = uri.substring(uri.lastIndexOf('/') + 1);
 
