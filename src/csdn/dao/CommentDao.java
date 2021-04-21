@@ -17,6 +17,9 @@ public interface CommentDao {
     //根据评论Id查找评论
     Comment getCommentByCId(String cId);
 
+    //根据用户Id查找评论
+    ArrayList<Comment> getCommentIdByUId(int uId, int index);
+
     //根据博客Id查找评论Id
     ArrayList<String> getCommentIdByBId(int bId);
 
@@ -31,4 +34,7 @@ public interface CommentDao {
 
     //删除回复（被调用）
     PreparedStatement deleteCom(String cId, Connection con, PreparedStatement ps) throws SQLException;
+
+    //判断是否回复评论
+    boolean isRespCom(String rId);
 }

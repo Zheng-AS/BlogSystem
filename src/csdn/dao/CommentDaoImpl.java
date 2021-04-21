@@ -117,6 +117,30 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
+    public ArrayList<Comment> getCommentIdByUId(int uId, int index) {
+        ArrayList<Comment> commentArrayList = new ArrayList<>();
+        String cId, content, time;
+        String sql = "select * from comment where uid = ? limit ?, 6";
+        ps = util.createStatement(sql);
+        try {
+            ps.setInt(1,uId);
+            ps.setInt(2,index);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                cId = rs.getString("cid");
+                content = rs.getString("content");
+                time = rs.getString("time");
+                commentArrayList.add(new Comment(cId,content,uId,time));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close(rs);
+        }
+        return commentArrayList;
+    }
+
+    @Override
     public ArrayList<String> getCommentRespId(String cId) {
         ArrayList<String> respIdArrayList = new ArrayList<>();
         String respId = "00000000000";
@@ -235,5 +259,24 @@ public class CommentDaoImpl implements CommentDao {
         ps.executeUpdate();
 
         return ps;
+    }
+
+    @Override
+    public boolean isRespCom(String rId) {
+        boolean result = false;
+        String sql = "select * from comment_resp where rid = ?";
+        ps = util.createStatement(sql);
+        try {
+            ps.setString(1,rId);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                result = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close();
+        }
+        return result;
     }
 }

@@ -1,6 +1,7 @@
 package csdn.controller;
 
 import csdn.po.Comment;
+import csdn.service.AdminService;
 import csdn.service.ServiceFactory;
 import csdn.service.UserService;
 
@@ -14,9 +15,10 @@ import java.util.ArrayList;
 @WebServlet("/comment/*")
 public class CommentServlet extends BaseServlet {
     private UserService userService = ServiceFactory.getUserService();
+    private AdminService adminService = ServiceFactory.getAdminService();
 
     /**
-     *  递归拼接字符串
+     *  输出评论（用户使用）
      */
     public void outPrintComment(PrintWriter out,ArrayList<Comment> commentArrayList, String userName){
         if(commentArrayList == null ){ }
@@ -35,8 +37,28 @@ public class CommentServlet extends BaseServlet {
         }
     }
 
+   /**
+     *  输出评论（管理员用）
+     */
+    public void adminOutPrintComment(PrintWriter out,ArrayList<Comment> commentArrayList, String userName){
+        if(commentArrayList == null ){ }
+        else {
+            for (Comment comment : commentArrayList) {
+                out.print("<div>");
+                out.print("<div>------------------------------------------------------------------------</div>");
+                out.print("<div>" + comment.getUserName() + "</div>");
+                out.print("<div style=\"padding-left: 20px\">回复["+userName+"]:" + comment.getContent());
+                out.print("<a href=\"/psdn/comment/deleteRespCom?cId=" + comment.getcId() + "\">点击删除</a>");
+                //调用递归函数
+                adminOutPrintComment(out, comment.getRespCom(), comment.getUserName());
+                out.print("</div>");
+                out.print("</div>");
+            }
+        }
+    }
+
     /**
-     * 查看评论&发表评论入口
+     * 查看评论&发表评论入口（用户使用）
      */
     public void viewComment(HttpServletRequest req, HttpServletResponse resp) throws IOException{
         req.setCharacterEncoding("utf-8");
@@ -46,7 +68,6 @@ public class CommentServlet extends BaseServlet {
         int indexInt = Integer.parseInt(index);
         ArrayList<Comment> commentArrayList = userService.getComment(bId,indexInt);
         PrintWriter out;
-        StringBuffer sb = new StringBuffer();
 
         out = resp.getWriter();
         //调用递归方法
@@ -86,6 +107,43 @@ public class CommentServlet extends BaseServlet {
                 "</script>");
     }
 
+   /**
+     * 查看评论&删除评论入口（管理员使用）
+     */
+    public void adminViewComment(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        req.setCharacterEncoding("utf-8");
+        resp.setContentType("text/html;charset=utf-8");
+        int bId = Integer.parseInt(req.getParameter("blogId"));
+        String index = req.getParameter("index");
+        int indexInt = Integer.parseInt(index);
+        ArrayList<Comment> commentArrayList = userService.getComment(bId,indexInt);
+        PrintWriter out;
+
+        out = resp.getWriter();
+        //调用递归方法
+        out.print("<div>_________________________________博客评论_____________________________________</div>");
+        //属于博客评论，不是回复评论，不进入递归
+        int i = 0;
+        for (Comment comment : commentArrayList) {
+            out.print("<div>");
+            out.print("<div>" + comment.getUserName() + "</div>");
+            out.print("<div style=\"padding-left: 20px\">评论：" + comment.getContent());
+            out.print("<a href=\"/psdn/comment/deleteCom?cId=" + comment.getcId() + "\">点击删除</a>");
+            //调用递归函数
+            adminOutPrintComment(out, comment.getRespCom(), comment.getUserName());
+            out.print("</div>");
+            out.print("</div>");
+            out.print("<div>________________________________________________________________________</div>");
+            i ++;
+        }
+        if (indexInt != 0){
+            out.print("<div><a href=\"/psdn/comment/adminViewComment?blogId="+bId+"&index="+(indexInt-6)+"\" target=\"down\">上一页</a></div>");
+        }
+        if (i == 6){
+            out.print("<div><a href=\"/psdn/comment/adminViewComment?blogId="+bId+"&index="+(indexInt+6)+"\" target=\"down\">下一页</a></div>");
+        }
+    }
+
     /**
      *  对博客发表评论
      */
@@ -112,6 +170,45 @@ public class CommentServlet extends BaseServlet {
         String content = req.getParameter("content");
 
         String mes = userService.addRespCom(cId,content,uId);
+        PrintWriter out = resp.getWriter();
+        out.print("<font style='color:red;font-size:40'>"+mes+"</font>");
+    }
+
+    /**
+     *  删除回复评论
+     */
+    public void deleteRespCom(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        req.setCharacterEncoding("utf-8");
+        resp.setContentType("text/html;charset=UTF-8");
+        String cId = req.getParameter("cId");
+
+        String mes = adminService.deleteRespCom(cId);
+        PrintWriter out = resp.getWriter();
+        out.print("<font style='color:red;font-size:40'>"+mes+"</font>");
+    }
+
+    /**
+     *  删除博客评论
+     */
+    public void deleteCom(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        req.setCharacterEncoding("utf-8");
+        resp.setContentType("text/html;charset=UTF-8");
+        String cId = req.getParameter("cId");
+
+        String mes = adminService.deleteCom(cId);
+        PrintWriter out = resp.getWriter();
+        out.print("<font style='color:red;font-size:40'>"+mes+"</font>");
+    }
+
+    /**
+     *  删除评论(博客评论/回复评论)
+     */
+    public void deleteComment(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        req.setCharacterEncoding("utf-8");
+        resp.setContentType("text/html;charset=UTF-8");
+        String cId = req.getParameter("cId");
+
+        String mes = adminService.deleteComment(cId);
         PrintWriter out = resp.getWriter();
         out.print("<font style='color:red;font-size:40'>"+mes+"</font>");
     }

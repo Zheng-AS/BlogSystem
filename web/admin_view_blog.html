@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="jquery-3.3.1.js"></script>
+    <script
+            type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/wangeditor@latest/dist/wangEditor.min.js"></script>
+    <style>
+        .toolbar {
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <span id="author"></span>
+    <input type="text" style="display: none" id="author_id"/>
+</div>
+<label>
+    <div id="title"></div>
+</label>
+<div>
+    <div id="toolbar-container" class="toolbar"></div>
+</div>
+<!-- 引入 wangEditor.min.js -->
+<form id="form" method="post">
+    <div id="contentDiv"></div>
+    <textarea name="content" id="content" style="display:none" ></textarea>
+</form>
+
+<button type="button" class="btn btn-default" onclick="comment()">    查看评论    </button>
+
+<form id="form2" method="post" action="/psdn/blog/updateBlog">
+    <input type="text" id="title1" name="title" style="display: none"/>
+    <input type="text" id="tag1" name="tag" style="display: none"/>
+    <input type="text" id="imgUrl1" name="imgUrl" style="display: none"/>
+    <input type="text" id="content1" name="content" style="display: none"/>
+    <input type="text" id="isPublic1" name="isPublic" style="display: none"/>
+</form>
+
+<form id="from3" method="get" action="/psdn/comment/adminViewComment">
+    <input style="display: none" type="text" name="blogId" id="blogId"/>
+    <input style="display: none" type="text" name="index" value="0"/>
+</form>
+
+
+</body>
+<script>
+    var data = {
+        title : "",
+        tag : "",
+        imgUrl : [],
+        content :"",
+        isPublic :""
+    };
+    var data2 = {
+        blogId : ""
+    };
+
+
+    window.onload = function () {
+        console.log(window.location.href);
+        var href = window.location.href;
+        var search = "=";
+        var start = href.indexOf(search);
+        data2.blogId = href.substring(start+1,start+12);
+        console.log(data2.blogId);
+        $.ajax({
+            type: "GET",
+            url: "blog/viewBlog",
+            data: data2,
+            cache: false,
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            //processData: false,
+            dataType: "json",
+            success: function (ret) {
+                $('#title').text("标题:"+ret.title);
+                editor.txt.text(ret.content);
+                ret.imgUrl = ret.imgUrl.substring(1,ret.imgUrl.length-1);
+                console.log(ret.imgUrl );
+                $('#like-num').text(ret.likeNum);
+                $('#con-num').text(ret.conNum);
+                $('#author').text("作者呢称:  "+ret.author);
+                $('#author_id').text(ret.author_id);
+                while (ret.imgUrl) {
+                    var imgUrl = ret.imgUrl.substring(0, 67);
+                    ret.imgUrl = ret.imgUrl.substr(68);
+                    console.log(imgUrl);
+                    $('.w-e-text').html(`${ $('.w-e-text').html()}<img src=${imgUrl}>`);
+                }
+            }
+        })
+    }
+
+    var E = window.wangEditor;
+    var editor = new E('#contentDiv');
+    var $text1 = $('#content');
+    editor.config.onchange = function (html) {
+        // 监控变化，同步更新富文本内容到 textarea
+        $text1.val(html);
+    }
+    editor.config.uploadImgServer = false;	//自定义上传图片
+    editor.config.onchange = (html)=>{
+        console.log(html);
+
+        for(var i in data.imgUrl){
+            var newArr = [];
+            var re = new RegExp(data.imgUrl[i]);
+            if(!re.test(html)){
+                data.imgUrl = data.imgUrl.filter(item=> item!==data.imgUrl[i]);
+            }
+        }
+        console.log(data.imgUrl)
+    }
+    editor.config.customAlert = function (info) {	//关闭默认提示信息
+        // info 是需要提示的内容
+        alert('自定义提示：' + info)
+    }
+    editor.config.height = 550;
+    editor.create();
+    $text1.val(editor.txt.html());
+
+    function comment() {
+        $('#blogId').val(data2.blogId);
+        $('#from3').submit();
+    }
+
+
+</script>
+</body>
+</html>
