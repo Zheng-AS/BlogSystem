@@ -192,4 +192,13 @@ public class AdminServiceImpl implements AdminService {
         }
         return mes;
     }
+
+    @Override
+    public ArrayList<Blog> findAllBlog(int index) {
+        ArrayList<Blog> blogArrayList =  blogDao.findAllBlog(index);
+        for (Blog blog : blogArrayList) {
+            blog.setbContent(userDao.getNameByUId(blog.getuId()));
+        }
+        return blogArrayList;
+    }
 }

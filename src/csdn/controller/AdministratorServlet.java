@@ -169,7 +169,6 @@ public class AdministratorServlet extends BaseServlet {
         int uIndex = Integer.parseInt(req.getParameter("uIndex"));
         PrintWriter out = resp.getWriter();
 
-
         ArrayList<Comment> commentArrayList = adminService.getUserCom(uId, indexInt);
         int i = 0;
         out = resp.getWriter();
@@ -202,7 +201,58 @@ public class AdministratorServlet extends BaseServlet {
         if (i == 6){
             out.print("<td><a href=\"/psdn/admin/userCom?uid="+uId+"&index="+(indexInt+6)+"&uIndex="+uIndex+"\" target=\"down\">下一页</a></td>");
         }
-        out.print("<td><a href=\"/psdn/admin/user?index="+uIndex+"\" target=\"down\">返回</a></td>");
+        out.print("<tr><td><a href=\"/psdn/admin/user?index="+uIndex+"\" target=\"down\">返回</a></td></tr>");
+        out.print("</table>");
+    }
+
+    /**
+     *  管理博客
+     */
+    public void blog(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        req.setCharacterEncoding("utf-8");
+        resp.setContentType("text/html;charset=utf-8");
+
+        String index = req.getParameter("index");
+        int indexInt = Integer.parseInt(index);
+        ArrayList<Blog> blogArrayList = adminService.findAllBlog(indexInt);
+
+        PrintWriter out;
+
+        int i = 0;
+        out = resp.getWriter();
+        out.print("<table border='2' align='center'>");
+        out.print("<tr>");
+        out.print("<td>编号</td>");
+        out.print("<td>博客Id</td>");
+        out.print("<td>用户姓名</td>");
+        out.print("<td>博客标签</td>");
+        out.print("<td>博客标题</td>");
+        out.print("<td>博客点赞</td>");
+        out.print("<td>博客收藏</td>");
+        out.print("<td>操作</td>");
+        out.print("<td>操作</td>");
+        out.print("</tr>");
+        for (Blog blog : blogArrayList) {
+            out.print("<tr>");
+            out.print("<td>" + (i+1) + "</td>");
+            out.print("<td>" + blog.getbId()+ "</td>");
+            out.print("<td>" + blog.getbContent()+ "</td>");
+            out.print("<td>" + blog.getTag()+ "</td>");
+            out.print("<td>" + blog.getTitle()+ "</td>");
+            out.print("<td>" + blog.getnOfLike()+ "</td>");
+            out.print("<td>" + blog.getnOfCon()+ "</td>");
+            out.print("<td><a href=\"http://localhost:8080/psdn/admin_view_blog.html?blogId="+blog.getbId()+"\" target=\"down\">查看博客</a></td>");
+            out.print("<td><a href=\"/psdn/blog/deleteBlog?blogId="+blog.getbId()+"\" target=\"down\">删除博客</a></td>");
+            out.print("</tr>");
+            i ++;
+        }
+        out.print("<tr>");
+        if (indexInt != 0){
+            out.print("<td><a href=\"/psdn/admin/blog?&index="+(indexInt-6)+"\" target=\"down\">上一页</a></td>");
+        }
+        if (i == 6){
+            out.print("<td><a href=\"/psdn/admin/blog?&index="+(indexInt+6)+"\" target=\"down\">下一页</a></td>");
+        }
         out.print("</table>");
     }
 }

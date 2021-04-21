@@ -45,4 +45,7 @@ public interface AdminService {
 
     //删除评论（回复评论/博客评论）
     String deleteComment(String cId);
+
+    //查找所有博客（带分页）
+    ArrayList<Blog> findAllBlog(int index);
 }

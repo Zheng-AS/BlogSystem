@@ -1,6 +1,7 @@
 package csdn.dao;
 
 import csdn.po.Blog;
+import csdn.po.Comment;
 import csdn.util.JdbcUtil;
 
 import java.sql.Connection;
@@ -389,5 +390,32 @@ public class BlogDaoImpl implements BlogDao {
         ps.executeUpdate();
 
         return ps;
+    }
+
+    @Override
+    public ArrayList<Blog> findAllBlog(int index) {
+        ArrayList<Blog> blogArrayList = new ArrayList<>();
+        int bId, uId, nOfLike, nOfCon;
+        String title, tag;
+        String sql = "select * from blog where is_pub = '是' limit ?, 6";
+        ps = util.createStatement(sql);
+        try {
+            ps.setInt(1,index);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                bId = rs.getInt("bid");
+                uId = rs.getInt("uid");
+                nOfCon = rs.getInt("n_of_con");
+                nOfLike = rs.getInt("n_of_like");
+                title = rs.getString("title");
+                tag = rs.getString("tag");
+                blogArrayList.add(new Blog(bId, uId, null, tag, nOfLike, nOfCon, null, null, title, null));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close(rs);
+        }
+        return blogArrayList;
     }
 }

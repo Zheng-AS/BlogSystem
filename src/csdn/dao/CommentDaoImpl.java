@@ -275,7 +275,7 @@ public class CommentDaoImpl implements CommentDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            util.close();
+            util.close(rs);
         }
         return result;
     }
