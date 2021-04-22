@@ -1,10 +1,13 @@
 package csdn.controller;
 
+import com.alibaba.fastjson.JSON;
 import csdn.po.Blog;
 import csdn.po.Comment;
 import csdn.po.User;
 import csdn.service.AdminService;
 import csdn.service.ServiceFactory;
+import csdn.service.UserService;
+import csdn.service.UserServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +17,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @WebServlet("/admin/*")
 public class AdministratorServlet extends BaseServlet {
@@ -299,5 +304,70 @@ public class AdministratorServlet extends BaseServlet {
             out.print("<td><a href=\"/psdn/admin/comment?&index="+(indexInt+6)+"\" target=\"down\">下一页</a></td>");
         }
         out.print("</table>");
+    }
+
+    /**
+     * 查看举报信息
+     */
+    public void report(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setContentType("text/html;charset=utf-8");
+
+        int index = Integer.parseInt(req.getParameter("index"));
+        ArrayList<Blog> reportArrayList = adminService.findAllReport(index);
+        PrintWriter out;
+
+        int i = 0;
+        out = resp.getWriter();
+        out.print("<table border='2' align='center'>");
+        out.print("<tr>");
+        out.print("<td>编号</td>");
+        out.print("<td>Id</td>");
+        out.print("<td>标题</td>");
+        out.print("<td>操作</td>");
+        out.print("<td>操作</td>");
+        out.print("</tr>");
+        for (Blog report : reportArrayList) {
+            out.print("<tr>");
+            out.print("<td>" + (i+1) + "</td>");
+            out.print("<td>" + report.getbId()+ "</td>");
+            out.print("<td>" + report.getTitle()+ "</td>");
+            out.print("<td><a href=\"http://localhost:8080/psdn/admin_view_report.html?rId="+report.getbId()+"\" target=\"down\">查看举报信息</a></td>");
+            out.print("<td><a href='/psdn/admin/deleteReport?rId="+report.getbId()+"'>删除</a></td>");
+            out.print("</tr>");
+            i++;
+        }
+        out.print("<tr>");
+        if (index != 0){
+            out.print("<td><a href=\"/psdn/admin/report?&index="+(index-6)+"\" target=\"down\">上一页</a></td>");
+        }
+        if (i == 6){
+            out.print("<td><a href=\"/psdn/admin/report?&index="+(index+6)+"\" target=\"down\">下一页</a></td>");
+        }
+        out.print("</table>");
+    }
+
+    /**
+     * 查看举报信息
+     */
+    public void viewReport(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setContentType("text/json;charset=UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+
+        int rId = Integer.parseInt(req.getParameter("reportId"));
+        Blog report = adminService.findReportByRId(rId);
+        String authorName = new UserServiceImpl().getAuthorName(report.getuId());
+        Map<String,String> map = new HashMap<>();
+
+        StringBuffer imgUrl = new StringBuffer();
+        imgUrl.append("[");
+        imgUrl.append(report.getImgUrl());
+        imgUrl.append("]");
+        map.put("imgUrl",imgUrl.toString());
+        map.put("title",report.getTitle());
+        map.put("content",report.getbContent());
+        map.put("author",authorName);
+
+        PrintWriter out = resp.getWriter();
+        out.print(JSON.toJSONString(map));
     }
 }

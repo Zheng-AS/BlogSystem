@@ -51,4 +51,10 @@ public interface AdminService {
 
     //查找所有评论（带分页）
     ArrayList<Comment> findAllComment(int index);
+
+    //查找所有举报信息（带分页）
+    ArrayList<Blog> findAllReport(int index);
+
+    //根据Id查找举报信息
+    Blog findReportByRId(int rId);
 }

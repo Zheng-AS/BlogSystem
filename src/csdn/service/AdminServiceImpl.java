@@ -210,4 +210,14 @@ public class AdminServiceImpl implements AdminService {
         }
         return commentArrayList;
     }
+
+    @Override
+    public ArrayList<Blog> findAllReport(int index) {
+        return adminDao.findAllReport(index);
+    }
+
+    @Override
+    public Blog findReportByRId(int rId) {
+        return adminDao.findRepByRId(rId);
+    }
 }
