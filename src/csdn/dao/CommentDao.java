@@ -37,4 +37,7 @@ public interface CommentDao {
 
     //判断是否回复评论
     boolean isRespCom(String rId);
+
+    //查询所有评论
+    ArrayList<Comment> findAllComment(int index);
 }

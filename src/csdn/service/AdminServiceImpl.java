@@ -201,4 +201,13 @@ public class AdminServiceImpl implements AdminService {
         }
         return blogArrayList;
     }
+
+    @Override
+    public ArrayList<Comment> findAllComment(int index) {
+        ArrayList<Comment> commentArrayList = commentDao.findAllComment(index);
+        for (Comment comment : commentArrayList) {
+            comment.setUserName(userDao.getNameByUId(comment.getuId()));
+        }
+        return commentArrayList;
+    }
 }

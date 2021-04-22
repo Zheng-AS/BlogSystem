@@ -397,7 +397,7 @@ public class BlogDaoImpl implements BlogDao {
         ArrayList<Blog> blogArrayList = new ArrayList<>();
         int bId, uId, nOfLike, nOfCon;
         String title, tag;
-        String sql = "select * from blog where is_pub = '是' limit ?, 6";
+        String sql = "select * from blog where is_pub = '是' order by n_of_con desc, n_of_like desc limit ?, 6";
         ps = util.createStatement(sql);
         try {
             ps.setInt(1,index);

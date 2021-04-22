@@ -1,5 +1,6 @@
 package csdn.dao;
 
+import csdn.po.Blog;
 import csdn.po.Comment;
 import csdn.util.IDUtil;
 import csdn.util.JdbcUtil;
@@ -278,5 +279,30 @@ public class CommentDaoImpl implements CommentDao {
             util.close(rs);
         }
         return result;
+    }
+
+    @Override
+    public ArrayList<Comment> findAllComment(int index) {
+        ArrayList<Comment> commentArrayList = new ArrayList<>();
+        int uId;
+        String cId, content, time;
+        String sql = "select * from comment order by time asc limit ?, 6";
+        ps = util.createStatement(sql);
+        try {
+            ps.setInt(1,index);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                cId = rs.getString("cid");
+                content = rs.getString("content");
+                time = rs.getString("time");
+                uId = rs.getInt("uid");
+                commentArrayList.add(new Comment(cId,content,uId,time));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close(rs);
+        }
+        return commentArrayList;
     }
 }

@@ -227,8 +227,8 @@ public class AdministratorServlet extends BaseServlet {
         out.print("<td>用户姓名</td>");
         out.print("<td>博客标签</td>");
         out.print("<td>博客标题</td>");
-        out.print("<td>博客点赞</td>");
         out.print("<td>博客收藏</td>");
+        out.print("<td>博客点赞</td>");
         out.print("<td>操作</td>");
         out.print("<td>操作</td>");
         out.print("</tr>");
@@ -239,8 +239,8 @@ public class AdministratorServlet extends BaseServlet {
             out.print("<td>" + blog.getbContent()+ "</td>");
             out.print("<td>" + blog.getTag()+ "</td>");
             out.print("<td>" + blog.getTitle()+ "</td>");
-            out.print("<td>" + blog.getnOfLike()+ "</td>");
             out.print("<td>" + blog.getnOfCon()+ "</td>");
+            out.print("<td>" + blog.getnOfLike()+ "</td>");
             out.print("<td><a href=\"http://localhost:8080/psdn/admin_view_blog.html?blogId="+blog.getbId()+"\" target=\"down\">查看博客</a></td>");
             out.print("<td><a href=\"/psdn/blog/deleteBlog?blogId="+blog.getbId()+"\" target=\"down\">删除博客</a></td>");
             out.print("</tr>");
@@ -252,6 +252,51 @@ public class AdministratorServlet extends BaseServlet {
         }
         if (i == 6){
             out.print("<td><a href=\"/psdn/admin/blog?&index="+(indexInt+6)+"\" target=\"down\">下一页</a></td>");
+        }
+        out.print("</table>");
+    }
+
+    /**
+     *  管理博客
+     */
+    public void comment(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        req.setCharacterEncoding("utf-8");
+        resp.setContentType("text/html;charset=utf-8");
+
+        String index = req.getParameter("index");
+        int indexInt = Integer.parseInt(index);
+        ArrayList<Comment> commentArrayList = adminService.findAllComment(indexInt);
+
+        PrintWriter out;
+
+        int i = 0;
+        out = resp.getWriter();
+        out.print("<table border='2' align='center'>");
+        out.print("<tr>");
+        out.print("<td>编号</td>");
+        out.print("<td>评论Id</td>");
+        out.print("<td>用户姓名</td>");
+        out.print("<td>评论内容</td>");
+        out.print("<td>评论时间</td>");
+        out.print("<td>操作</td>");
+        out.print("</tr>");
+        for (Comment comment : commentArrayList) {
+            out.print("<tr>");
+            out.print("<td>" + (i+1) + "</td>");
+            out.print("<td>" + comment.getcId()+ "</td>");
+            out.print("<td>" + comment.getUserName()+ "</td>");
+            out.print("<td>" + comment.getContent()+ "</td>");
+            out.print("<td>" + comment.getTime()+ "</td>");
+            out.print("<td><a href=\"/psdn/comment/deleteComment?cId="+comment.getcId()+"\" target=\"down\">删除评论</a></td>");
+            out.print("</tr>");
+            i ++;
+        }
+        out.print("<tr>");
+        if (indexInt != 0){
+            out.print("<td><a href=\"/psdn/admin/comment?&index="+(indexInt-6)+"\" target=\"down\">上一页</a></td>");
+        }
+        if (i == 6){
+            out.print("<td><a href=\"/psdn/admin/comment?&index="+(indexInt+6)+"\" target=\"down\">下一页</a></td>");
         }
         out.print("</table>");
     }

@@ -48,4 +48,7 @@ public interface AdminService {
 
     //查找所有博客（带分页）
     ArrayList<Blog> findAllBlog(int index);
+
+    //查找所有评论（带分页）
+    ArrayList<Comment> findAllComment(int index);
 }
