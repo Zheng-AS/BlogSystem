@@ -80,4 +80,21 @@ public class AdminDaoImpl implements AdministratorDao {
         }
         return report;
     }
+
+    @Override
+    public String deleteReport(int rId) {
+        String mes = "删除失败，正在为您加急抢修";
+        String sql = "delete from report where rid = ?";
+        ps = util.createStatement(sql);
+        try {
+            ps.setInt(1,rId);
+            ps.execute();
+            mes = "删除成功";
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close();
+        }
+        return mes;
+    }
 }

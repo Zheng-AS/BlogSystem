@@ -57,4 +57,7 @@ public interface AdminService {
 
     //根据Id查找举报信息
     Blog findReportByRId(int rId);
+
+    //删除举报信息
+    String deleteReport(int rId);
 }

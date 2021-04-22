@@ -350,7 +350,7 @@ public class AdministratorServlet extends BaseServlet {
      * 查看举报信息
      */
     public void viewReport(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType("text/json;charset=UTF-8");
+        resp.setContentType("text/html;charset=UTF-8");
         resp.setCharacterEncoding("UTF-8");
 
         int rId = Integer.parseInt(req.getParameter("reportId"));
@@ -369,5 +369,14 @@ public class AdministratorServlet extends BaseServlet {
 
         PrintWriter out = resp.getWriter();
         out.print(JSON.toJSONString(map));
+    }
+
+    public void deleteReport(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        req.setCharacterEncoding("utf-8");
+        resp.setContentType("text/html;charset=UTF-8");
+        int rId = Integer.parseInt(req.getParameter("rId"));
+
+        String mes = adminService.deleteReport(rId);
+        resp.getWriter().print("<font style='color:red;font-size:40'>"+mes+"</font>");
     }
 }

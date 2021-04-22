@@ -220,4 +220,9 @@ public class AdminServiceImpl implements AdminService {
     public Blog findReportByRId(int rId) {
         return adminDao.findRepByRId(rId);
     }
+
+    @Override
+    public String deleteReport(int rId) {
+        return adminDao.deleteReport(rId);
+    }
 }

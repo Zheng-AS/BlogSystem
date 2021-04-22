@@ -13,4 +13,7 @@ public interface AdministratorDao {
 
     //根据rId查找举报信息
     Blog findRepByRId(int rId);
+
+    //删除举报信息
+    String deleteReport(int rId);
 }
