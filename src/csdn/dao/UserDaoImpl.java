@@ -40,7 +40,13 @@ public class UserDaoImpl implements UserDao {
             ps.setString(2,user.getPassword());
             rs = ps.executeQuery();
             if(rs.next()){
-                result = rs.getInt("uid");
+                String able = rs.getString("able");
+                System.out.println(able);
+                if(able.equals("是")){
+                    result = -1;
+                }else {
+                    result = rs.getInt("uid");
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

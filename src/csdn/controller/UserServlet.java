@@ -47,7 +47,9 @@ public class UserServlet extends BaseServlet {
         password = req.getParameter("password");
 
         int uid = userService.login(userName, password);
-        if(uid != 0){
+        if(uid == -1){
+            resp.sendRedirect("/psdn/login_ban.html");
+        }else if(uid != 0){
             HttpSession session = req.getSession();
             req.getServletContext().setAttribute("uid",uid);
             req.getServletContext().setAttribute("userName",userName);
