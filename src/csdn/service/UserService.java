@@ -81,4 +81,7 @@ public interface UserService {
 
     //上传举报信息
     String updateReport(int uId, String title, String content, String imgUrl);
+
+    //发送好友请求
+    String sendFriendRequest(int reqId, String respUserName);
 }

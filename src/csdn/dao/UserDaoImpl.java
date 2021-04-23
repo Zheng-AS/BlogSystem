@@ -16,7 +16,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public int addUser(User user) {
         int result = 0;
-        String sql = "insert into user(username,password)" + "values(?,?)";
+        String sql = "insert into user(username,password) values(?,?)";
         ps = util.createStatement(sql);
         try {
             ps.setString(1,user.getUserName());
@@ -152,6 +152,25 @@ public class UserDaoImpl implements UserDao {
             util.close(rs);
         }
         return userName;
+    }
+
+    @Override
+    public int getUIdByName(String userName) {
+        int uId = -1;
+        String sql = "select * from user where username = ?";
+        ps = util.createStatement(sql);
+        try {
+            ps.setString(1,userName);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                uId = rs.getInt("uid");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close(rs);
+        }
+        return uId;
     }
 
     @Override
@@ -303,10 +322,43 @@ public class UserDaoImpl implements UserDao {
         return mes;
     }
 
+    @Override
+    public boolean sendFriendRequest(int reqId, int respId) {
+        boolean result = false;
+        String sql = "insert into user_mes (req_id,resp_id,type) values (?,?,?)";
+        ps = util.createStatement(sql);
+        try {
+            ps.setInt(1,reqId);
+            ps.setInt(2,respId);
+            ps.setString(3,"request");
+            result = ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close();
+        }
+        return result;
+    }
 
-
-    @Test
-    public void test(){
-        System.out.println(new User(1,"aaaa","aaaaddd", "是").toString());
+    @Override
+    public boolean requestIsExist(int reqId, int respId) {
+        boolean result = false;
+        String type = "request";
+        String sql = "select * from user_mes where req_id = ? and resp_id = ? and type = ?";
+        ps = util.createStatement(sql);
+        try {
+            ps.setInt(1,reqId);
+            ps.setInt(2,respId);
+            ps.setString(3,type);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                result = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close(rs);
+        }
+        return result;
     }
 }

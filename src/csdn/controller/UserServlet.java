@@ -243,4 +243,21 @@ public class UserServlet extends BaseServlet {
         PrintWriter out = resp.getWriter();
         out.print("<font style='color:red;font-size:40'>"+mes+"</font>");
     }
+
+    /**
+     *  发送好友请求
+     */
+    public void sendFriendRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/json;charset=utf-8");
+
+        String userName = req.getParameter("username");
+        int uId = (int) req.getServletContext().getAttribute("uid");
+        String mes = userService.sendFriendRequest(uId, userName);
+
+        Map<String,String> map = new HashMap<>();
+        map.put("mes", mes);
+        resp.getWriter().print(JSON.toJSONString(map));
+    }
 }

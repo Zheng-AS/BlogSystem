@@ -348,6 +348,23 @@ public class UserServiceImpl implements UserService {
         return userDao.updateReport(uId, title, content, imgUrl);
     }
 
+    @Override
+    public String sendFriendRequest(int reqId, String respUserName) {
+        String mes = "发送失败，正在为您加急抢修";
+        int respId = userDao.getUIdByName(respUserName);
+        if(respId == -1){
+            mes = "好友请发发送失败，没有该用户哦";
+        }
+        if(userDao.requestIsExist(reqId, respId)){
+            mes = "好友请求已发送";
+        }else {
+            if(userDao.sendFriendRequest(reqId, respId)){
+                mes = "好友请求发送成功";
+            }
+        }
+        return mes;
+    }
+
     @Test
     public void test(){
         deleteBlog(9);

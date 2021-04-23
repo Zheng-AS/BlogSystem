@@ -26,6 +26,9 @@ public interface UserDao {
     //通过ID获取用户姓名
     String getNameByUId(int uId);
 
+    //根据用户姓名获取ID
+    int getUIdByName(String userName);
+
     //查询用户关注是否存在
     boolean attnIsExist(int uId, int aId);
 
@@ -49,4 +52,11 @@ public interface UserDao {
 
     //解禁用户
     String noBanUser(int uId);
+
+    //插入好友请求
+    boolean sendFriendRequest(int reqId, int respId);
+
+    //查看好友请求是否存在
+    boolean requestIsExist(int reqId, int respId);
+
 }
