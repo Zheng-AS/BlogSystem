@@ -19,4 +19,7 @@ public interface UserMesDao {
 
     //删除（好友请求），增添（拒绝消息）
     String reject(UserMes userMes);
+
+    //删除消息
+    String deleteMes(int umId);
 }

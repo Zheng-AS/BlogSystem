@@ -374,4 +374,9 @@ public class UserServiceImpl implements UserService {
         UserMes userMes = userMesDao.getUserMesByUMId(umId);
         return userMesDao.reject(userMes);
     }
+
+    @Override
+    public String readMes(int umId) {
+        return userMesDao.deleteMes(umId);
+    }
 }

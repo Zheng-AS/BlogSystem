@@ -91,4 +91,7 @@ public interface UserService {
 
     //拒绝好友请求
     String rejectFriendRequest(int umId);
+
+    //消息已读
+    String readMes(int umId);
 }

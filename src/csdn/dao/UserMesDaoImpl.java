@@ -133,4 +133,21 @@ public class UserMesDaoImpl implements UserMesDao {
         }
         return mes;
     }
+
+    @Override
+    public String deleteMes(int umId) {
+        String mes = "服务器出现故障";
+        String sql = "delete from user_mes where umid = ?";
+        ps = util.createStatement(sql);
+        try {
+            ps.setInt(1, umId);
+            ps.executeUpdate();
+            mes = "操作成功";
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close();
+        }
+        return mes;
+    }
 }

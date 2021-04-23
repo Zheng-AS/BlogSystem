@@ -298,13 +298,13 @@ public class UserServlet extends BaseServlet {
             }else if(mes.getType().equals("accept")){
                 out.print("<td> 提示信息 </td>");
                 out.print("<td> ["+userName+"]:接受了你的好友请求 </td>");
-                out.print("<td><a href=\"/psdn/user/?umid="+mes.getUmId()+"\" target=\"right\">已读</a></td>");
-                out.print("<td><a href=\"/psdn/user/?umid="+mes.getUmId()+"\" target=\"right\">已读</a></td>");
+                out.print("<td><a href=\"/psdn/user/read?umid="+mes.getUmId()+"\" target=\"right\">已读</a></td>");
+                out.print("<td><a href=\"/psdn/user/read?umid="+mes.getUmId()+"\" target=\"right\">已读</a></td>");
             }else {
                 out.print("<td> 提示信息 </td>");
                 out.print("<td> ["+userName+"]:拒绝了你的好友请求 </td>");
-                out.print("<td><a href=\"/psdn/user/?umid="+mes.getUmId()+"\" target=\"right\">已读</a></td>");
-                out.print("<td><a href=\"/psdn/user/?umid="+mes.getUmId()+"\" target=\"right\">已读</a></td>");
+                out.print("<td><a href=\"/psdn/user/read?umid="+mes.getUmId()+"\" target=\"right\">已读</a></td>");
+                out.print("<td><a href=\"/psdn/user/read?umid="+mes.getUmId()+"\" target=\"right\">已读</a></td>");
             }
             out.print("</tr>");
             i ++;
@@ -322,6 +322,21 @@ public class UserServlet extends BaseServlet {
 
         int umId = Integer.parseInt(req.getParameter("umid"));
         String mes = userService.rejectFriendRequest(umId);
+
+        PrintWriter out = resp.getWriter();
+        out.print("<font style='color:red;font-size:40'>"+mes+"</font>");
+    }
+
+    /**
+     *  我的消息【消息已读】
+     */
+    public void read(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=utf-8");
+
+        int umId = Integer.parseInt(req.getParameter("umid"));
+        String mes = userService.readMes(umId);
 
         PrintWriter out = resp.getWriter();
         out.print("<font style='color:red;font-size:40'>"+mes+"</font>");
