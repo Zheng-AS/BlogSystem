@@ -25,7 +25,8 @@ public class UserMesDaoImpl implements UserMesDao {
             ps.setInt(1,reqId);
             ps.setInt(2,respId);
             ps.setString(3,"request");
-            result = ps.execute();
+            ps.execute();
+            result = true;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -149,5 +150,27 @@ public class UserMesDaoImpl implements UserMesDao {
             util.close();
         }
         return mes;
+    }
+
+    @Override
+    public PreparedStatement deleteMes(int umId, Connection con, PreparedStatement ps) throws SQLException {
+        String sql1 = "delete from user_mes where umid = ?";
+        ps = con.prepareStatement(sql1);
+        ps.setInt(1, umId);
+        ps.executeUpdate();
+
+        return ps;
+    }
+
+    @Override
+    public PreparedStatement addAcceptMes(UserMes userMes, Connection con, PreparedStatement ps) throws SQLException {
+        String sql1 = "insert into user_mes (req_id, resp_id, type) values (?,?,?)";
+        ps = con.prepareStatement(sql1);
+        ps.setInt(1, userMes.getRespId());
+        ps.setInt(2, userMes.getReqId());
+        ps.setString(3, "accept");
+        ps.execute();
+
+        return ps;
     }
 }

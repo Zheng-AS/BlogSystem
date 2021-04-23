@@ -3,6 +3,9 @@ package csdn.dao;
 import csdn.po.User;
 import csdn.po.UserMes;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface UserDao {
@@ -53,4 +56,7 @@ public interface UserDao {
 
     //解禁用户
     String noBanUser(int uId);
+
+    //添加好友
+    PreparedStatement addFriend(UserMes userMes, Connection con, PreparedStatement ps) throws SQLException;
 }

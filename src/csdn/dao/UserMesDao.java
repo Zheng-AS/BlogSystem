@@ -2,6 +2,9 @@ package csdn.dao;
 
 import csdn.po.UserMes;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface UserMesDao {
@@ -22,4 +25,10 @@ public interface UserMesDao {
 
     //删除消息
     String deleteMes(int umId);
+
+    //删除消息
+    PreparedStatement deleteMes(int umId, Connection con, PreparedStatement ps) throws SQLException;
+
+    //增添（接受好友请求）
+    PreparedStatement addAcceptMes(UserMes userMes, Connection con, PreparedStatement ps) throws SQLException;
 }

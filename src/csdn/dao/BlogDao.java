@@ -47,5 +47,6 @@ public interface BlogDao {
     //博客删除
     PreparedStatement deleteBlog(int bId, Connection con, PreparedStatement ps) throws SQLException;
 
+    //查找所有博客（带分页）
     ArrayList<Blog> findAllBlog(int index);
 }

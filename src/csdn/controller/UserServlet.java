@@ -341,4 +341,19 @@ public class UserServlet extends BaseServlet {
         PrintWriter out = resp.getWriter();
         out.print("<font style='color:red;font-size:40'>"+mes+"</font>");
     }
+
+    /**
+     *  我的消息【添加好友】
+     */
+    public void accept(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=utf-8");
+
+        int umId = Integer.parseInt(req.getParameter("umid"));
+        String mes = userService.addFriend(umId);
+
+        PrintWriter out = resp.getWriter();
+        out.print("<font style='color:red;font-size:40'>"+mes+"</font>");
+    }
 }

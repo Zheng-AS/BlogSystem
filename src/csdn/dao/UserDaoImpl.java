@@ -1,8 +1,10 @@
 package csdn.dao;
 
 import csdn.po.User;
+import csdn.po.UserMes;
 import csdn.util.JdbcUtil;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -321,4 +323,20 @@ public class UserDaoImpl implements UserDao {
         return mes;
     }
 
+    @Override
+    public PreparedStatement addFriend(UserMes userMes, Connection con, PreparedStatement ps) throws SQLException {
+        String sql1 = "insert into user_friend (uid1, uid2) values (?, ?)";
+        ps = con.prepareStatement(sql1);
+        ps.setInt(1, userMes.getReqId());
+        ps.setInt(2, userMes.getRespId());
+        ps.executeUpdate();
+
+        String sql2 = "insert into user_friend (uid1, uid2) values (?, ?)";
+        ps = con.prepareStatement(sql2);
+        ps.setInt(1, userMes.getRespId());
+        ps.setInt(2, userMes.getReqId());
+        ps.executeUpdate();
+
+        return ps;
+    }
 }

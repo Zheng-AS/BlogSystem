@@ -94,4 +94,7 @@ public interface UserService {
 
     //消息已读
     String readMes(int umId);
+
+    //添加好友
+    String addFriend(int umId);
 }

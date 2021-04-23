@@ -351,8 +351,11 @@ public class UserServiceImpl implements UserService {
     public String sendFriendRequest(int reqId, String respUserName) {
         String mes = "发送失败，正在为您加急抢修";
         int respId = userDao.getUIdByName(respUserName);
+        if(reqId == respId){
+            return "不能添加自己为好友哦";
+        }
         if(respId == -1){
-            mes = "好友请发发送失败，没有该用户哦";
+            return "好友请发发送失败，没有该用户哦";
         }
         if(userMesDao.requestIsExist(reqId, respId)){
             mes = "好友请求已发送";
@@ -378,5 +381,34 @@ public class UserServiceImpl implements UserService {
     @Override
     public String readMes(int umId) {
         return userMesDao.deleteMes(umId);
+    }
+
+    @Override
+    public String addFriend(int umId) {
+        UserMes userMes = userMesDao.getUserMesByUMId(umId);
+        String mes = "添加失败，正在为您加急抢修";
+        JdbcUtil util = new JdbcUtil();
+
+        //开启事务
+        Connection con = util.getCon();
+        PreparedStatement ps = null;
+        try {
+            userDao.addFriend(userMes, con, ps);
+            userMesDao.deleteMes(umId, con, ps);
+            userMesDao.addAcceptMes(userMes, con, ps);
+
+            mes = "添加成功";
+            con.commit();
+        } catch (SQLException e) {
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            util.close();
+        }
+        return mes;
     }
 }
