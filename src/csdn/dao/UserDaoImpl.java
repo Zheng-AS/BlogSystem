@@ -339,4 +339,23 @@ public class UserDaoImpl implements UserDao {
 
         return ps;
     }
+
+    @Override
+    public ArrayList<Integer> findFriendId(int uId) {
+        ArrayList friendIds = new ArrayList();
+        String sql = "select * from user_friend where uid1 = ?";
+        ps = util.createStatement(sql);
+        try {
+            ps.setInt(1, uId);
+            rs = ps.executeQuery();
+            while (rs.next()){
+                friendIds.add(rs.getInt("uid2"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close(rs);
+        }
+        return friendIds;
+    }
 }

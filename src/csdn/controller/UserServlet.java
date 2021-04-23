@@ -356,4 +356,38 @@ public class UserServlet extends BaseServlet {
         PrintWriter out = resp.getWriter();
         out.print("<font style='color:red;font-size:40'>"+mes+"</font>");
     }
+
+    public void friend(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=utf-8");
+
+        int uId = (int) req.getServletContext().getAttribute("uid");
+        ArrayList<User> friendList = userService.findFriend(uId);
+
+        int i = 0;
+        PrintWriter out = resp.getWriter();
+        out.print("<br>");
+        out.print("<br>");
+        out.print("<br>");
+        out.print("<br>");
+
+        out.print("<table border='2' align='center'>");
+        out.print("<tr>");
+        out.print("<td>编号</td>");
+        out.print("<td>用户昵称</td>");
+        out.print("<td>操作</td>");
+        out.print("<td>操作</td>");
+        out.print("</tr>");
+        for (User user : friendList) {
+            out.print("<tr>");
+            out.print("<td>" + (i+1) + "</td>");
+            out.print("<td>" + user.getUserName()+ "</td>");
+            out.print("<td><a href=\"/psdn/user/talk?uid="+user.getuId()+"\" target=\"right\">聊天</a></td>");
+            out.print("<td><a href=\"/psdn/user/deleteFriend?uid="+user.getuId()+"\" target=\"right\">删除好友</a></td>");
+            out.print("</tr>");
+            i ++;
+        }
+        out.print("</table>");
+    }
 }

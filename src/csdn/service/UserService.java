@@ -97,4 +97,7 @@ public interface UserService {
 
     //添加好友
     String addFriend(int umId);
+
+    //获取用户好友
+    ArrayList<User> findFriend(int uId);
 }

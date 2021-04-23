@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:https="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="jquery-3.3.1.js"></script>
+    <script src="bootstrap.js"></script>
+</head>
+<body>
+<center>
+    <div class="btn-group" data-toggle="buttons">"
+        <label class="btn btn-primary">
+            <input id="username1" type="text" class="form-control" placeholder="作者呢称" style="width: 150px">
+        </label>
+        <label class="btn btn-primary">
+            <button  type="button" class="btn btn-default" onclick="sendFriendRequest()">发送好友请求</button>
+        </label>
+    </div>
+</center>
+
+<script>
+    data = {
+        username :""
+    };
+
+    function sendFriendRequest() {
+        data.username = $('#username1').val();
+        $.ajax({
+            type: "GET",
+            url: "user/sendFriendRequest",
+            data: data,
+            cache: false,
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            //processData: false,
+            dataType: "json",
+            success: function (ret) {
+                alert(ret.mes);
+            }
+        })
+    }
+
+</script>
+</body>
+</html>

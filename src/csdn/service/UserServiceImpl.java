@@ -411,4 +411,15 @@ public class UserServiceImpl implements UserService {
         }
         return mes;
     }
+
+    @Override
+    public ArrayList<User> findFriend(int uId) {
+        ArrayList<Integer> friendId = userDao.findFriendId(uId);
+        ArrayList<User> userArrayList = new ArrayList<>();
+        for (int id : friendId) {
+            User user = new User(id, userDao.getNameByUId(id), null);
+            userArrayList.add(user);
+        }
+        return userArrayList;
+    }
 }

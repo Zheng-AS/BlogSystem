@@ -59,4 +59,7 @@ public interface UserDao {
 
     //添加好友
     PreparedStatement addFriend(UserMes userMes, Connection con, PreparedStatement ps) throws SQLException;
+
+    //查询用户好友ID
+    ArrayList<Integer> findFriendId(int uId);
 }
