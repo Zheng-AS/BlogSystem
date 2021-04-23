@@ -368,4 +368,10 @@ public class UserServiceImpl implements UserService {
     public ArrayList<UserMes> getUserMes(int respId) {
         return userMesDao.getUserMes(respId);
     }
+
+    @Override
+    public String rejectFriendRequest(int umId) {
+        UserMes userMes = userMesDao.getUserMesByUMId(umId);
+        return userMesDao.reject(userMes);
+    }
 }

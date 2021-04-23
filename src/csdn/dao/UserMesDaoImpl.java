@@ -1,8 +1,10 @@
 package csdn.dao;
 
 import csdn.po.UserMes;
+import csdn.util.IDUtil;
 import csdn.util.JdbcUtil;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +14,7 @@ public class UserMesDaoImpl implements UserMesDao {
     private JdbcUtil util = new JdbcUtil();
     PreparedStatement ps = null;
     ResultSet rs = null;
+    Connection con = null;
 
     @Override
     public boolean sendFriendRequest(int reqId, int respId) {
@@ -92,5 +95,42 @@ public class UserMesDaoImpl implements UserMesDao {
             util.close(rs);
         }
         return userMes;
+    }
+
+    @Override
+    public String reject(UserMes userMes) {
+        String mes = "操作失败，正在为您加急抢修";
+        try {
+            int count = 0;
+            //开启事务
+            con = util.getCon();
+
+            String sql1 = "delete from user_mes where umid = ?";
+            ps = con.prepareStatement(sql1);
+            ps.setInt(1, userMes.getUmId());
+            count += ps.executeUpdate();
+
+            String sql2 = "insert into user_mes(req_id, resp_id, type) values(?,?,?)";
+            ps = con.prepareStatement(sql2);
+            ps.setInt(1,userMes.getRespId());
+            ps.setInt(2,userMes.getReqId());
+            ps.setString(3,"reject");
+            count += ps.executeUpdate();
+            if(count == 2){
+                mes = "操作成功";
+            }
+
+            con.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } finally {
+            util.close();
+        }
+        return mes;
     }
 }

@@ -88,4 +88,7 @@ public interface UserService {
 
     //获取用户信息
     ArrayList<UserMes> getUserMes(int respId);
+
+    //拒绝好友请求
+    String rejectFriendRequest(int umId);
 }

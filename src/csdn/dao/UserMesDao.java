@@ -16,4 +16,7 @@ public interface UserMesDao {
 
     //通过ID查找用户信息
     UserMes getUserMesByUMId(int umId);
+
+    //删除（好友请求），增添（拒绝消息）
+    String reject(UserMes userMes);
 }

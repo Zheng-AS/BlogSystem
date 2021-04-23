@@ -293,18 +293,18 @@ public class UserServlet extends BaseServlet {
             if(mes.getType().equals("request")){
                 out.print("<td> 好友请求 </td>");
                 out.print("<td> ["+userName+"]:向你发送了好友请求 </td>");
-                out.print("<td><a href=\"/psdn/accept?umid="+mes.getUmId()+"\" target=\"right\">接受</a></td>");
-                out.print("<td><a href=\"/psdn/admin/accept?umid="+mes.getUmId()+"\" target=\"right\">拒绝</a></td>");
+                out.print("<td><a href=\"/psdn/user/accept?umid="+mes.getUmId()+"\" target=\"right\">接受</a></td>");
+                out.print("<td><a href=\"/psdn/user/reject?umid="+mes.getUmId()+"\" target=\"right\">拒绝</a></td>");
             }else if(mes.getType().equals("accept")){
                 out.print("<td> 提示信息 </td>");
                 out.print("<td> ["+userName+"]:接受了你的好友请求 </td>");
-                out.print("<td><a href=\"/psdn/?umid="+mes.getUmId()+"\" target=\"right\">已读</a></td>");
-                out.print("<td><a href=\"/psdn/?umid="+mes.getUmId()+"\" target=\"right\">已读</a></td>");
+                out.print("<td><a href=\"/psdn/user/?umid="+mes.getUmId()+"\" target=\"right\">已读</a></td>");
+                out.print("<td><a href=\"/psdn/user/?umid="+mes.getUmId()+"\" target=\"right\">已读</a></td>");
             }else {
                 out.print("<td> 提示信息 </td>");
                 out.print("<td> ["+userName+"]:拒绝了你的好友请求 </td>");
-                out.print("<td><a href=\"/psdn/?umid="+mes.getUmId()+"\" target=\"right\">已读</a></td>");
-                out.print("<td><a href=\"/psdn/?umid="+mes.getUmId()+"\" target=\"right\">已读</a></td>");
+                out.print("<td><a href=\"/psdn/user/?umid="+mes.getUmId()+"\" target=\"right\">已读</a></td>");
+                out.print("<td><a href=\"/psdn/user/?umid="+mes.getUmId()+"\" target=\"right\">已读</a></td>");
             }
             out.print("</tr>");
             i ++;
@@ -315,12 +315,15 @@ public class UserServlet extends BaseServlet {
     /**
      *  我的消息【拒绝好友请求】
      */
-    public void accept(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+    public void reject(HttpServletRequest req, HttpServletResponse resp) throws IOException{
         req.setCharacterEncoding("utf-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html;charset=utf-8");
 
         int umId = Integer.parseInt(req.getParameter("umid"));
-        int respId = (int) req.getServletContext().getAttribute("uid");
+        String mes = userService.rejectFriendRequest(umId);
+
+        PrintWriter out = resp.getWriter();
+        out.print("<font style='color:red;font-size:40'>"+mes+"</font>");
     }
 }
