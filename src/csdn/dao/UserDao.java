@@ -1,6 +1,7 @@
 package csdn.dao;
 
 import csdn.po.User;
+import csdn.po.UserMes;
 
 import java.util.ArrayList;
 
@@ -52,11 +53,4 @@ public interface UserDao {
 
     //解禁用户
     String noBanUser(int uId);
-
-    //插入好友请求
-    boolean sendFriendRequest(int reqId, int respId);
-
-    //查看好友请求是否存在
-    boolean requestIsExist(int reqId, int respId);
-
 }

@@ -3,6 +3,7 @@ package csdn.service;
 import csdn.po.Blog;
 import csdn.po.Comment;
 import csdn.po.User;
+import csdn.po.UserMes;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -84,4 +85,7 @@ public interface UserService {
 
     //发送好友请求
     String sendFriendRequest(int reqId, String respUserName);
+
+    //获取用户信息
+    ArrayList<UserMes> getUserMes(int respId);
 }

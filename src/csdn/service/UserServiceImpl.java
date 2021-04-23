@@ -1,12 +1,10 @@
 package csdn.service;
 
-import csdn.dao.BlogDao;
-import csdn.dao.CommentDao;
-import csdn.dao.DaoFactory;
-import csdn.dao.UserDao;
+import csdn.dao.*;
 import csdn.po.Blog;
 import csdn.po.Comment;
 import csdn.po.User;
+import csdn.po.UserMes;
 import csdn.util.JdbcUtil;
 import org.junit.Test;
 
@@ -19,6 +17,7 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao = DaoFactory.getUserDao();
     private BlogDao blogDao = DaoFactory.getBlogDao();
     private CommentDao commentDao = DaoFactory.getCommentDao();
+    private UserMesDao userMesDao = DaoFactory.getUserMesDao();
     @Override
     public int register(String userName, String password) {
         if(userDao.isExist(userName)){
@@ -355,18 +354,18 @@ public class UserServiceImpl implements UserService {
         if(respId == -1){
             mes = "好友请发发送失败，没有该用户哦";
         }
-        if(userDao.requestIsExist(reqId, respId)){
+        if(userMesDao.requestIsExist(reqId, respId)){
             mes = "好友请求已发送";
         }else {
-            if(userDao.sendFriendRequest(reqId, respId)){
+            if(userMesDao.sendFriendRequest(reqId, respId)){
                 mes = "好友请求发送成功";
             }
         }
         return mes;
     }
 
-    @Test
-    public void test(){
-        deleteBlog(9);
+    @Override
+    public ArrayList<UserMes> getUserMes(int respId) {
+        return userMesDao.getUserMes(respId);
     }
 }

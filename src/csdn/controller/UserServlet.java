@@ -3,6 +3,7 @@ package csdn.controller;
 import com.alibaba.fastjson.JSON;
 import csdn.po.Blog;
 import csdn.po.User;
+import csdn.po.UserMes;
 import csdn.service.ServiceFactory;
 import csdn.service.UserService;
 
@@ -259,5 +260,67 @@ public class UserServlet extends BaseServlet {
         Map<String,String> map = new HashMap<>();
         map.put("mes", mes);
         resp.getWriter().print(JSON.toJSONString(map));
+    }
+
+    /**
+     *  我的消息
+     */
+    public void message(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=utf-8");
+
+        int uId = (int) req.getServletContext().getAttribute("uid");
+        ArrayList<UserMes> userMesArrayList = userService.getUserMes(uId);
+        PrintWriter out = resp.getWriter();
+        String userName;
+        int i =0;
+
+        out.print("<table border='2' align='center'>");
+        out.print("<tr>");
+        out.print("<td>编号</td>");
+        out.print("<td>发送用户</td>");
+        out.print("<td>信息类型</td>");
+        out.print("<td>内容</td>");
+        out.print("<td>操作</td>");
+        out.print("<td>操作</td>");
+        out.print("</tr>");
+        for (UserMes mes : userMesArrayList) {
+            userName = userService.getAuthorName(mes.getReqId());
+            out.print("<tr>");
+            out.print("<td>" + (i+1) + "</td>");
+            out.print("<td>" + userName+ "</td>");
+            if(mes.getType().equals("request")){
+                out.print("<td> 好友请求 </td>");
+                out.print("<td> ["+userName+"]:向你发送了好友请求 </td>");
+                out.print("<td><a href=\"/psdn/accept?umid="+mes.getUmId()+"\" target=\"right\">接受</a></td>");
+                out.print("<td><a href=\"/psdn/admin/accept?umid="+mes.getUmId()+"\" target=\"right\">拒绝</a></td>");
+            }else if(mes.getType().equals("accept")){
+                out.print("<td> 提示信息 </td>");
+                out.print("<td> ["+userName+"]:接受了你的好友请求 </td>");
+                out.print("<td><a href=\"/psdn/?umid="+mes.getUmId()+"\" target=\"right\">已读</a></td>");
+                out.print("<td><a href=\"/psdn/?umid="+mes.getUmId()+"\" target=\"right\">已读</a></td>");
+            }else {
+                out.print("<td> 提示信息 </td>");
+                out.print("<td> ["+userName+"]:拒绝了你的好友请求 </td>");
+                out.print("<td><a href=\"/psdn/?umid="+mes.getUmId()+"\" target=\"right\">已读</a></td>");
+                out.print("<td><a href=\"/psdn/?umid="+mes.getUmId()+"\" target=\"right\">已读</a></td>");
+            }
+            out.print("</tr>");
+            i ++;
+        }
+        out.print("</table>");
+    }
+
+    /**
+     *  我的消息【拒绝好友请求】
+     */
+    public void accept(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=utf-8");
+
+        int umId = Integer.parseInt(req.getParameter("umid"));
+        int respId = (int) req.getServletContext().getAttribute("uid");
     }
 }

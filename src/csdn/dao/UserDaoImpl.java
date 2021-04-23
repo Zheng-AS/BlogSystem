@@ -2,7 +2,6 @@ package csdn.dao;
 
 import csdn.po.User;
 import csdn.util.JdbcUtil;
-import org.junit.Test;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -322,43 +321,4 @@ public class UserDaoImpl implements UserDao {
         return mes;
     }
 
-    @Override
-    public boolean sendFriendRequest(int reqId, int respId) {
-        boolean result = false;
-        String sql = "insert into user_mes (req_id,resp_id,type) values (?,?,?)";
-        ps = util.createStatement(sql);
-        try {
-            ps.setInt(1,reqId);
-            ps.setInt(2,respId);
-            ps.setString(3,"request");
-            result = ps.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            util.close();
-        }
-        return result;
-    }
-
-    @Override
-    public boolean requestIsExist(int reqId, int respId) {
-        boolean result = false;
-        String type = "request";
-        String sql = "select * from user_mes where req_id = ? and resp_id = ? and type = ?";
-        ps = util.createStatement(sql);
-        try {
-            ps.setInt(1,reqId);
-            ps.setInt(2,respId);
-            ps.setString(3,type);
-            rs = ps.executeQuery();
-            if(rs.next()){
-                result = true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            util.close(rs);
-        }
-        return result;
-    }
 }

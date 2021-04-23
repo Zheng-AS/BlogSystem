@@ -12,4 +12,6 @@ public class DaoFactory {
     }
 
     public static AdministratorDao getAdminDao(){ return new AdminDaoImpl(); }
+
+    public static UserMesDao getUserMesDao(){ return new UserMesDaoImpl(); }
 }
