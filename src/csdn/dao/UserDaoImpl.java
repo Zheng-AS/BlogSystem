@@ -358,4 +358,21 @@ public class UserDaoImpl implements UserDao {
         }
         return friendIds;
     }
+
+    @Override
+    public PreparedStatement deleteFriend(int uId1, int uId2, Connection con, PreparedStatement ps) throws SQLException {
+        String sql1 = "delete from user_friend where uid1 = ? and uid2 = ?";
+        ps = con.prepareStatement(sql1);
+        ps.setInt(1, uId1);
+        ps.setInt(2, uId2);
+        ps.executeUpdate();
+
+        String sql2 = "delete from user_friend where uid1 = ? and uid2 = ?";
+        ps = con.prepareStatement(sql2);
+        ps.setInt(1, uId2);
+        ps.setInt(2, uId1);
+        ps.executeUpdate();
+
+        return ps;
+    }
 }

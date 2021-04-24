@@ -100,4 +100,7 @@ public interface UserService {
 
     //获取用户好友
     ArrayList<User> findFriend(int uId);
+
+    //删除好友
+    String deleteFriend(int uId1, int uId2);
 }

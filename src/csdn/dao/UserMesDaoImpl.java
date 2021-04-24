@@ -173,4 +173,16 @@ public class UserMesDaoImpl implements UserMesDao {
 
         return ps;
     }
+
+    @Override
+    public PreparedStatement addDeleteMes(int reqId, int respId, Connection con, PreparedStatement ps) throws SQLException {
+        String sql1 = "insert into user_mes (req_id, resp_id, type) values (?,?,?)";
+        ps = con.prepareStatement(sql1);
+        ps.setInt(1, reqId);
+        ps.setInt(2, respId);
+        ps.setString(3, "delete");
+        ps.execute();
+
+        return ps;
+    }
 }

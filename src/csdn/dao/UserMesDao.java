@@ -31,4 +31,7 @@ public interface UserMesDao {
 
     //增添（接受好友请求）
     PreparedStatement addAcceptMes(UserMes userMes, Connection con, PreparedStatement ps) throws SQLException;
+
+    //增添（好友删除消息）
+    PreparedStatement addDeleteMes(int reqId, int respId, Connection con, PreparedStatement ps) throws SQLException;
 }

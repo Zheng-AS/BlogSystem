@@ -422,4 +422,31 @@ public class UserServiceImpl implements UserService {
         }
         return userArrayList;
     }
+
+    @Override
+    public String deleteFriend(int uId1, int uId2) {
+        String mes = "删除失败，正在为您加急抢修";
+        JdbcUtil util = new JdbcUtil();
+
+        //开启事务
+        Connection con = util.getCon();
+        PreparedStatement ps = null;
+        try {
+            userDao.deleteFriend(uId1, uId2, con, ps);
+            userMesDao.addDeleteMes(uId1, uId2, con, ps);
+
+            mes = "删除成功";
+            con.commit();
+        } catch (SQLException e) {
+            try {
+                con.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            util.close();
+        }
+        return mes;
+    }
 }

@@ -300,6 +300,11 @@ public class UserServlet extends BaseServlet {
                 out.print("<td> ["+userName+"]:接受了你的好友请求 </td>");
                 out.print("<td><a href=\"/psdn/user/read?umid="+mes.getUmId()+"\" target=\"right\">已读</a></td>");
                 out.print("<td><a href=\"/psdn/user/read?umid="+mes.getUmId()+"\" target=\"right\">已读</a></td>");
+            }else if(mes.getType().equals("delete")){
+                out.print("<td> 提示信息 </td>");
+                out.print("<td> ["+userName+"]:解除了与你的好友关系 </td>");
+                out.print("<td><a href=\"/psdn/user/read?umid="+mes.getUmId()+"\" target=\"right\">已读</a></td>");
+                out.print("<td><a href=\"/psdn/user/read?umid="+mes.getUmId()+"\" target=\"right\">已读</a></td>");
             }else {
                 out.print("<td> 提示信息 </td>");
                 out.print("<td> ["+userName+"]:拒绝了你的好友请求 </td>");
@@ -357,6 +362,9 @@ public class UserServlet extends BaseServlet {
         out.print("<font style='color:red;font-size:40'>"+mes+"</font>");
     }
 
+    /**
+     *  我的好友
+     */
     public void friend(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("utf-8");
         resp.setCharacterEncoding("UTF-8");
@@ -389,5 +397,21 @@ public class UserServlet extends BaseServlet {
             i ++;
         }
         out.print("</table>");
+    }
+
+    /**
+     *  我的好友：【删除好友】
+     */
+    public void deleteFriend(HttpServletRequest req, HttpServletResponse resp) throws IOException{
+        req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=utf-8");
+
+        int uId1 = (int) req.getServletContext().getAttribute("uid");
+        int uId2 = Integer.parseInt(req.getParameter("uid"));
+
+        String mes = userService.deleteFriend(uId1, uId2);
+        PrintWriter out = resp.getWriter();
+        out.print("<font style='color:red;font-size:40'>"+mes+"</font>");
     }
 }

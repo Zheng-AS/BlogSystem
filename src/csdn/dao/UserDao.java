@@ -62,4 +62,7 @@ public interface UserDao {
 
     //查询用户好友ID
     ArrayList<Integer> findFriendId(int uId);
+
+    //删除好友
+    PreparedStatement deleteFriend(int uId1, int uId2, Connection con, PreparedStatement ps) throws SQLException;
 }
