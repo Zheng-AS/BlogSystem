@@ -1,10 +1,7 @@
 package csdn.service;
 
 import csdn.dao.*;
-import csdn.po.Blog;
-import csdn.po.Comment;
-import csdn.po.User;
-import csdn.po.UserMes;
+import csdn.po.*;
 import csdn.util.JdbcUtil;
 import org.junit.Test;
 
@@ -18,6 +15,7 @@ public class UserServiceImpl implements UserService {
     private BlogDao blogDao = DaoFactory.getBlogDao();
     private CommentDao commentDao = DaoFactory.getCommentDao();
     private UserMesDao userMesDao = DaoFactory.getUserMesDao();
+    private UserTalkMesDao userTalkMesDao = DaoFactory.getUserTalkMesDao();
     @Override
     public int register(String userName, String password) {
         if(userDao.isExist(userName)){
@@ -448,5 +446,20 @@ public class UserServiceImpl implements UserService {
             util.close();
         }
         return mes;
+    }
+
+    @Override
+    public String addTalkMes(int reqId, int uuId, String content) {
+        return userTalkMesDao.addTalkMes(reqId, uuId, content);
+    }
+
+    @Override
+    public ArrayList<UserTalkMes> getTalkMes(int uId, int uId2) {
+        ArrayList<Integer> arrayList = userDao.getUuId(uId, uId2);
+        ArrayList<UserTalkMes> talkMes = userTalkMesDao.getTalkMes(arrayList);
+        for (UserTalkMes mes : talkMes) {
+            mes.setUserName(userDao.getNameByUId(mes.getReqId()));
+        }
+        return talkMes;
     }
 }

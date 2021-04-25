@@ -1,5 +1,6 @@
-package csdn.dao;
+package csdn.dao.impl;
 
+import csdn.dao.UserMesDao;
 import csdn.po.UserMes;
 import csdn.util.IDUtil;
 import csdn.util.JdbcUtil;

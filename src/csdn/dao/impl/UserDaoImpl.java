@@ -1,5 +1,6 @@
-package csdn.dao;
+package csdn.dao.impl;
 
+import csdn.dao.UserDao;
 import csdn.po.User;
 import csdn.po.UserMes;
 import csdn.util.JdbcUtil;
@@ -374,5 +375,34 @@ public class UserDaoImpl implements UserDao {
         ps.executeUpdate();
 
         return ps;
+    }
+
+    @Override
+    public ArrayList<Integer> getUuId(int uId1, int uId2) {
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        String sql1 = "select * from user_friend where uid1 = ? and uid2 = ?";
+        String sql2 = "select * from user_friend where uid1 = ? and uid2 = ?";
+        try {
+            ps = util.createStatement(sql1);
+            ps.setInt(1,uId1);
+            ps.setInt(2,uId2);
+            rs = ps.executeQuery();
+            if (rs.next()){
+                arrayList.add(rs.getInt("uuid"));
+            }
+
+            ps = util.createStatement(sql2);
+            ps.setInt(1,uId2);
+            ps.setInt(2,uId1);
+            rs = ps.executeQuery();
+            if (rs.next()){
+                arrayList.add(rs.getInt("uuid"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            util.close(rs);
+        }
+        return arrayList;
     }
 }

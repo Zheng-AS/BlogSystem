@@ -1,10 +1,9 @@
-package csdn.dao;
+package csdn.dao.impl;
 
-import csdn.po.Blog;
+import csdn.dao.CommentDao;
 import csdn.po.Comment;
 import csdn.util.IDUtil;
 import csdn.util.JdbcUtil;
-import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -69,20 +69,20 @@
         imgUrl : [],
         content :"",
         isPublic :""
-    }
+    };
     var data3 = {
         title : "",
         tag : "",
         imgUrl : [],
         content :"",
         isPublic :""
-    }
+    };
 
     var data2 = {
         blogId : ""
-    }
+    };
 
-    var data3 = []
+    var data3 = [];
 
     window.onload = function () {
         console.log(window.location.href)
@@ -100,18 +100,18 @@
             //processData: false,
             dataType: "json",
             success: function (ret) {
-                $('#title').val(ret.title)
-                editor.txt.text(ret.content)
-                $('#tag').val(ret.tag)
-                $('#isPublic').val(ret.isPublic)
+                $('#title').val(ret.title);
+                editor.txt.text(ret.content);
+                $('#tag').val(ret.tag);
+                $('#isPublic').val(ret.isPublic);
                 //for()
                 //$('#contentDiv').html = `<img src=${ret.imgUrl} >`;
-                ret.imgUrl = ret.imgUrl.substring(1,ret.imgUrl.length-1)
-                console.log(ret.imgUrl )
+                ret.imgUrl = ret.imgUrl.substring(1,ret.imgUrl.length-1);
+                console.log(ret.imgUrl );
                 while (ret.imgUrl) {
-                    var imgUrl = ret.imgUrl.substring(0, 67)
-                    ret.imgUrl = ret.imgUrl.substr(68)
-                    console.log(imgUrl)
+                    var imgUrl = ret.imgUrl.substring(0, 67);
+                    ret.imgUrl = ret.imgUrl.substr(68);
+                    console.log(imgUrl);
 
                     $('.w-e-text').html(`${ $('.w-e-text').html()}<img src=${imgUrl}>`)
                 }
@@ -120,26 +120,26 @@
     }
 
     var E = window.wangEditor;
-    var editor = new E('#contentDiv')
+    var editor = new E('#contentDiv');
     var $text1 = $('#content');
     editor.config.onchange = function (html) {
         // 监控变化，同步更新富文本内容到 textarea
         $text1.val(html);
 
-    }
+    };
     editor.config.uploadImgServer = '/psdn/blog/imgUpload';	//自定义上传图片
     editor.config.uploadFileName = 'imgFile';	//自定义文件名
     editor.config.uploadImgHooks = {
         customInsert: function (insertImg, result) {
             var url = result.url;
-            console.log(data.imgUrl)
-            data.imgUrl.push(url)
-            insertImg(url)
+            console.log(data.imgUrl);
+            data.imgUrl.push(url);
+            insertImg(url);
             alert(result.msg);
         }
-    }
+    };
     editor.config.onchange = (html)=>{
-            console.log(html)
+            console.log(html);
 
         for(var i in data.imgUrl){
             var newArr = [];
@@ -149,33 +149,33 @@
             }
         }
         console.log(data.imgUrl)
-    }
+    };
     editor.config.customAlert = function (info) {	//关闭默认提示信息
         // info 是需要提示的内容
         alert('自定义提示：' + info)
-    }
+    };
     editor.config.height = 700;
     editor.create();
     $text1.val(editor.txt.html());
 
     function submitData() {
-        data.tag = $('#tag option:selected').val()
-        data.title = $('#title').val()
-        data.isPublic = $('#isPublic option:selected').val()
-        data.content = editor.txt.text()
+        data.tag = $('#tag option:selected').val();
+        data.title = $('#title').val();
+        data.isPublic = $('#isPublic option:selected').val();
+        data.content = editor.txt.text();
 
-        $("#title1").val(data.title)
-        $("#tag1").val(data.tag)
-        $("#isPublic1").val(data.isPublic)
-        $("#content1").val(data.content)
-        $("#imgUrl1").val(data.imgUrl)
+        $("#title1").val(data.title);
+        $("#tag1").val(data.tag);
+        $("#isPublic1").val(data.isPublic);
+        $("#content1").val(data.content);
+        $("#imgUrl1").val(data.imgUrl);
 
         $("#form2").submit()
     }
-    $("#title").val(data.title)
-    $("#tag").val(data.tag)
-    $("#isPublic").val(data.isPublic)
-    $("#content").val(data.content)
+    $("#title").val(data.title);
+    $("#tag").val(data.tag);
+    $("#isPublic").val(data.isPublic);
+    $("#content").val(data.content);
     $("#imgUrl").val(data.imgUrl)
 
 

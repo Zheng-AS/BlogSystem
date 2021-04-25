@@ -1,9 +1,6 @@
 package csdn.service;
 
-import csdn.po.Blog;
-import csdn.po.Comment;
-import csdn.po.User;
-import csdn.po.UserMes;
+import csdn.po.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -103,4 +100,10 @@ public interface UserService {
 
     //删除好友
     String deleteFriend(int uId1, int uId2);
+
+    //上传用户聊天信息
+    String addTalkMes(int reqId, int uuId, String content);
+
+    //获取用户聊天信息
+    ArrayList<UserTalkMes> getTalkMes(int uId, int uId2);
 }

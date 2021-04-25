@@ -65,4 +65,7 @@ public interface UserDao {
 
     //删除好友
     PreparedStatement deleteFriend(int uId1, int uId2, Connection con, PreparedStatement ps) throws SQLException;
+
+    //根据两用户Id查询其好友关系Id
+    ArrayList<Integer> getUuId(int uId1, int uId2);
 }

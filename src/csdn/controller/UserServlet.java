@@ -1,9 +1,9 @@
 package csdn.controller;
 
 import com.alibaba.fastjson.JSON;
-import csdn.po.Blog;
-import csdn.po.User;
-import csdn.po.UserMes;
+import csdn.dao.UserDao;
+import csdn.dao.impl.UserDaoImpl;
+import csdn.po.*;
 import csdn.service.ServiceFactory;
 import csdn.service.UserService;
 
@@ -391,7 +391,7 @@ public class UserServlet extends BaseServlet {
             out.print("<tr>");
             out.print("<td>" + (i+1) + "</td>");
             out.print("<td>" + user.getUserName()+ "</td>");
-            out.print("<td><a href=\"/psdn/user/talk?uid="+user.getuId()+"\" target=\"right\">聊天</a></td>");
+            out.print("<td><a href=\"/psdn/user/getTalkMes?uid="+user.getuId()+"\" target=\"right\">聊天</a></td>");
             out.print("<td><a href=\"/psdn/user/deleteFriend?uid="+user.getuId()+"\" target=\"right\">删除好友</a></td>");
             out.print("</tr>");
             i ++;
@@ -413,5 +413,64 @@ public class UserServlet extends BaseServlet {
         String mes = userService.deleteFriend(uId1, uId2);
         PrintWriter out = resp.getWriter();
         out.print("<font style='color:red;font-size:40'>"+mes+"</font>");
+    }
+
+    /**
+     *  我的好友：【聊天】
+     */
+    public void talk(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=utf-8");
+
+        int uId = (int) req.getServletContext().getAttribute("uid");
+        int uuId = Integer.parseInt(req.getParameter("uuid"));
+        String content = req.getParameter("content");
+        String mes = userService.addTalkMes(uId, uuId, content);
+        PrintWriter out = resp.getWriter();
+        out.print("<font style='color:red;font-size:40'>"+mes+"</font>");
+    }
+
+    /**
+     * 【聊天】：获取聊天信息
+     */
+    public void getTalkMes(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        req.setCharacterEncoding("utf-8");
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=utf-8");
+        int uId = (int) req.getServletContext().getAttribute("uid");
+        int uId2 = Integer.parseInt(req.getParameter("uid"));
+
+        ArrayList<Integer> uuId = new UserDaoImpl().getUuId(uId, uId2);
+        ArrayList<UserTalkMes> userTalkMesArrayList = userService.getTalkMes(uId, uId2);
+        PrintWriter out = resp.getWriter();
+
+        out.print("<div>_________________________________用户聊天_____________________________________</div>");
+        out.print("<br><br><br>");
+        for (UserTalkMes talkMes : userTalkMesArrayList) {
+            out.print("<div>");
+            if (uId != talkMes.getReqId()){
+                out.print("<div>" + talkMes.getUserName() + ":</div>");
+                out.print("<div style=\"padding-left: 20px\">" + talkMes.getContent());
+            }else {
+                out.print("<div style=\"padding-left: 300px\">" + talkMes.getContent());
+            }
+            out.print("</div>");
+            out.print("</div>");
+        }
+
+        out.print("<br>");
+        out.print("<br>");
+        out.print("<form id=\"from1\" method=\"post\" action=\"/psdn/user/talk\">\n" +
+                "    <input type=\"text\" name=\"content\" />\n" +
+                "    <input style=\"display: none\" type=\"text\" name=\"uuid\" value=\""+uuId.get(0)+"\"/>\n" +
+                "    <input type=\"button\" value=\"发送\" onclick=\"submit1()\">\n" +
+                "</form>\n" +
+                "\n" +
+                "<script>\n" +
+                "    function submit1() {\n" +
+                "        window.document.getElementById(\"from1\").submit();\n" +
+                "    }\n" +
+                "</script>");
     }
 }

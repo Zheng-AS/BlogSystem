@@ -1,5 +1,6 @@
-package csdn.dao;
+package csdn.dao.impl;
 
+import csdn.dao.AdministratorDao;
 import csdn.po.Blog;
 import csdn.util.JdbcUtil;
 
